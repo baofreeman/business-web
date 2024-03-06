@@ -1,0 +1,172 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-black: #080404;
+    --color-silver: #929292;
+    --color-gray: #303030;
+    --color-white: #ffffff;
+    --color-light: #d9d9d9;
+    --color-primary: #ff8700;
+    --color-active: #f6ae2d;
+    --color-success: #ade25d;
+    --color-info: #3e00f9;
+    --color-warn: #eaff72;
+    --color-error: #f95200;
+    --header-height: "62px";
+    --footer-height: "28px";
+  }
+
+  html {
+    font-family: "IBM Plex Mono", system-ui, monospace;
+    font-weight: 500;
+    font-size: 62.5%;
+    color: #080404;
+    scrollbar-width: 0;
+  }
+  img {
+    height: auto;
+  }
+  * {
+    box-sizing: border-box;
+  }
+}
+@layer utilities {
+  .zz3d {
+    color: var(--color-white);
+    background-color: var(--color-black);
+  }
+  .page-tab-layout-md {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    gap: 1px;
+    grid-template:
+      "HEADER_LAYOUT" minmax(48px, 48px)
+      "SIDEBAR_LEFT_LAYOUT" minmax(48px, 48px)
+      "MAIN_LAYOUT" minmax(0px, 2.55fr)
+      "FOOTER_LAYOUT" minmax(32px, 32px)
+      / minmax(0px, 7fr);
+  }
+  .page-tab-layout-md-cart {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    gap: 1px;
+    grid-template:
+      "HEADER_LAYOUT" minmax(48px, 48px)
+      "SIDEBAR_LEFT_LAYOUT" minmax(48px, 48px)
+      "MAIN_LAYOUT" minmax(0px, 0.7fr)
+      "SIDEBAR_RIGHT_LAYOUT" minmax(0px, 0.3fr)
+      "FOOTER_LAYOUT" minmax(32px, 32px)
+      / minmax(0px, 7fr);
+  }
+  .page-tab-layout-md-shop-detail {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    gap: 1px;
+    grid-template:
+      "HEADER_LAYOUT" minmax(48px, 48px)
+      "MAIN_LAYOUT" minmax(0px, 0px)
+      "SIDEBAR_RIGHT_LAYOUT" minmax(0px, 7fr)
+      "FOOTER_LAYOUT" minmax(32px, 32px)
+      / minmax(0px, 7fr);
+  }
+  .page-tab-layout {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    gap: 1px;
+    grid-template:
+      "NONE_LEFT_LAYOUT HEADER_LAYOUT NONE_RIGHT_LAYOUT" minmax(84px, 84px)
+      "SIDEBAR_LEFT_LAYOUT MAIN_LAYOUT SIDEBAR_RIGHT_LAYOUT" minmax(0px, 2.55fr)
+      "FOOTER_LAYOUT FOOTER_LAYOUT FOOTER_LAYOUT" minmax(32px, 32px)
+      / minmax(0, 2.15fr) minmax(0px, 7fr) minmax(0, 2.85fr);
+  }
+  .page-tab-layout-admin {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    gap: 1px;
+    grid-template:
+      "NONE_LEFT_LAYOUT HEADER_LAYOUT" minmax(48px, 48px)
+      "SIDEBAR_LEFT_LAYOUT MAIN_LAYOUT" minmax(0px, 2.55fr)
+      "FOOTER_LAYOUT FOOTER_LAYOUT" minmax(32px, 32px)
+      / minmax(0, 2.15fr) minmax(0px, 7fr);
+  }
+  .page-tab-layout-left {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    gap: 1px;
+    grid-template:
+      "HEADER_LAYOUT NONE_RIGHT_LAYOUT " minmax(84px, 84px)
+      "MAIN_LAYOUT SIDEBAR_RIGHT_LAYOUT" minmax(0px, 2.55fr)
+      "FOOTER_LAYOUT FOOTER_LAYOUT" minmax(32px, 32px)
+      / 1fr 0.75fr;
+  }
+
+  .page-tab-layout-right {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    gap: 1px;
+    grid-template:
+      "NONE_LEFT_LAYOUT HEADER_LAYOUT" minmax(84px, 84px)
+      "SIDEBAR_LEFT_LAYOUT MAIN_LAYOUT" minmax(0px, 2.55fr)
+      "FOOTER_LAYOUT FOOTER_LAYOUT" minmax(32px, 32px)
+      / 0.3fr 1fr;
+  }
+
+  .page-tab-layout-nosb {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    gap: 1px;
+    grid-template:
+      "HEADER_LAYOUT" minmax(84px, 84px)
+      "MAIN_LAYOUT" minmax(0px, 1fr)
+      "FOOTER_LAYOUT" minmax(32px, 32px)
+      / minmax(0px, 1fr);
+  }
+  .header-layout {
+    grid-area: HEADER_LAYOUT;
+  }
+  .none-left-layout {
+    grid-area: NONE_LEFT_LAYOUT;
+  }
+  .none-right-layout {
+    grid-area: NONE_RIGHT_LAYOUT;
+  }
+  .sidebar-left-layout {
+    grid-area: SIDEBAR_LEFT_LAYOUT;
+  }
+  .sidebar-right-layout {
+    grid-area: SIDEBAR_RIGHT_LAYOUT;
+  }
+  .footer-layout {
+    grid-area: FOOTER_LAYOUT;
+  }
+  .main-layout {
+    grid-area: MAIN_LAYOUT;
+  }
+}
+
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari, and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge, and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+}
