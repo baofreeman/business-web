@@ -124,7 +124,7 @@ const Cart = () => {
         </table>
       ) : (
         <div className="w-full flex flex-col justify-center items-center h-[100%]">
-          <span>Chưa có sản phẩm nào được chọn</span>
+          <span>Chưa có sản phẩm nàod được chọn</span>
           <Button size="m" design="link-primary" width="max" to={"/shop"}>
             Tiếp tục mua sắm
           </Button>
