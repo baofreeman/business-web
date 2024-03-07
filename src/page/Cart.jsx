@@ -54,7 +54,7 @@ const Cart = () => {
                   style={{ height: "100%" }}
                 >
                   <img
-                    src={`http://localhost:8000/uploads/products/${i?.productImg[0]}`}
+                    src={`${process.env.REACT_APP_SERVER_URL}/uploads/products/${i?.productImg[0]}`}
                     width={"60%"}
                     height={"100%"}
                     alt={"No product"}
@@ -124,7 +124,7 @@ const Cart = () => {
         </table>
       ) : (
         <div className="w-full flex flex-col justify-center items-center h-[100%]">
-          <span>Chưa có sản phẩm nàod được chọn</span>
+          <span>Chưa có sản phẩm nào được chọn</span>
           <Button size="m" design="link-primary" width="max" to={"/shop"}>
             Tiếp tục mua sắm
           </Button>
