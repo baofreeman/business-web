@@ -58,7 +58,7 @@ const TabDetail = () => {
                 ref={childRefs[index]}
               >
                 <img
-                  src={`${REACT_APP_SERVER_URL}/uploads/products/${item}`}
+                  src={`${process.env.REACT_APP_SERVER_URL}/uploads/products/${item}`}
                   alt="no product"
                   className="w-full object-cover"
                   style={{ height: "auto" }}
