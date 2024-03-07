@@ -62,7 +62,7 @@ const TabItem = ({ productId }) => {
               {product?.name}
             </h1>
             <div className="text-sm flex justify-between items-center w-full gap-2 sm:gap-1">
-              <h1 className="text-silver sm:hidden">Giá</h1>
+              <h1 className="text-silver sm:hidden">Giaá</h1>
               <h1 className="text-sm text-silver whitespace-wrap text-center">
                 {max === min
                   ? convertPrice(max)
