@@ -26,12 +26,10 @@ const Public = () => {
       if (e.deltaY > 0) {
         currentSlide =
           (currentSlide + 1 + childRefs?.length) % childRefs?.length;
-        console.log(">>>>> 0", currentSlide);
         scrollPage(currentSlide);
       } else {
         currentSlide =
           (currentSlide - 1 + childRefs?.length) % childRefs?.length;
-        console.log("<<<<< 0", currentSlide);
         scrollPage(currentSlide);
       }
     };
@@ -82,10 +80,9 @@ const Public = () => {
           style={{ height: "100%" }}
         >
           {imageList.map((item) => (
-            <div className="w-full flex items-center h-[100%]">
+            <div key={item.image} className="w-full flex items-center h-[100%]">
               <div
                 className={`rounded-lg relative pb-[50%] cursor-pointer gap-8 sm:gap-4 flex items-end justify-center w-full`}
-                key={item.image}
                 style={{
                   backgroundImage: `url(${item.image})`,
                   backgroundRepeat: "no-repeat",
