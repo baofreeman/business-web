@@ -133,7 +133,7 @@ const Header = ({ darkMode, toggleDark }) => {
 
         {/* Search input */}
         <div
-          className={`flex h-[36px] relative justify-center items-center flex-1 ${showSearch}`}
+          className={`flex h-[36px] relative justify-center items-center flex-1 sm:hidden ${showSearch}`}
         >
           <div
             className="top-0 left-[12px] h-full flex absolute items-center justify-center"
@@ -203,7 +203,7 @@ const Header = ({ darkMode, toggleDark }) => {
                       >
                         <div className="w-[20%]">
                           <img
-                            src={`http://localhost:8000/uploads/products/${item?.productImg[0]}`}
+                            src={`${process.env.REACT_APP_SERVER_URL}/uploads/products/${item?.productImg[0]}`}
                             width={"60%"}
                             height={"100%"}
                             alt={"No product"}
