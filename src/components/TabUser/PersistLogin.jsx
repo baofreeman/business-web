@@ -29,7 +29,7 @@ const PersistLogin = () => {
   }, []);
 
   let content;
-  if (!persist) {
+  if (!persist || persist == false) {
     console.log("no persist");
     content = <Outlet />;
   } else if (isLoading) {
