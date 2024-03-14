@@ -18,10 +18,13 @@ const Login = () => {
   const [msg, setMsg] = useState();
   const [persist, setPresist] = usePersist();
   const handleToggle = () => {
-    setPresist((prev) => !prev);
+    if (watchName || watchPw) {
+      setPresist((prev) => !prev);
+    }
   };
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -30,6 +33,8 @@ const Login = () => {
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
   const navigate = useNavigate();
+  const watchName = watch("username");
+  const watchPw = watch("password");
   const onSubmit = async (data) => {
     const { username, password } = data;
     const newData = {
@@ -55,6 +60,7 @@ const Login = () => {
       }
     }
   };
+
   return (
     <section
       className="flex flex-col gap-6 w-full justify-center items-center"
@@ -93,14 +99,23 @@ const Login = () => {
         <div className="flex items-center gap-2">
           <Input
             name={"persist"}
+            id={"persist"}
             size="sm"
             type="checkbox"
             checked={persist}
             placeholder="Persist"
             register={register}
             onChange={handleToggle}
+            disabled={!watchName && !watchPw}
           />
-          <label className={persist ? "text-active" : ""}>
+          <label
+            htmlFor="persist"
+            className={
+              persist
+                ? "text-active cursor-pointer"
+                : "text-silver cursor-pointer"
+            }
+          >
             Duy trì đăng nhập
           </label>
         </div>

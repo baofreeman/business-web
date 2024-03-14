@@ -15,7 +15,6 @@ const TabsList = () => {
   const nameParam = searchParams.get("name");
   const openSR = useSelector(selectSibarRight);
   const openSL = useSelector(selectSibarLeft);
-  console.log(productId, category);
   const { productFilter } = useGetProductsQuery(
     { tag: tagParam, color: colorParam, size: sizeParam },
     {

@@ -14,14 +14,12 @@ import { useSeachProductQuery } from "../../../api/productsApiSlice";
 
 const Header = ({ darkMode, toggleDark }) => {
   const navigate = useNavigate();
-  const menuList = ["shop", "admin"];
   const [showUser, setShowUser] = useState(false);
   const location = useLocation();
   const { category } = useParams();
   const pathname = location.pathname;
   const [key, setKey] = useState("");
   const { username, roles, status, isAdmin, isCustommer } = useAuth();
-  console.log(username, roles, status, isAdmin, isCustommer);
   const [sendLogOut, { isLoading }] = useSendLogOutMutation();
   const [toggleModal, setToggleModal] = useState(false);
   const handleLogOut = () => {
@@ -99,7 +97,7 @@ const Header = ({ darkMode, toggleDark }) => {
         <div
           className={`flex gap-16 sm:gap-1 items-center sm:justify-start flex-1 sm:flex-none`}
         >
-          <div className={`${showLogo} `}>
+          <div className={`${showLogo}`}>
             <Button size="m" to={"/"}>
               <svg
                 className="fill-gray hover:fill-orange dark:fill-silver dark:hover:fill-white"
@@ -114,20 +112,32 @@ const Header = ({ darkMode, toggleDark }) => {
           </div>
 
           <ul className="flex gap-2 items-center">
-            {menuList.map((item) => (
-              <li key={item}>
+            <li>
+              <Button
+                size={"l"}
+                design={
+                  pathname.includes("/shop") ? "link-primary" : "link-basic"
+                }
+                width="max"
+                to={`/shop`}
+              >
+                Shop
+              </Button>
+            </li>
+            {isAdmin && (
+              <li>
                 <Button
                   size={"l"}
                   design={
-                    pathname.includes(item) ? "link-active" : "link-basic"
+                    pathname.includes("/admin") ? "link-primary" : "link-basic"
                   }
                   width="max"
-                  to={`/${item}`}
+                  to={`/admin`}
                 >
-                  {item}
+                  Admin
                 </Button>
               </li>
-            ))}
+            )}
           </ul>
         </div>
 
