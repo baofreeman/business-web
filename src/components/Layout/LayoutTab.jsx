@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Outlet, useLocation, useSearchParams } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useGetProductsQuery } from "../../api/productsApiSlice";
 import TabHeader from "../Layout/TabHeader";
 import SidebarRight from "../SideBar/SidebarRight/SidebarRight";
@@ -16,14 +16,11 @@ import SidebarLeft from "../SideBar/SideBarLeft/SidebarLeft";
 import ModelDetail from "../TabShop/ModelDetail";
 
 const LayoutTab = () => {
-  const { isLoading, isSuccess, isFetching } = useGetProductsQuery(
-    "allProduct",
-    {
-      pollingInterval: 60000000,
-      refetchOnFocus: true,
-      refetchOnMountOrArgChange: true,
-    }
-  );
+  const { isLoading, isSuccess } = useGetProductsQuery("allProduct", {
+    pollingInterval: 60000000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
   const location = useLocation();
   const pageRef = useRef();
 

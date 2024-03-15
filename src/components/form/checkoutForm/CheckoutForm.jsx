@@ -31,6 +31,7 @@ import Errors from "../../ui/Errors/Errors";
 import useAuth from "../../../hook/useAuth";
 import { shippingValue } from "../../../services/option";
 import { convertPrice } from "../../../config/convertPrice";
+import { toast } from "react-toastify";
 
 const CheckoutForm = () => {
   const {
@@ -123,10 +124,10 @@ const CheckoutForm = () => {
         if (res.data?.url) {
           // window.location.href = res.data?.url;
           navigate(res.data?.url);
+          toast.success("Đặt hàng thành công");
           dispatch(resetCart());
-          console.log(res.data);
         } else {
-          console.log(error);
+          return error;
         }
       }
     }

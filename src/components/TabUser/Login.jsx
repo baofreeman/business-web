@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "../../api/authSlice";
 import useAuth from "../../hook/useAuth";
 import usePersist from "../../hook/usePresist";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [roles, setRoles] = useState(["Custommer"]);
@@ -46,17 +47,21 @@ const Login = () => {
       const res = await login(newData);
       const { accessToken } = res.data;
       dispatch(setCredentials({ accessToken }));
+      toast.success("Đăng nhập thành công");
       navigate("/");
     } catch (error) {
-      console.log(error);
       if (!error.status) {
         setMsg("Tài khoản hoặc mật khẩu không đúng");
+        toast.error("Đăng nhập thất bại");
       } else if (error.status === 400) {
         setMsg("missing username or password");
+        toast.error("Đăng nhập thất bại");
       } else if (error.status === 401) {
         setMsg("unauthozied");
+        toast.error("Đăng nhập thất bại");
       } else {
         setMsg(error.data.message);
+        toast.error("Đăng nhập thất bại");
       }
     }
   };

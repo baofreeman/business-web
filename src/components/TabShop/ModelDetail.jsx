@@ -147,7 +147,7 @@ const ModelDetail = () => {
                 onClick={handleAddCart}
                 disabled={!itemId}
               >
-                ADD TO CART
+                Thêm giỏ hàng
               </Button>
             </div>
           </div>

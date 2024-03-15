@@ -30,10 +30,10 @@ const TabHeader = () => {
         <div className="relative">
           <Button size="m" design="link-basic" to={"/cart"}>
             <svg
+              className="fill-black dark:fill-silver"
               width="14"
               height="14"
               viewBox="0 0 14 14"
-              fill="#fff"
               xmlns="http://www.w3.org/2000/svg"
             >
               <rect

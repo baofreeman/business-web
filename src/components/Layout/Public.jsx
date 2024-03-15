@@ -1,5 +1,15 @@
 import React, { createRef, useLayoutEffect, useMemo, useRef } from "react";
-import { image1, image2, image3, image4 } from "../../assets/img";
+import {
+  ao,
+  giay,
+  image1,
+  image2,
+  image3,
+  image4,
+  non,
+  quan,
+  thatlung,
+} from "../../assets/img";
 import Button from "../ui/Button/Button";
 import { useNavigate } from "react-router-dom";
 const Public = () => {
@@ -43,11 +53,11 @@ const Public = () => {
     navigate(e);
   };
   const imageList = [
-    { category: "áo", image: image4, link: "/shop/áo" },
-    { category: "quần", image: image4, link: "/shop/quần" },
-    { category: "thắt lưng", image: image4, link: "/shop/thắt%20lưng" },
-    { category: "giày", image: image4, link: "/shop/giày" },
-    { category: "nón", image: image4, link: "/shop/nón" },
+    { category: "áo", image: ao, link: "/shop/áo" },
+    { category: "quần", image: quan, link: "/shop/quần" },
+    { category: "thắt lưng", image: thatlung, link: "/shop/thắt%20lưng" },
+    { category: "giày", image: giay, link: "/shop/giày" },
+    { category: "nón", image: non, link: "/shop/nón" },
   ];
   return (
     <div className="w-full relative dark:bg-black" style={{ height: "100%" }}>
@@ -76,13 +86,13 @@ const Public = () => {
       </div>
       <div className="absolute bottom-0 w-full px-[40px] h-[200px] sm:h-[100px] sm:px-[10px]">
         <div
-          className="w-full relative flex gap-8 sm:gap-4"
+          className="w-full relative flex gap-8 sm:gap-4 pb-[20px]"
           style={{ height: "100%" }}
         >
           {imageList.map((item) => (
             <div key={item.image} className="w-full flex items-center h-[100%]">
               <div
-                className={`rounded-lg relative pb-[50%] cursor-pointer gap-8 sm:gap-4 flex items-end justify-center w-full`}
+                className={`rounded-lg h-[100%] relative cursor-pointer gap-8 sm:gap-4 flex items-end justify-center w-full`}
                 style={{
                   backgroundImage: `url(${item.image})`,
                   backgroundRepeat: "no-repeat",

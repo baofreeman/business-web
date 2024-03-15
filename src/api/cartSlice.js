@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 const initialState = {
   cartItems: [],
@@ -28,6 +29,7 @@ const cartSlice = createSlice({
         state.cartTotalAmount += action.payload.subCategory.model.skus.price;
         state.cartTotalQuantity += 1;
       }
+      toast.success("Thêm vào giỏ hàng thành công");
     },
     decrToCart: (state, action) => {
       const itemIndex = state.cartItems.findIndex(
@@ -41,6 +43,7 @@ const cartSlice = createSlice({
         state.cartTotalQuantity -= 1;
         state.cartTotalAmount -=
           state.cartItems[itemIndex].subCategory.model.skus.price;
+        toast.warn("Xoá số lượng thành công");
       }
     },
 
@@ -57,6 +60,7 @@ const cartSlice = createSlice({
           state.cartItems[itemIndex].subCategory.model.skus.price *
           state.cartItems[itemIndex].qty;
         state.cartItems.splice(itemIndex, 1);
+        toast.error("Xoá sản phẩm thành công");
       }
     },
     resetCart: (state, action) => {

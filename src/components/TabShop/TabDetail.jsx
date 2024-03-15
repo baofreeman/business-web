@@ -2,12 +2,12 @@ import { createRef, useMemo } from "react";
 import { useGetProductsQuery } from "../../api/productsApiSlice";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ModelDetail from "./ModelDetail";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const TabDetail = () => {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("productId");
-  const navigate = useNavigate();
-  console.log(productId);
   const { product } = useGetProductsQuery("allProduct", {
     selectFromResult: ({ data }) => ({
       product: data?.entities[productId],

@@ -7,6 +7,7 @@ import { useCreateUserMutation } from "../../api/usersApiSlice";
 import Errors from "../ui/Errors/Errors";
 import { schema } from "./ValidateRegister";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [roles] = useState(["Custommer"]);
@@ -31,11 +32,13 @@ const Register = () => {
       const res = await createUser(newData);
       if (res.error) {
         setMsg(res.error.data.message);
+        toast.success("Đăng ký thất bại");
       }
       if (window.history.state && window.history.state.idx > 0) {
         navigate(-1);
       }
       if (res.data) {
+        toast.success("Đăng ký thành công");
         navigate("/shop");
       }
     } catch (error) {
@@ -78,7 +81,6 @@ const Register = () => {
           />
         </div>
         <Errors>{msg}</Errors>
-
         <Button size="l" design="primary" width="120" type={"submit"}>
           đăng ký
         </Button>
