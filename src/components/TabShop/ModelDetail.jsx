@@ -9,6 +9,7 @@ import Button from "../ui/Button/Button";
 import { addToCart } from "../../api/cartSlice";
 import { useDispatch } from "react-redux";
 import { convertPrice } from "../../config/convertPrice";
+import Loading from "../ui/Loading/Loading";
 
 const ModelDetail = () => {
   const [searchParams] = useSearchParams();
@@ -85,7 +86,9 @@ const ModelDetail = () => {
                         className="flex items-center gap-2 flex-1"
                       >
                         {isLoading ? (
-                          <p>Loading</p>
+                          <>
+                            <Loading />
+                          </>
                         ) : (
                           <>
                             <div className="flex gap-2 pr-[6px]">
@@ -136,7 +139,11 @@ const ModelDetail = () => {
                 <h1 className="text-silver">GIÁ: </h1>
                 {itemId ? (
                   <h1 className="text-orange">
-                    {convertPrice(item[0]?.subCategory?.model?.skus?.price)}
+                    {item[0]?.subCategory?.model?.skus?.price ? (
+                      convertPrice(item[0]?.subCategory?.model?.skus?.price)
+                    ) : (
+                      <Loading />
+                    )}
                   </h1>
                 ) : null}
               </div>

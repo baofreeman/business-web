@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { setSibarLeft, setSibarRight } from "../../api/toggleSlice";
 import SidebarLeft from "../SideBar/SideBarLeft/SidebarLeft";
 import ModelDetail from "../TabShop/ModelDetail";
+import Loading from "../ui/Loading/Loading";
 
 const LayoutTab = () => {
   const { isLoading, isSuccess } = useGetProductsQuery("allProduct", {
@@ -132,7 +133,7 @@ const LayoutTab = () => {
   const layout = location.pathname.includes("/admin")
     ? "page-tab-layout-admin"
     : "page-tab-layout";
-  if (isLoading) return (content = <p>Loading...</p>);
+  if (isLoading) return (content = <Loading />);
   if (isSuccess)
     return (content = (
       <div

@@ -8,6 +8,7 @@ import {
 import useAuth from "../../hook/useAuth";
 import { shippingValue } from "../../services/option";
 import { convertPrice } from "../../config/convertPrice";
+import Loading from "../ui/Loading/Loading";
 
 const TabCheckout = () => {
   const cart = useSelector(selectCartItem);
@@ -60,7 +61,7 @@ const TabCheckout = () => {
                   style={{ height: "100%" }}
                 >
                   <img
-                    src={`http://localhost:8000/uploads/products/${i?.productImg[0]}`}
+                    src={`${process.env.REACT_APP_SERVER_URL}/uploads/products/${i?.productImg[0]}`}
                     height={"100%"}
                     style={{ marginLeft: "auto", marginRight: "auto" }}
                     className="w-[60px] sm:w-[20px]"
@@ -77,7 +78,11 @@ const TabCheckout = () => {
                 </td>
                 <td className="border text-center px-2 py-4 sm:p-1">{i.qty}</td>
                 <td className="border text-center px-2 py-4 sm:p-1">
-                  {convertPrice(i.subCategory.model.skus.price * i?.qty)}
+                  {i.subCategory.model.skus.price * i?.qty ? (
+                    convertPrice(i.subCategory.model.skus.price * i?.qty)
+                  ) : (
+                    <Loading />
+                  )}
                 </td>
               </tr>
             ))}

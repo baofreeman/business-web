@@ -19,7 +19,7 @@ const Header = ({ darkMode, toggleDark }) => {
   const { category } = useParams();
   const pathname = location.pathname;
   const [key, setKey] = useState("");
-  const { username, roles, status, isAdmin, isCustommer } = useAuth();
+  const { username, isAdmin } = useAuth();
   const [sendLogOut, { isLoading }] = useSendLogOutMutation();
   const [toggleModal, setToggleModal] = useState(false);
   const handleLogOut = () => {
@@ -79,7 +79,7 @@ const Header = ({ darkMode, toggleDark }) => {
     setToggleModal(false);
   };
   const showSearch =
-    location.pathname == "/" ||
+    location.pathname === "/" ||
     location.pathname.includes("/register") ||
     location.pathname.includes("/login")
       ? `sm:hidden`
@@ -208,7 +208,7 @@ const Header = ({ darkMode, toggleDark }) => {
                       }
                     >
                       <div
-                        className="border flex justify-start items-center text-center w-[100%] h-full"
+                        className="flex border-b-1 mb-2 justify-start items-center text-center w-[100%] h-full"
                         style={{ height: "100%" }}
                       >
                         <div className="w-[20%]">
@@ -217,7 +217,11 @@ const Header = ({ darkMode, toggleDark }) => {
                             width={"60%"}
                             height={"100%"}
                             alt={"No product"}
-                            style={{ marginLeft: "auto", marginRight: "auto" }}
+                            style={{
+                              marginLeft: "auto",
+                              marginRight: "auto",
+                              marginBottom: "4px",
+                            }}
                           />
                         </div>
                         <h1 className="mb-2 w-full cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis">

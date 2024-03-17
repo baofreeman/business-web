@@ -1,6 +1,6 @@
 export const InputSize = {
-  sm: "text-md text-text w-full p-2 sm:p-1.5 sm:text-md placeholder:italic placeholder:text-md placeholder:text-note",
-  m: "text-md text-text w-full p-2.5 sm:p-2 sm:text-md placeholder:italic placeholder:text-md placeholder:text-note",
+  sm: "text-md text-text w-full p-2 sm:p-1.5 sm:text-sm placeholder:italic placeholder:text-sm placeholder:text-note",
+  m: "text-md text-text w-full p-2.5 sm:p-2 sm:text-sm placeholder:italic placeholder:text-sm placeholder:text-note",
   lg: "text-xl text-text w-full sm:text-md placeholder:italic placeholder:text-md placeholder:text-note",
   checkbox: "placeholder:italic placeholder:text-md placeholder:text-note",
 };
