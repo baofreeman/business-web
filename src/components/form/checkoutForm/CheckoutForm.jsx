@@ -94,6 +94,7 @@ const CheckoutForm = () => {
       phone,
       province,
       district,
+      address,
       note,
       paymentMethod,
       shippingPrice,
@@ -111,6 +112,7 @@ const CheckoutForm = () => {
       phone,
       province: valueProvince.province_name,
       district: valueDistrict.district_name,
+      address,
       note,
       totalQuantity,
       itemsPrice,
@@ -136,7 +138,7 @@ const CheckoutForm = () => {
     <section className="flex flex-col p-[50px] sm:p-[0px] justify-center items-center w-full rounded gap-4">
       {cart.length ? (
         <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex sm:flex-col gap-16 sm:gap-4 pb-[20px] sm:pb-[10px]">
+          <div className="flex sm:flex-col md:flex-col gap-16 sm:gap-4 md:gap-[20px] pb-[20px] sm:pb-[10px]">
             <div className="flex w-full gap-2">
               <label className="basis-1/2">Tên người nhận</label>
               <Input
@@ -160,7 +162,7 @@ const CheckoutForm = () => {
               />
             </div>
           </div>
-          <div className="flex sm:flex-col gap-16 sm:gap-4 pb-[20px] sm:pb-[10px]">
+          <div className="flex md:flex-col sm:flex-col gap-16 md:gap-[20px] sm:gap-4 pb-[20px] sm:pb-[10px]">
             <div className="flex w-full gap-2">
               <label className="basis-1/2">Chọn tỉnh thành</label>
               <Select
@@ -199,7 +201,19 @@ const CheckoutForm = () => {
                 ))}
               </Select>
             </div>
+            <div className="flex w-full gap-2">
+              <label className="basis-1/2">Địa chỉ</label>
+              <Input
+                size={"m"}
+                design={"basic"}
+                placeholder="Địa chỉ cụ thể"
+                name="address"
+                register={register}
+                error={errors.address?.message}
+              />
+            </div>
           </div>
+
           <div className="flex sm:flex-col w-full gap-4 pb-[20px] sm:pb-[10px]">
             <div className="flex sm:flex-col flex-1 flex-col gap-2">
               <h1 className="sm:basis-1/2">Phương thức vận chuyển</h1>
