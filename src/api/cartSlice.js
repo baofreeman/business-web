@@ -15,18 +15,20 @@ const cartSlice = createSlice({
       const itemIndex = state.cartItems.findIndex(
         (item) =>
           item._id === action.payload._id &&
-          item.subCategory.model.skus._id ===
-            action.payload.subCategory.model.skus._id
+          item.subCategory?.model?.skus?._id ===
+            action.payload?.subCategory?.model?.skus._id
       );
       if (itemIndex >= 0) {
         state.cartItems[itemIndex].qty += 1;
         state.cartItems = [...state.cartItems];
         state.cartTotalQuantity += 1;
-        state.cartTotalAmount += action.payload.subCategory.model.skus.price;
+        state.cartTotalAmount +=
+          action.payload?.subCategory?.model?.skus?.price;
       } else {
         let newItem = { ...action.payload, qty: 1 };
         state.cartItems = [...state.cartItems, newItem];
-        state.cartTotalAmount += action.payload.subCategory.model.skus.price;
+        state.cartTotalAmount +=
+          action.payload?.subCategory?.model?.skus?.price;
         state.cartTotalQuantity += 1;
       }
       toast.success("Thêm vào giỏ hàng thành công");
@@ -34,15 +36,15 @@ const cartSlice = createSlice({
     decrToCart: (state, action) => {
       const itemIndex = state.cartItems.findIndex(
         (item) =>
-          item._id === action.payload._id &&
-          item.subCategory.model.skus._id ===
-            action.payload.subCategory.model.skus._id
+          item._id === action.payload?._id &&
+          item.subCategory.mode.skus._id ===
+            action.payload?.subCategory?.model?.skus?._id
       );
       if (itemIndex >= 0 && state.cartItems[itemIndex].qty > 1) {
         state.cartItems[itemIndex].qty -= 1;
         state.cartTotalQuantity -= 1;
         state.cartTotalAmount -=
-          state.cartItems[itemIndex].subCategory.model.skus.price;
+          state.cartItems[itemIndex]?.subCategory?.model?.skus?.price;
         toast.warn("Xoá số lượng thành công");
       }
     },
@@ -51,14 +53,14 @@ const cartSlice = createSlice({
       const itemIndex = state.cartItems.findIndex(
         (item) =>
           item._id === action.payload._id &&
-          item.subCategory.model.skus._id ===
-            action.payload.subCategory.model.skus._id
+          item.subCategory?.model?.skus._id ===
+            action.payload?.subCategory?.model?.skus?._id
       );
       if (itemIndex >= 0) {
-        state.cartTotalQuantity -= state.cartItems[itemIndex].qty;
+        state.cartTotalQuantity -= state.cartItems[itemIndex]?.qty;
         state.cartTotalAmount -=
-          state.cartItems[itemIndex].subCategory.model.skus.price *
-          state.cartItems[itemIndex].qty;
+          state.cartItems[itemIndex]?.subCategory?.model?.skus?.price *
+          state.cartItems[itemIndex]?.qty;
         state.cartItems.splice(itemIndex, 1);
         toast.error("Xoá sản phẩm thành công");
       }

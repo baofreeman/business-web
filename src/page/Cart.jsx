@@ -65,10 +65,10 @@ const Cart = () => {
                   <h1 className=" line-clamp-3">{i?.name}</h1>
                 </td>
                 <td className="border px-2 text-center py-4 w-[10%]">
-                  {i?.subCategory.model.color}
+                  {i?.subCategory?.model?.color}
                 </td>
                 <td className="border px-2 text-center py-4 w-[10%]">
-                  {i?.subCategory.model.skus.size}
+                  {i?.subCategory?.model?.skus?.size}
                 </td>
                 <td className="border px-2 text-center py-4 w-[20%]">
                   <div className="flex gap-5 items-center justify-center select-none">
