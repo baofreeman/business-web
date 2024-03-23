@@ -23,10 +23,10 @@ const TabItem = ({ productId }) => {
       selectFromResult: ({ data }) => ({ product: data?.entities[productId] }),
     }
   );
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSR = () => {
+    dispatch(setSibarRight(true));
     navigate({
       pathname: category ? `/shop/${category}` : "/shop",
       search: createSearchParams({
@@ -34,8 +34,8 @@ const TabItem = ({ productId }) => {
         productId: product?._id,
       }).toString(),
     });
-    dispatch(setSibarRight(true));
   };
+
   const price = product?.subCategory?.flatMap(({ tag, model }) =>
     model?.map(({ color, skus }) => skus.map(({ price }) => price))
   );

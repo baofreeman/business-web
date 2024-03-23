@@ -104,7 +104,7 @@
     height: 100%;
     gap: 1px;
     grid-template:
-      "HEADER_LAYOUT NONE_RIGHT_LAYOUT " minmax(84px, 84px)
+      "HEADER_LAYOUT NONE_RIGHT_LAYOUT" minmax(84px, 84px)
       "MAIN_LAYOUT SIDEBAR_RIGHT_LAYOUT" minmax(0px, 2.55fr)
       "FOOTER_LAYOUT FOOTER_LAYOUT" minmax(32px, 32px)
       / 1fr 0.75fr;

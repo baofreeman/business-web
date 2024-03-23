@@ -10,8 +10,13 @@ import { useGetProductsQuery } from "../../api/productsApiSlice";
 import TabHeader from "../Layout/TabHeader";
 import SidebarRight from "../SideBar/SidebarRight/SidebarRight";
 import Footer from "../ui/Footer/Footer";
-import { useDispatch } from "react-redux";
-import { setSibarLeft, setSibarRight } from "../../api/toggleSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectSibarLeft,
+  selectSibarRight,
+  setSibarLeft,
+  setSibarRight,
+} from "../../api/toggleSlice";
 import SidebarLeft from "../SideBar/SideBarLeft/SidebarLeft";
 import ModelDetail from "../TabShop/ModelDetail";
 import Loading from "../ui/Loading/Loading";
@@ -34,21 +39,25 @@ const LayoutTab = () => {
   const [height, setHeight] = useState(0);
   const [openSL, setOpenSL] = useState(true);
   const [openSR, setOpenSR] = useState(true);
+  const openSidebarRight = useSelector(selectSibarRight);
+  const openSidebarLeft = useSelector(selectSibarLeft);
   const dispatch = useDispatch();
 
   const handleToggleSL = () => {
     setOpenSL((prev) => !prev);
   };
+
   const handleToggleSR = () => {
     setOpenSR((prev) => !prev);
   };
-  useEffect(() => {
-    dispatch(setSibarRight(openSR));
-  }, [openSR]);
 
   useEffect(() => {
     dispatch(setSibarLeft(openSL));
   }, [openSL]);
+
+  useEffect(() => {
+    dispatch(setSibarRight(openSR));
+  }, [openSR]);
 
   const mainRef = useCallback(
     (node) => {
@@ -75,40 +84,36 @@ const LayoutTab = () => {
   );
 
   useLayoutEffect(() => {
-    if (!openSL) {
-      pageRef.current?.classList.add("page-tab-layout-left");
-      slRef.current?.classList.add("hidden");
-      pageRef.current?.classList.remove("page-tab-layout");
-    } else {
-      pageRef.current?.classList.add("page-tab-layout");
-      slRef.current?.classList.remove("hidden");
-      pageRef.current?.classList.remove("page-tab-layout-left");
-    }
-  }, [openSL]);
-
-  useLayoutEffect(() => {
-    if (!openSR) {
-      pageRef.current?.classList.add("page-tab-layout-right");
-      srRef.current?.classList.add("hidden");
-      pageRef.current?.classList.remove("page-tab-layout");
-    } else {
-      pageRef.current?.classList.add("page-tab-layout");
-      srRef.current?.classList.remove("hidden");
-      pageRef.current?.classList.remove("page-tab-layout-right");
-    }
-  }, [openSR]);
-
-  useLayoutEffect(() => {
-    if (!openSR && !openSL) {
+    if (!openSidebarRight && !openSidebarLeft) {
       pageRef.current?.classList.add("page-tab-layout-nosb");
       srRef.current?.classList.add("hidden");
       slRef.current?.classList.add("hidden");
       pageRef.current?.classList.remove("page-tab-layout");
+      pageRef.current?.classList.remove("page-tab-layout-left");
+      pageRef.current?.classList.remove("page-tab-layout-right");
+    } else if (!openSidebarRight) {
+      pageRef.current?.classList.add("page-tab-layout-right");
+      srRef.current?.classList.add("hidden");
+      slRef.current?.classList.remove("hidden");
+      pageRef.current?.classList.remove("page-tab-layout");
+      pageRef.current?.classList.remove("page-tab-layout-left");
+      pageRef.current?.classList.remove("page-tab-layout-nosb");
+    } else if (!openSidebarLeft) {
+      pageRef.current?.classList.add("page-tab-layout-left");
+      slRef.current?.classList.add("hidden");
+      srRef.current?.classList.remove("hidden");
+      pageRef.current?.classList.remove("page-tab-layout");
+      pageRef.current?.classList.remove("page-tab-layout-nosb");
+      pageRef.current?.classList.remove("page-tab-layout-right");
     } else {
       pageRef.current?.classList.add("page-tab-layout");
+      srRef.current?.classList.remove("hidden");
+      slRef.current?.classList.remove("hidden");
       pageRef.current?.classList.remove("page-tab-layout-nosb");
+      pageRef.current?.classList.remove("page-tab-layout-left");
+      pageRef.current?.classList.remove("page-tab-layout-right");
     }
-  }, [openSL, openSR]);
+  }, [openSidebarRight, openSidebarLeft]);
 
   let content;
   const tabMobile =
