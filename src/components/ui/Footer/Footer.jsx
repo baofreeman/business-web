@@ -40,7 +40,7 @@ const Footer = () => {
         <div className="flex w-full items-center overflow-scroll no-scrollbar">
           <div className="border-r rounded-r px-3 sm:p-2 sm:whitespace-nowrap">
             <Button size="s-link" design="link-basic" to={"/"}>
-              visvim Official Web Site
+              clothes Official Web Site
             </Button>
           </div>
           <div className="border-r rounded-r px-3 sm:p-2 sm:whitespace-nowrap">
@@ -57,6 +57,40 @@ const Footer = () => {
             <Button size="s-link" design="link-basic" to={"/"}>
               Website Terms and Conditions
             </Button>
+          </div>
+        </div>
+        <div className="relative w-full overflow-hidden sm:hidden">
+          <div className="w-full overflow-hidden flex whitespace-nowrap">
+            <div className="animate-marque">
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES </span>
+              <span className="pr-1">BUSINESS CLOTHES BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+            </div>
+            <div className="animate-marque">
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES </span>
+              <span className="pr-1">BUSINESS CLOTHES BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+              <span className="pr-1">BUSINESS CLOTHES</span>
+            </div>
           </div>
         </div>
       </div>

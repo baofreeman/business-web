@@ -79,6 +79,10 @@ module.exports = {
       aspectRatio: {
         "9/16": "9/16",
       },
+
+      animation: {
+        marque: "marque 20s linear infinite",
+      },
     },
   },
   darkMode: "class",
