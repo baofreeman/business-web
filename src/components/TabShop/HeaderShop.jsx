@@ -5,13 +5,16 @@ import Button from "../ui/Button/Button";
 
 const HeaderShop = () => {
   const [category, setCategory] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const handleName = (e) => {
+  // SET category
+  const handleCategory = (e) => {
     const value = e.target.value;
     setCategory(value);
   };
-  const location = useLocation();
-  const navigate = useNavigate();
+
+  // Check category, if category navigate /shop/category. if category == all then render all product
   useEffect(() => {
     if (category !== "") {
       navigate({
@@ -22,11 +25,13 @@ const HeaderShop = () => {
       navigate("/shop");
     }
   }, [category]);
+
   useEffect(() => {
     if (location.pathname === "/shop") {
       setCategory("tất cả");
     }
   }, [location]);
+
   return (
     <ul className="flex w-full dark:text-silver">
       {optionCategory.map((item) => (
@@ -35,7 +40,7 @@ const HeaderShop = () => {
             size="m"
             design={category === item ? `link-active` : "link-basic"}
             value={item}
-            onClick={(e) => handleName(e)}
+            onClick={(e) => handleCategory(e)}
           >
             {item}
           </Button>

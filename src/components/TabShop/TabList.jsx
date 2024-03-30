@@ -6,15 +6,18 @@ import { useSelector } from "react-redux";
 import { selectSibarLeft, selectSibarRight } from "../../api/toggleSlice";
 
 const TabsList = () => {
-  const { category } = useParams();
+  //Get params
   const [searchParams] = useSearchParams();
+  const { category } = useParams();
   const tagParam = searchParams.get("tag");
   const colorParam = searchParams.get("color");
-  const productId = searchParams.get("productId");
   const sizeParam = searchParams.get("size");
   const nameParam = searchParams.get("name");
+
   const openSR = useSelector(selectSibarRight);
   const openSL = useSelector(selectSibarLeft);
+
+  // GET product filter
   const { productFilter } = useGetProductsQuery(
     { tag: tagParam, color: colorParam, size: sizeParam },
     {

@@ -22,31 +22,37 @@ import ModelDetail from "../TabShop/ModelDetail";
 import Loading from "../ui/Loading/Loading";
 
 const LayoutTab = () => {
+  // GET all product
   const { isLoading, isSuccess } = useGetProductsQuery("allProduct", {
     pollingInterval: 60000000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
   const location = useLocation();
-  const pageRef = useRef();
 
+  // set ref element
+  const pageRef = useRef();
   const slRef = useRef();
   const srRef = useRef();
   const buttonRefRight = useRef();
   const buttonRefLeft = useRef();
   const modelRef = useRef();
+
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [openSL, setOpenSL] = useState(true);
   const [openSR, setOpenSR] = useState(true);
+
   const openSidebarRight = useSelector(selectSibarRight);
   const openSidebarLeft = useSelector(selectSibarLeft);
   const dispatch = useDispatch();
 
+  // toggle sidebar left
   const handleToggleSL = () => {
     setOpenSL((prev) => !prev);
   };
 
+  // toggle sidebar right
   const handleToggleSR = () => {
     setOpenSR((prev) => !prev);
   };
@@ -59,6 +65,7 @@ const LayoutTab = () => {
     dispatch(setSibarRight(openSR));
   }, [openSR]);
 
+  // Resize width and height, responsive mobile, tablet
   const mainRef = useCallback(
     (node) => {
       if (!node) return;
@@ -83,6 +90,7 @@ const LayoutTab = () => {
     [location.pathname]
   );
 
+  // Check sidebar Right and Left =>  render layout responsive
   useLayoutEffect(() => {
     if (!openSidebarRight && !openSidebarLeft) {
       pageRef.current?.classList.add("page-tab-layout-nosb");
@@ -116,6 +124,7 @@ const LayoutTab = () => {
   }, [openSidebarRight, openSidebarLeft]);
 
   let content;
+  // Layout mobile custom
   const tabMobile =
     location.pathname.includes("/cart") ||
     location.pathname.includes("/checkout")
@@ -126,18 +135,25 @@ const LayoutTab = () => {
         location.pathname.includes("/shop/")
       ? `sm:page-tab-layout-md md:page-tab-layout-md`
       : `sm:page-tab-layout-md md:page-tab-layout-md`;
+
+  // Hidden sidebar right item detail on mobile
   const showSr =
     location.pathname.includes("/cart") ||
     location.pathname.includes("/checkout") ||
     location.search.includes("productId")
       ? `sm:block md:block`
       : `sm:hidden md:hidden`;
+
+  // Hidden sidebar left item detail on mobile
   const showSl = location.search.includes("productId")
     ? `sm:hidden md:hidden`
     : `sm:block md:block`;
+
+  // Set layout /admin
   const layout = location.pathname.includes("/admin")
     ? "page-tab-layout-admin"
     : "page-tab-layout";
+
   if (isLoading) return (content = <Loading />);
   if (isSuccess)
     return (content = (

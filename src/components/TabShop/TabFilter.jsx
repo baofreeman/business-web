@@ -8,31 +8,39 @@ import {
   useSearchParams,
 } from "react-router-dom";
 const TabFilter = () => {
-  const { category } = useParams();
   const navigate = useNavigate();
+  const { category } = useParams();
+
+  //Set params
   const [queryTag, setQueryTag] = useState(undefined);
   const [queryColor, setQueryColor] = useState(undefined);
   const [querySize, setQuerySize] = useState(undefined);
   const [searchParams] = useSearchParams();
   const params = Object.fromEntries(searchParams.entries());
+
   const subCategoryOption = subCategory.find(
     (item) => item.category === category
-  );
+  ); // filter category
+
   const optionSub = subCategoryOption?.data?.map((item) => (
     <option key={item} value={item}>
       {item}
     </option>
-  ));
+  )); // filter tag
+
   const colorOption = color.map((item) => (
     <option key={item} value={item}>
       {item}
     </option>
-  ));
+  )); // filter color
+
   const sizeOption = size.map((item) => (
     <option key={item} value={item}>
       {item}
     </option>
-  ));
+  )); // filter size
+
+  //check queryTag
   useEffect(() => {
     if (category && queryTag !== undefined) {
       navigate({
@@ -46,6 +54,7 @@ const TabFilter = () => {
     return () => {};
   }, [queryTag]);
 
+  //check querycolor
   useEffect(() => {
     if (queryColor !== undefined) {
       navigate({
@@ -59,6 +68,7 @@ const TabFilter = () => {
     return () => {};
   }, [queryColor]);
 
+  //check querySize
   useEffect(() => {
     if (querySize !== undefined) {
       navigate({
@@ -81,6 +91,7 @@ const TabFilter = () => {
   const handleSize = (e) => {
     setQuerySize(e.target.value);
   };
+
   const tagCss = queryTag
     ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
     : "text-silver px-3 py-2";

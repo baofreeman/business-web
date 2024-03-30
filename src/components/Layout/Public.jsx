@@ -5,7 +5,6 @@ import {
   image1,
   image2,
   image3,
-  image4,
   non,
   quan,
   thatlung,
@@ -14,17 +13,21 @@ import Button from "../ui/Button/Button";
 import { useNavigate } from "react-router-dom";
 const Public = () => {
   const pageRef = useRef();
-  const imageCatalog = [
+  const imageCatelog = [
     { category: "áo", image: image1, link: "/shop/áo" },
     { category: "quần", image: image2, link: "/shop/quần" },
     { category: "nón", image: image3, link: "/shop/nón" },
   ];
-  const refs = imageCatalog;
+  const refs = imageCatelog;
+
+  // Render image
   const childRefs = useMemo(
     () => refs?.map(() => createRef()),
     [refs?.join(",")]
   );
   let currentSlide = 0;
+
+  // Scroll page 100vh
   useLayoutEffect(() => {
     const scrollPage = (index) => {
       childRefs?.forEach((slide, i) => {
@@ -48,10 +51,12 @@ const Public = () => {
       document.removeEventListener("wheel", wheelListener);
     };
   }, []);
+
   const navigate = useNavigate();
   const handleLink = (e) => {
     navigate(e);
   };
+
   const imageList = [
     { category: "áo", image: ao, link: "/shop/áo" },
     { category: "quần", image: quan, link: "/shop/quần" },
@@ -67,7 +72,7 @@ const Public = () => {
           className="w-screen h-screen"
           style={{ height: "100vh" }}
         >
-          {imageCatalog.map((item, index) => (
+          {imageCatelog.map((item, index) => (
             <div
               key={item.image}
               className="w-full cursor-pointer duration-700"

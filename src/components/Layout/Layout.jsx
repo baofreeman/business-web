@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 const Layout = () => {
   const [darkMode, setDarkMode] = useState(true);
 
+  // Toggle light or dark screen
   const toggleDark = () => {
     setDarkMode((prevDarkMode) => !prevDarkMode);
   };

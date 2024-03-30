@@ -12,6 +12,8 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
+
+//refresh token basequery
 const baseQueryWithReAuth = async (args, api, extraOpitons) => {
   let result = await baseQuery(args, api, extraOpitons);
   if (result?.error?.status === 403) {
@@ -33,7 +35,7 @@ const baseQueryWithReAuth = async (args, api, extraOpitons) => {
 const apiSlice = createApi({
   baseQuery: baseQueryWithReAuth,
   tagTypes: ["Product", "User", "Order"],
-  endpoints: (builder) => ({}),
+  endpoints: () => ({}),
 });
 
 export { apiSlice };

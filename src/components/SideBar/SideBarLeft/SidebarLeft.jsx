@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import TabFilter from "../../TabShop/TabFilter";
 import SidebarAdmin from "./SidebarAdmin";
 import TabFilterCart from "../../TabCart/TabFilterCart";
-import TabFilterCheckout from "../../TabCheckout/TabFilterCheckout";
 
 const SidebarLeft = () => {
   const location = useLocation();

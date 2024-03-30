@@ -1,8 +1,7 @@
 import { createRef, useMemo } from "react";
 import { useGetProductsQuery } from "../../api/productsApiSlice";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import ModelDetail from "./ModelDetail";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const TabDetail = () => {
@@ -14,13 +13,13 @@ const TabDetail = () => {
     }),
   });
 
+  //render image
   const refs = product?.productImg;
   const childRefs = useMemo(
     () => refs?.map(() => createRef()),
     [refs?.join(",")]
   );
   let currentSlide = 0;
-
   const showSlide = (index) => {
     childRefs?.forEach((slide, i) => {
       const slideWidth = slide.current?.clientWidth;
@@ -28,11 +27,11 @@ const TabDetail = () => {
     });
   };
 
+  //Silde Image
   const preSlide = () => {
     currentSlide = (currentSlide - 1 + childRefs?.length) % childRefs?.length;
     showSlide(currentSlide);
   };
-
   const nextSlide = () => {
     currentSlide = (currentSlide + 1) % childRefs?.length;
     showSlide(currentSlide);

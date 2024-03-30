@@ -29,12 +29,23 @@ export const userApiSlice = apiSlice.injectEndpoints({
       },
     }),
     createUser: builder.mutation({
-      query: (body) => {
+      query: ({ userId }) => {
         return {
           url: "/user",
           method: "POST",
-          body: body,
+          body: userId,
           formData: true,
+        };
+      },
+      invalidatesTags: (result, error, arg) => [{ type: "User", id: arg?._id }],
+    }),
+
+    deleteUser: builder.mutation({
+      query: (body) => {
+        return {
+          url: "/user",
+          method: "DELETE",
+          body: body,
         };
       },
       invalidatesTags: (result, error, arg) => [{ type: "User", id: arg?._id }],
@@ -42,7 +53,11 @@ export const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetUsersQuery, useCreateUserMutation } = userApiSlice;
+export const {
+  useGetUsersQuery,
+  useCreateUserMutation,
+  useDeleteUserMutation,
+} = userApiSlice;
 export const selectOrderResult = userApiSlice.endpoints.getUsers.select();
 const selectUserData = createSelector(selectOrderResult, (orderResult) => {
   return orderResult.data;

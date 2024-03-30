@@ -20,6 +20,7 @@ import { ROLES } from "./config/roles";
 import RequireAuth from "./components/TabUser/RequireAuth";
 import PersistLogin from "./components/TabUser/PersistLogin";
 import TabDetail from "./components/TabShop/TabDetail";
+import Users from "./components/TabAdmin/User/Users";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route index element={<Public />} />
           <Route path="/register" element={<Register />}></Route>
           <Route path="/login" element={<Login />}></Route>
+
           <Route element={<PersistLogin />}>
             <Route element={<Prefresh />}>
               <Route element={<LayoutTab />}>
@@ -46,6 +48,9 @@ function App() {
                     </Route>
                     <Route path="orders">
                       <Route index element={<Order />} />
+                    </Route>
+                    <Route path="users">
+                      <Route index element={<Users />} />
                     </Route>
                   </Route>
                 </Route>

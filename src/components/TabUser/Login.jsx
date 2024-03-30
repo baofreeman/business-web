@@ -15,7 +15,7 @@ import usePersist from "../../hook/usePresist";
 import { toast } from "react-toastify";
 
 const Login = () => {
-  const [roles, setRoles] = useState(["Custommer"]);
+  const [roles] = useState(["Custommer"]);
   const [msg, setMsg] = useState();
   const [persist, setPresist] = usePersist();
   const handleToggle = () => {
@@ -97,6 +97,7 @@ const Login = () => {
             design={"basic"}
             name="password"
             placeholder="password"
+            type={"password"}
             register={register}
             error={errors.password?.message}
           />

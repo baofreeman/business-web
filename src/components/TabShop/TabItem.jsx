@@ -11,20 +11,26 @@ import {
 import { convertPrice } from "../../config/convertPrice";
 
 const TabItem = ({ productId }) => {
+  //Get params
   const [searchParams] = useSearchParams();
   const params = Object.fromEntries(searchParams.entries());
   const { category } = useParams();
   const tag = searchParams.get("tag");
   const color = searchParams.get("color");
   const size = searchParams.get("size");
+
+  //GET product filter or allproduct
   const { product } = useGetProductsQuery(
     { tag, color, size },
     {
       selectFromResult: ({ data }) => ({ product: data?.entities[productId] }),
     }
   );
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const srRef = useRef();
+
   const handleSR = () => {
     dispatch(setSibarRight(true));
     navigate({
@@ -36,12 +42,12 @@ const TabItem = ({ productId }) => {
     });
   };
 
-  const price = product?.subCategory?.flatMap(({ tag, model }) =>
-    model?.map(({ color, skus }) => skus.map(({ price }) => price))
+  //Caculating Price
+  const price = product?.subCategory?.flatMap(({ model }) =>
+    model?.map(({ skus }) => skus.map(({ price }) => price))
   );
   let min = price && Math.min(...price[0]);
   let max = price && Math.max(...price[0]);
-  const srRef = useRef();
   return (
     <div className="w-full outline hover:outline-orange hover:outline-4 focus-within:outline-orange focus-within:outline-4 rounded">
       <div

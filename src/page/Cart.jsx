@@ -11,15 +11,20 @@ import { convertPrice } from "../config/convertPrice";
 const Cart = () => {
   const cart = useSelector(selectCartItem);
   const dispatch = useDispatch();
+
+  //increment product
+  const handleIncr = (i) => {
+    dispatch(addToCart(i));
+  };
+
+  //decrement product
   const handleDecr = (i) => {
     dispatch(decrToCart(i));
   };
 
+  //delete product
   const handleDeleteCart = (i) => {
     dispatch(deleteCart(i));
-  };
-  const handleIncr = (i) => {
-    dispatch(addToCart(i));
   };
 
   return (

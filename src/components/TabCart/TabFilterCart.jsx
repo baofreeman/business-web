@@ -4,7 +4,6 @@ import Button from "../ui/Button/Button";
 
 const TabFilterCart = () => {
   const { username } = useAuth();
-  console.log(username);
   return (
     <div className="w-full">
       {!username ? (

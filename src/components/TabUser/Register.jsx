@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [roles] = useState(["Custommer"]);
   const [msg, setMsg] = useState();
   const {
@@ -20,7 +21,7 @@ const Register = () => {
     resolver: yupResolver(schema),
   });
   const [createUser] = useCreateUserMutation();
-  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     const { username, password } = data;
     const newData = {
@@ -76,6 +77,7 @@ const Register = () => {
             design={"basic"}
             name="password"
             placeholder="password"
+            type={"password"}
             register={register}
             error={errors.password?.message}
           />

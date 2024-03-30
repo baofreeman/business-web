@@ -14,46 +14,47 @@ import Loading from "../ui/Loading/Loading";
 const ModelDetail = () => {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("productId");
-
   const [isColor, setIsColor] = useState("");
   const [itemId, setItemId] = useState("");
-  const [msg, setMsg] = useState("");
+  const dispatch = useDispatch();
 
+  // GET products
   const { product } = useGetProductsQuery("allProduct", {
     selectFromResult: ({ data }) => ({
       product: data?.entities[productId],
     }),
   });
+
+  // GET detail Product
   const { data: item, isLoading } = useGetItemQuery(itemId, {
     pollingInterval: 6600000,
     refetchOnMountOrArgChange: true,
     skip: false,
   });
-
   const items = product?.subCategory.flatMap(({ tag, model, _id }) => ({
     tag,
     model,
     _id,
   }));
+
+  // Choose Size
   const handleSize = (e) => {
     let itemId = e.target.value;
     if (itemId) setItemId(itemId);
-    setMsg("");
   };
 
   useEffect(() => {
     setItemId("");
   }, [productId]);
-  const dispatch = useDispatch();
 
+  // Add to cart
   const handleAddCart = async () => {
     if (itemId) {
       await dispatch(addToCart(item[0]));
       setIsColor("");
       setItemId("");
-      setMsg("");
     } else {
-      setMsg("Bạn cần chọn size");
+      console.log("Bạn cần chọn size");
     }
   };
 
