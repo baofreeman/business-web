@@ -17,6 +17,7 @@ const UserExtent = ({ userId }) => {
   const handleToggleModal = () => {
     setModal((prev) => !prev);
   };
+
   const handleDelete = async (e) => {
     try {
       const userId = e.target.value;
@@ -67,12 +68,7 @@ const UserExtent = ({ userId }) => {
           ></div>
           <div className="bg-white flex items-center justify-center w-[300px] h-[150px] dark:bg-black border rounded-md absolute">
             <div className="absolute top-3 right-3">
-              <Button
-                size="m"
-                design="basic"
-                value={user?._id}
-                onClick={handleToggleModal}
-              >
+              <Button size="m" design="basic" onClick={handleToggleModal}>
                 <svg
                   className="fill-silver hover:fill-white cursor-pointer"
                   width="12"
@@ -95,12 +91,7 @@ const UserExtent = ({ userId }) => {
                 >
                   Xoá
                 </Button>
-                <Button
-                  size="s"
-                  design="basic"
-                  value={user?._id}
-                  onClick={handleToggleModal}
-                >
+                <Button size="s" design="basic" onClick={handleToggleModal}>
                   Hủy bỏ
                 </Button>
               </div>
