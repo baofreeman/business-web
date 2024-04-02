@@ -37,7 +37,7 @@ const cartSlice = createSlice({
       const itemIndex = state.cartItems.findIndex(
         (item) =>
           item._id === action.payload?._id &&
-          item.subCategory.mode.skus._id ===
+          item.subCategory.model.skus._id ===
             action.payload?.subCategory?.model?.skus?._id
       );
       if (itemIndex >= 0 && state.cartItems[itemIndex].qty > 1) {

@@ -98,8 +98,17 @@ const Cart = () => {
                       </div>
                     </div>
                     <h1 className="text-orange">{i?.qty}</h1>
-                    <div onClick={() => handleDecr(i)}>
-                      <div className="border rounded p-3 cursor-pointer">
+                    <div
+                      onClick={() => handleDecr(i)}
+                      aria-disabled={i?.qty <= 1}
+                    >
+                      <div
+                        className={
+                          i?.qty <= 1
+                            ? "border rounded p-3 cursor-not-allowed opacity-50"
+                            : "border rounded p-3 cursor-pointer"
+                        }
+                      >
                         <svg
                           className="fill-silver hover:fill-white"
                           width="12"
