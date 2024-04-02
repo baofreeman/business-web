@@ -11,6 +11,7 @@ import { useState } from "react";
 
 const Cart = () => {
   const [modal, setModal] = useState(false);
+  const [productId, setProductId] = useState();
   const cart = useSelector(selectCartItem);
   const dispatch = useDispatch();
 
@@ -25,12 +26,13 @@ const Cart = () => {
   };
 
   //delete product
-  const handleDeleteCart = (i) => {
-    dispatch(deleteCart(i));
+  const handleDeleteCart = () => {
+    dispatch(deleteCart(productId));
     handleToggleModal();
   };
 
-  const handleToggleModal = () => {
+  const handleToggleModal = (i) => {
+    setProductId(i);
     setModal((prev) => !prev);
   };
 
@@ -127,7 +129,7 @@ const Cart = () => {
                 </td>
                 <td
                   className="border px-2 text-center py-4 select-none w-[20%]"
-                  onClick={handleToggleModal}
+                  onClick={() => handleToggleModal(i)}
                 >
                   <svg
                     className="fill-silver hover:fill-white cursor-pointer"
@@ -143,14 +145,14 @@ const Cart = () => {
                   <div className="w-full h-[100%] flex items-center justify-center absolute top-0 left-0 right-0 bottom-0">
                     <div
                       className="w-full h-[100%] bg-black opacity-80"
-                      onClick={handleToggleModal}
+                      onClick={() => handleToggleModal(i)}
                     ></div>
                     <div className="bg-white flex items-center justify-center w-[300px] h-[150px] dark:bg-black border rounded-md absolute">
                       <div className="absolute top-3 right-3">
                         <Button
                           size="m"
                           design="basic"
-                          onClick={handleToggleModal}
+                          onClick={() => handleToggleModal(i)}
                         >
                           <svg
                             className="fill-silver hover:fill-white cursor-pointer"
@@ -169,14 +171,14 @@ const Cart = () => {
                           <Button
                             size="s"
                             design="primary"
-                            onClick={() => handleDeleteCart(i)}
+                            onClick={handleDeleteCart}
                           >
                             Xoá
                           </Button>
                           <Button
                             size="s"
                             design="basic"
-                            onClick={handleToggleModal}
+                            onClick={() => handleToggleModal(i)}
                           >
                             Hủy bỏ
                           </Button>
