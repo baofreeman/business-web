@@ -23,7 +23,7 @@ const UserExtent = ({ userId }) => {
       const userId = e.target.value;
       await deleteUser({ userId });
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
   return (

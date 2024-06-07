@@ -12,7 +12,6 @@ const CheckoutSuccess = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
-  console.log(orders);
   const text = `Nếu có thay đổi về đơn hàng vui lòng liên hệ
   Hotline: 0909090909 hoặc email: test@gmail.com
   để được nhân viên hỗ trợ. Xin cám ơn.`;

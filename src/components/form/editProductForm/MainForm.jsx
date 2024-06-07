@@ -17,10 +17,7 @@ const MainForm = ({ product }) => {
     setValue("category", product?.category);
     setValue("description", product?.description);
   }, []);
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-  console.log(product.subCategory);
+  const onSubmit = (data) => {};
   return (
     <div className="flex flex-col p-4 border rounded-md gap-4">
       <form onSubmit={handleSubmit(onSubmit)}>

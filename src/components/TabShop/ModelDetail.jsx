@@ -54,7 +54,6 @@ const ModelDetail = () => {
       setIsColor("");
       setItemId("");
     } else {
-      console.log("Bạn cần chọn size");
     }
   };
 

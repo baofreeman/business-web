@@ -8,7 +8,6 @@ const ProductExtent = ({ productId }) => {
       product: data?.entities[productId],
     }),
   });
-  console.log(product);
   return (
     <tr>
       <td className="border px-8 py-4">

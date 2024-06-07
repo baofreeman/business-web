@@ -20,7 +20,7 @@ const PersistLogin = () => {
           await refresh();
           setTrueSuccess(true);
         } catch (error) {
-          console.log(error);
+          return error;
         }
       };
       if (!token && persist) verifyRefreshToken();
