@@ -27,7 +27,7 @@ const Layout = () => {
               darkMode ? "bg-black text-silver" : "bg-silver text-black"
             } relative flex p-1 min-h-20 border rounded-md justify-between overflow-hidden cursor-pointer`
           }
-          bodyClassName={() => "flex items-center text-sm p-3"}
+          bodyClassName={() => "flex items-center text-sm p-2"}
           autoClose={3000}
         />
       </div>
