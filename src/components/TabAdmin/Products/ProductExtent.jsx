@@ -13,7 +13,7 @@ const ProductExtent = ({ productId }) => {
     <tr>
       <td className="border px-8 py-4">
         <img
-          src={`http://localhost:8000/uploads/products/${product?.productImg[0]}`}
+          src={`${process.env.REACT_APP_SERVER_URL}/uploads/products/${product?.productImg[0]}`}
           width={"60px"}
         />
       </td>

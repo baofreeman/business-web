@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials } from "./authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://business-api-eg0d.onrender.com",
+  baseUrl: process.env.REACT_APP_SERVER_URL,
   // baseUrl: "http://localhost:8000",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
