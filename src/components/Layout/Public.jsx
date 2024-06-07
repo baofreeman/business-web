@@ -95,18 +95,21 @@ const Public = () => {
           style={{ height: "100%" }}
         >
           {imageList.map((item) => (
-            <div key={item.image} className="w-full flex items-center h-[100%]">
+            <div
+              key={item.image}
+              className="w-full flex items-center h-[100%] relative"
+            >
               <div
-                className={`rounded-lg h-[100%] relative cursor-pointer gap-8 sm:gap-4 flex items-end justify-center w-full`}
+                className={`rounded-lg h-[250px] w-[250px] md:h-[100px] md:w-[100px] absolute bottom-20 cursor-pointer gap-8 sm:hidden flex items-end justify-center`}
                 style={{
                   backgroundImage: `url(${item.image})`,
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: "center center",
-                  backgroundSize: "contain",
+                  backgroundSize: "cover",
                 }}
                 onClick={() => handleLink(item.link)}
               >
-                <div className="absolute bottom-0 px-[50%]">
+                <div className="absolute bottom-10 px-[50%]">
                   <Button
                     size="s-link"
                     design="link-basic"
