@@ -59,7 +59,7 @@ const TabItem = ({ productId }) => {
           <div className="w-full block pb-[150%] relative">
             <img
               className="w-full max-h-full absolute top-0 left-0 right-0 object-cover"
-              src={`${process.env.REACT_APP_SERVER_URL}/uploads/products/${product?.productImg[0]}`}
+              src={product?.productImg[0]?.url}
               alt="No product"
             />
           </div>
@@ -72,7 +72,7 @@ const TabItem = ({ productId }) => {
               <h1 className="text-sm text-silver whitespace-wrap text-center">
                 {max === min
                   ? convertPrice(max)
-                  : convertPrice(min) - convertPrice(max)}
+                  : `${convertPrice(min)} - ${convertPrice(max)}`}
               </h1>
             </div>
           </div>

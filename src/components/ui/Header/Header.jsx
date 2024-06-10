@@ -189,9 +189,9 @@ const Header = ({ darkMode, toggleDark }) => {
             </div>
           )}
           {toggleModal && (
-            <div className="border rounded w-full h-[150px] absolute top-[35px] bg-black z-50 left-0">
+            <div className="border rounded w-full h-[150px] absolute top-[35px] bg-black z-50 left-0 overflow-hidden">
               <div
-                className="px-[20px] py-[10px] overflow-hidden overflow-scroll no-scrollbar"
+                className="px-[20px] py-[10px] overflow-scroll no-scrollbar"
                 style={{ height: "100%" }}
               >
                 {products?.length > 0 ? (
@@ -213,7 +213,7 @@ const Header = ({ darkMode, toggleDark }) => {
                       >
                         <div className="w-[20%]">
                           <img
-                            src={`${process.env.REACT_APP_SERVER_URL}/uploads/products/${item?.productImg[0]}`}
+                            src={item?.productImg[0].url}
                             width={"60%"}
                             height={"100%"}
                             alt={"No product"}

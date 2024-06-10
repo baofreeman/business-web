@@ -50,14 +50,14 @@ const TabDetail = () => {
             {product?.productImg.map((item, index) => (
               <div
                 className="w-full flex items-center justify-center h-[100%]"
-                key={item}
+                key={item?.id}
                 style={{
                   flex: "0 0 100%",
                 }}
                 ref={childRefs[index]}
               >
                 <img
-                  src={`${process.env.REACT_APP_SERVER_URL}/uploads/products/${item}`}
+                  src={item?.url}
                   alt="no product"
                   className="w-full object-cover"
                   style={{ height: "auto" }}

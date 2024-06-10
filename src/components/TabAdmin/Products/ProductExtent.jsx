@@ -11,10 +11,7 @@ const ProductExtent = ({ productId }) => {
   return (
     <tr>
       <td className="border px-8 py-4">
-        <img
-          src={`${process.env.REACT_APP_SERVER_URL}/uploads/products/${product?.productImg[0]}`}
-          width={"60px"}
-        />
+        <img src={product?.productImg[0].url} width={"60px"} />
       </td>
       <td className="border px-8 py-4">{product?.name}</td>
       <td className="border px-8 py-4">

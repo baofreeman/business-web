@@ -42,22 +42,12 @@ const Cart = () => {
         <table className="w-full">
           <thead className="w-full uppercase">
             <tr>
-              <th className="text-left text-center px-2 py-4 w-[20%]">
-                hình ảnh
-              </th>
-              <th className="text-left text-center px-2 py-4 w-[20%]">
-                tên sản phẩm
-              </th>
-              <th className="text-left text-center px-2 py-4 w-[10%]">
-                màu sắc
-              </th>
-              <th className="text-left text-center px-2 py-4 w-[10%]">
-                kích cỡ
-              </th>
-              <th className="text-left text-center px-2 py-4 w-[20%]">
-                số lượng
-              </th>
-              <th className="text-left text-center px-2 py-4 w-[20%]">giá</th>
+              <th className="text-center px-2 py-4 w-[20%]">hình ảnh</th>
+              <th className="text-center px-2 py-4 w-[20%]">tên sản phẩm</th>
+              <th className="text-center px-2 py-4 w-[10%]">màu sắc</th>
+              <th className="text-center px-2 py-4 w-[10%]">kích cỡ</th>
+              <th className="text-center px-2 py-4 w-[20%]">số lượng</th>
+              <th className="text-center px-2 py-4 w-[20%]">giá</th>
             </tr>
           </thead>
           <tbody className="w-full">
@@ -68,7 +58,7 @@ const Cart = () => {
                   style={{ height: "100%" }}
                 >
                   <img
-                    src={`${process.env.REACT_APP_SERVER_URL}/uploads/products/${i?.productImg[0]}`}
+                    src={i?.productImg[0].url}
                     width={"60%"}
                     height={"100%"}
                     alt={"No product"}

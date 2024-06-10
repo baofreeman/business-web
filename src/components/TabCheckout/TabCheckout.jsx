@@ -41,16 +41,10 @@ const TabCheckout = () => {
         <table className="w-full p-[20px] sm:p-[0px] uppercase">
           <thead className="sm:text-xs">
             <tr>
-              <th className="text-left text-center px-2 py-4 sm:p-1">
-                Sản phẩm
-              </th>
-              <th className="text-left text-center px-2 py-4 sm:p-1">
-                Chi tiết
-              </th>
-              <th className="text-left text-center px-2 py-4 sm:p-1">
-                Số lượng
-              </th>
-              <th className="text-left text-center px-2 py-4 sm:p-1">Giá</th>
+              <th className="text-center px-2 py-4 sm:p-1">Sản phẩm</th>
+              <th className="text-center px-2 py-4 sm:p-1">Chi tiết</th>
+              <th className="text-center px-2 py-4 sm:p-1">Số lượng</th>
+              <th className="text-center px-2 py-4 sm:p-1">Giá</th>
             </tr>
           </thead>
           <tbody className="sm:text-xs">
@@ -61,7 +55,7 @@ const TabCheckout = () => {
                   style={{ height: "100%" }}
                 >
                   <img
-                    src={`${process.env.REACT_APP_SERVER_URL}/uploads/products/${i?.productImg[0]}`}
+                    src={i?.productImg[0].url}
                     height={"100%"}
                     style={{ marginLeft: "auto", marginRight: "auto" }}
                     className="w-[60px] sm:w-[20px]"

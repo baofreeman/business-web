@@ -3,6 +3,6 @@ export const convertPrice = (price) => {
     const result = price?.toLocaleString().replaceAll(",", ".");
     return `${result} VND`;
   } catch (error) {
-    return null;
+    return `Chưa có giá`;
   }
 };
