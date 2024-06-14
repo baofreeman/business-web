@@ -2,10 +2,10 @@ import Button from "../ui/Button/Button";
 import { useSelector } from "react-redux";
 import { selectTotalQuatity } from "../../api/cartSlice";
 import { useLocation } from "react-router-dom";
-import HeaderShop from "../TabShop/HeaderShop";
-import HeaderCart from "../TabCart/HeaderCart";
-import HeaderAdmin from "../TabAdmin/HeaderAdmin";
-import HeaderCheckout from "../TabCheckout/HeaderCheckout";
+import HeaderShop from "../Shop/HeaderShop";
+import HeaderCart from "../Cart/HeaderCart";
+import HeaderAdmin from "../Admin/HeaderAdmin";
+import HeaderCheckout from "../Checkout/HeaderCheckout";
 
 const TabHeader = () => {
   const totalQuantity = useSelector(selectTotalQuatity);

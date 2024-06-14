@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import TabFilterProductAdmin from "../../TabAdmin/Products/TabFilterProductAdmin";
-import TabSibarLeftOrder from "../../TabAdmin/Orders/TabSibarLeftOrder";
+import TabFilterProductAdmin from "../../Admin/Products/TabFilterProductAdmin";
+import TabSibarLeftOrder from "../../Admin/Orders/TabSibarLeftOrder";
 
 const SidebarAdmin = () => {
   const location = useLocation();

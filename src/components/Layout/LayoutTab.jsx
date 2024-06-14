@@ -11,15 +11,15 @@ import TabHeader from "../Layout/TabHeader";
 import SidebarRight from "../SideBar/SidebarRight/SidebarRight";
 import Footer from "../ui/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectSibarLeft,
-  selectSibarRight,
-  setSibarLeft,
-  setSibarRight,
-} from "../../api/toggleSlice";
 import SidebarLeft from "../SideBar/SideBarLeft/SidebarLeft";
-import ModelDetail from "../TabShop/ModelDetail";
+import ModalDetail from "../Shop/ModalDetail";
 import Loading from "../ui/Loading/Loading";
+import {
+  selectSidebarLeft,
+  selectSidebarRight,
+  setSidebarLeft,
+  setSidebarRight,
+} from "../../api/toggleSlice";
 
 const LayoutTab = () => {
   // GET all product
@@ -34,8 +34,6 @@ const LayoutTab = () => {
   const pageRef = useRef();
   const slRef = useRef();
   const srRef = useRef();
-  const buttonRefRight = useRef();
-  const buttonRefLeft = useRef();
   const modelRef = useRef();
 
   const [width, setWidth] = useState(0);
@@ -43,8 +41,8 @@ const LayoutTab = () => {
   const [openSL, setOpenSL] = useState(true);
   const [openSR, setOpenSR] = useState(true);
 
-  const openSidebarRight = useSelector(selectSibarRight);
-  const openSidebarLeft = useSelector(selectSibarLeft);
+  const openSidebarRight = useSelector(selectSidebarRight);
+  const openSidebarLeft = useSelector(selectSidebarLeft);
   const dispatch = useDispatch();
 
   // toggle sidebar left
@@ -57,12 +55,12 @@ const LayoutTab = () => {
     setOpenSR((prev) => !prev);
   };
 
-  useEffect(() => {
-    dispatch(setSibarLeft(openSL));
+  useLayoutEffect(() => {
+    dispatch(setSidebarLeft(openSL));
   }, [openSL]);
 
-  useEffect(() => {
-    dispatch(setSibarRight(openSR));
+  useLayoutEffect(() => {
+    dispatch(setSidebarRight(openSR));
   }, [openSR]);
 
   // Resize width and height, responsive mobile, tablet
@@ -93,20 +91,35 @@ const LayoutTab = () => {
   // Check sidebar Right and Left =>  render layout responsive
   useLayoutEffect(() => {
     if (!openSidebarRight && !openSidebarLeft) {
+      console.log({
+        mount: "dual",
+        left: openSidebarLeft,
+        right: openSidebarRight,
+      });
       pageRef.current?.classList.add("page-tab-layout-nosb");
       srRef.current?.classList.add("hidden");
       slRef.current?.classList.add("hidden");
       pageRef.current?.classList.remove("page-tab-layout");
       pageRef.current?.classList.remove("page-tab-layout-left");
       pageRef.current?.classList.remove("page-tab-layout-right");
-    } else if (!openSidebarRight) {
+    } else if (!openSidebarRight && openSidebarLeft) {
+      console.log({
+        mount: "right",
+        left: openSidebarLeft,
+        right: openSidebarRight,
+      });
       pageRef.current?.classList.add("page-tab-layout-right");
       srRef.current?.classList.add("hidden");
       slRef.current?.classList.remove("hidden");
       pageRef.current?.classList.remove("page-tab-layout");
       pageRef.current?.classList.remove("page-tab-layout-left");
       pageRef.current?.classList.remove("page-tab-layout-nosb");
-    } else if (!openSidebarLeft) {
+    } else if (!openSidebarLeft && openSidebarRight) {
+      console.log({
+        mount: "left",
+        left: openSidebarLeft,
+        right: openSidebarRight,
+      });
       pageRef.current?.classList.add("page-tab-layout-left");
       slRef.current?.classList.add("hidden");
       srRef.current?.classList.remove("hidden");
@@ -114,6 +127,11 @@ const LayoutTab = () => {
       pageRef.current?.classList.remove("page-tab-layout-nosb");
       pageRef.current?.classList.remove("page-tab-layout-right");
     } else {
+      console.log({
+        mount: "dual",
+        left: openSidebarLeft,
+        right: openSidebarRight,
+      });
       pageRef.current?.classList.add("page-tab-layout");
       srRef.current?.classList.remove("hidden");
       slRef.current?.classList.remove("hidden");
@@ -123,7 +141,7 @@ const LayoutTab = () => {
     }
   }, [openSidebarRight, openSidebarLeft]);
 
-  let content;
+  let content = null;
   // Layout mobile custom
   const tabMobile =
     location.pathname.includes("/cart") ||
@@ -192,10 +210,9 @@ const LayoutTab = () => {
             <>
               <button
                 onClick={handleToggleSL}
-                ref={buttonRefLeft}
                 className="md:hidden sm:hidden flex absolute items-center border rounded-md justify-center top-[10px] w-[16px] h-[48px] bg-white dark:bg-black z-10"
                 style={
-                  openSL
+                  openSidebarLeft
                     ? {
                         left: "-16px",
                         borderRight: "none",
@@ -217,7 +234,11 @@ const LayoutTab = () => {
                     viewBox="0 0 12 7"
                     fill="#929292"
                     xmlns="http://www.w3.org/2000/svg"
-                    style={openSL ? { rotate: "90deg" } : { rotate: "-90deg" }}
+                    style={
+                      openSidebarLeft
+                        ? { rotate: "90deg" }
+                        : { rotate: "-90deg" }
+                    }
                   >
                     <path d="M1.71429 0H0V1.71429H1.71429V3.42857H3.42857V5.14286H5.14286V6.85714H6.85714V5.14286H8.57143V3.42857H10.2857V1.71429H12V0H10.2857V1.71429H8.57143V3.42857H6.85714V5.14286H5.14286V3.42857H3.42857V1.71429H1.71429V0Z"></path>
                   </svg>
@@ -226,10 +247,9 @@ const LayoutTab = () => {
 
               <button
                 onClick={handleToggleSR}
-                ref={buttonRefRight}
                 className="md:hidden sm:hidden flex absolute items-center border rounded-md justify-center top-[10px] w-[16px] h-[48px] bg-white dark:bg-black z-10"
                 style={
-                  openSR
+                  openSidebarRight
                     ? {
                         right: "-16px",
                         borderLeft: "none",
@@ -251,7 +271,11 @@ const LayoutTab = () => {
                     viewBox="0 0 12 7"
                     fill="#929292"
                     xmlns="http://www.w3.org/2000/svg"
-                    style={openSR ? { rotate: "-90deg" } : { rotate: "90deg" }}
+                    style={
+                      openSidebarRight
+                        ? { rotate: "-90deg" }
+                        : { rotate: "90deg" }
+                    }
                   >
                     <path d="M1.71429 0H0V1.71429H1.71429V3.42857H3.42857V5.14286H5.14286V6.85714H6.85714V5.14286H8.57143V3.42857H10.2857V1.71429H12V0H10.2857V1.71429H8.57143V3.42857H6.85714V5.14286H5.14286V3.42857H3.42857V1.71429H1.71429V0Z"></path>
                   </svg>
@@ -275,10 +299,10 @@ const LayoutTab = () => {
                 </div>
                 {location.pathname.includes("/shop") ? (
                   <div
-                    className="p-[12px] w-full h-[110px] border-t z-10"
+                    className="p-[12px] w-full h-[140px] border-t z-10"
                     ref={modelRef}
                   >
-                    <ModelDetail />
+                    <ModalDetail />
                   </div>
                 ) : null}
               </div>

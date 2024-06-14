@@ -2,19 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const toggleSlice = createSlice({
   name: "toggle",
-  initialState: { isSibarRight: true, isSibarLeft: true },
+  initialState: { isSidebarRight: true, isSidebarleft: true },
   reducers: {
-    setSibarRight: (state, action) => {
-      state.isSibarRight = action.payload;
+    setSidebarRight: (state, action) => {
+      state.isSidebarRight = action.payload;
     },
-    setSibarLeft: (state, action) => {
-      state.isSibarLeft = action.payload;
+    setSidebarLeft: (state, action) => {
+      state.isSidebarleft = action.payload;
     },
   },
 });
 
-export const { setSibarRight, setSibarLeft, showSB } = toggleSlice.actions;
-export const selectSibarRight = (state) => state.toggle.isSibarRight;
-export const selectSibarLeft = (state) => state.toggle.isSibarLeft;
+export const { setSidebarRight, setSidebarLeft } = toggleSlice.actions;
+export const selectSidebarRight = (state) => state.toggle.isSidebarRight;
+export const selectSidebarLeft = (state) => state.toggle.isSidebarleft;
 
 export default toggleSlice.reducer;

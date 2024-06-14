@@ -1,26 +1,26 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import Public from "./components/Layout/Public";
-import AddProduct from "./components/TabAdmin/Products/AddProduct";
-import EditProduct from "./components/TabAdmin/Products/EditProduct";
 import Prefresh from "./features/Prefresh";
 import LayoutTab from "./components/Layout/LayoutTab";
 import Admin from "./page/Admin";
 import Shop from "./page/Shop";
-import Products from "./components/TabAdmin/Products/Products";
-import TabsList from "./components/TabShop/TabList";
 import Cart from "./page/Cart";
 import CheckoutForm from "./components/form/checkoutForm/CheckoutForm";
-import Order from "./components/TabAdmin/Orders/Order";
-import CheckoutSuccess from "./components/TabCheckout/CheckoutSuccess";
-import TabAllProduct from "./components/TabShop/TabAllProduct";
-import Register from "./components/TabUser/Register";
-import Login from "./components/TabUser/Login";
 import { ROLES } from "./config/roles";
-import RequireAuth from "./components/TabUser/RequireAuth";
-import PersistLogin from "./components/TabUser/PersistLogin";
-import TabDetail from "./components/TabShop/TabDetail";
-import Users from "./components/TabAdmin/User/Users";
+import AllProduct from "./components/Shop/AllProduct";
+import DetailItem from "./components/Shop/DetailItem";
+import ListProduct from "./components/Shop/ListProduct";
+import CheckoutSuccess from "./components/Checkout/CheckoutSuccess";
+import Register from "./components/Auth/Register";
+import Login from "./components/Auth/Login";
+import PersistLogin from "./components/Auth/PersistLogin";
+import RequireAuth from "./components/Auth/RequireAuth";
+import Products from "./components/Admin/Products/Products";
+import AddProduct from "./components/Admin/Products/AddProduct";
+import EditProduct from "./components/Admin/Products/EditProduct";
+import Users from "./components/Admin/User/Users";
+import Order from "./components/Admin/Orders/Order";
 
 function App() {
   return (
@@ -57,9 +57,9 @@ function App() {
 
                 {/* Shop */}
                 <Route path="/shop" element={<Shop />}>
-                  <Route index element={<TabAllProduct />} />
-                  <Route path="product" element={<TabDetail />} />
-                  <Route path=":category" element={<TabsList />} />
+                  <Route index element={<AllProduct />} />
+                  <Route path="product" element={<DetailItem />} />
+                  <Route path=":category" element={<ListProduct />} />
                 </Route>
                 <Route path="/cart">
                   <Route index element={<Cart />} />

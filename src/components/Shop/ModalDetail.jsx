@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { convertPrice } from "../../config/convertPrice";
 import Loading from "../ui/Loading/Loading";
 
-const ModelDetail = () => {
+const ModalItem = () => {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("productId");
   const [isColor, setIsColor] = useState("");
@@ -58,32 +58,30 @@ const ModelDetail = () => {
   };
 
   return (
-    <div className="flex w-full sm:flex-col" style={{ height: "100%" }}>
+    <div className="flex w-full sm:flex-col overflow-hidden h-[100%]">
       {productId ? (
-        <div className="flex w-full items-center justify-center gap-6">
+        <div className="flex w-full items-start justify-center gap-6">
           <div className="flex h-full w-[30%] flex-col gap-2">
             <h1 className="line-clamp-2 pr-[10px] select-none">
               {product?.name}
             </h1>
-            <div className="w-full h-[50px] overflow-hidden overflow-scroll no-scrollbar">
+            <div className="w-full h-[80px] overflow-scroll no-scrollbar">
               <span className="text-silver">{product?.description}</span>
             </div>
           </div>
-          <div className="flex sm:flex-col w-[70%] flex gap-2">
-            <div className="flex gap-4 w-[70%] sm:w-full overflow-scroll no-scrollbar">
+          <div className="flex w-[70%] gap-2 h-[100%] sm:flex-col">
+            <div className="flex flex-row gap-4 w-[70%] sm:w-full sm:flex-col flex-wrap sm:h-[72px] overflow-scroll no-scrollbar">
               {items?.map((item) => (
                 <div
                   key={item?._id}
-                  className="flex items-center w-full gap-2 border rounded p-[10px] uppercase"
+                  className="flex flex-col basic-1/2 grow min-w-0 items-start h-[100%] gap-2 border rounded p-[10px] uppercase"
                 >
-                  <h1 className="cursor-pointer text-center w-[20%]">
-                    {item.tag}
-                  </h1>
-                  <div className="flex w-full justify-between gap-6 flex-wrap sm:flex-nowrap overflow-scroll no-scrollbar">
+                  <h1 className="cursor-pointers w-full">{item.tag}</h1>
+                  <div className="flex flex-col sm:h-[62px] w-full items-start h-[100%] justify-between gap-2 sm:flex-nowrap overflow-scroll no-scrollbar">
                     {item.model.map((z, index) => (
                       <div
                         key={z._id}
-                        className="flex items-center gap-2 flex-1"
+                        className="flex items-center gap-2 flex-1 w-full"
                       >
                         {isLoading ? (
                           <>
@@ -105,19 +103,19 @@ const ModelDetail = () => {
                                 className={
                                   z._id === isColor
                                     ? `text-active cursor-pointer`
-                                    : "text-white cursor-pointer"
+                                    : "cursor-pointer"
                                 }
                                 htmlFor={`color-${z._id}`}
                               >
                                 {z.color}
                               </label>
                             </div>
-                            <div className="flex-1 w-[50px]">
+                            <div className="flex-1 w-full">
                               <Select
                                 design="basic"
                                 onChange={(e) => handleSize(e)}
                                 disabled={z._id !== isColor}
-                                label={"kích cỡ"}
+                                label={"Kích cỡ"}
                               >
                                 {z.skus.map((s) => (
                                   <option key={s._id} value={s._id}>
@@ -168,4 +166,4 @@ const ModelDetail = () => {
   );
 };
 
-export default ModelDetail;
+export default ModalItem;

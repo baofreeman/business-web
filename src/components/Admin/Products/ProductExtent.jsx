@@ -1,6 +1,11 @@
-import React, { memo } from "react";
-import { useGetProductsQuery } from "../../../api/productsApiSlice";
+import React, { memo, useState } from "react";
+import {
+  useDeleteProductMutation,
+  useGetProductsQuery,
+} from "../../../api/productsApiSlice";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import Modal from "../../ui/Modal/Modal";
 
 const ProductExtent = ({ productId }) => {
   const { product } = useGetProductsQuery("allProduct", {
@@ -8,6 +13,24 @@ const ProductExtent = ({ productId }) => {
       product: data?.entities[productId],
     }),
   });
+  const [modal, setModal] = useState(false);
+
+  const [deleteProduct] = useDeleteProductMutation();
+  const handleToggleModal = () => {
+    setModal((prev) => !prev);
+  };
+
+  const handleDelete = async (productId) => {
+    try {
+      const res = await deleteProduct({ productId });
+      if (res.data) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      return toast.error(error.message);
+    }
+  };
+
   return (
     <tr>
       <td className="border px-8 py-4">
@@ -278,17 +301,24 @@ const ProductExtent = ({ productId }) => {
         </Link>
       </td>
       <td className="border px-8 py-4">
-        <Link to={`/admin/products/edit-product/${productId}`}>
-          <svg
-            className="fill-silver hover:fill-white cursor-pointer"
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M0 0H1.71429V1.71429H0V0ZM3.42857 3.42857H1.71429V1.71429H3.42857V3.42857ZM5.14286 5.14286H3.42857V3.42857H5.14286V5.14286ZM6.85714 5.14286H5.14286V6.85714H3.42857V8.57143H1.71429V10.2857H0V12H1.71429V10.2857H3.42857V8.57143H5.14286V6.85714H6.85714V8.57143H8.57143V10.2857H10.2857V12H12V10.2857H10.2857V8.57143H8.57143V6.85714H6.85714V5.14286ZM8.57143 3.42857V5.14286H6.85714V3.42857H8.57143ZM10.2857 1.71429V3.42857H8.57143V1.71429H10.2857ZM10.2857 1.71429V0H12V1.71429H10.2857Z"></path>
-          </svg>
-        </Link>
+        <svg
+          className="fill-silver hover:fill-white cursor-pointer"
+          width="12"
+          height="12"
+          viewBox="0 0 12 12"
+          xmlns="http://www.w3.org/2000/svg"
+          onClick={handleToggleModal}
+        >
+          <path d="M0 0H1.71429V1.71429H0V0ZM3.42857 3.42857H1.71429V1.71429H3.42857V3.42857ZM5.14286 5.14286H3.42857V3.42857H5.14286V5.14286ZM6.85714 5.14286H5.14286V6.85714H3.42857V8.57143H1.71429V10.2857H0V12H1.71429V10.2857H3.42857V8.57143H5.14286V6.85714H6.85714V8.57143H8.57143V10.2857H10.2857V12H12V10.2857H10.2857V8.57143H8.57143V6.85714H6.85714V5.14286ZM8.57143 3.42857V5.14286H6.85714V3.42857H8.57143ZM10.2857 1.71429V3.42857H8.57143V1.71429H10.2857ZM10.2857 1.71429V0H12V1.71429H10.2857Z"></path>
+        </svg>
+        {modal && (
+          <Modal
+            handleToggleModal={handleToggleModal}
+            callback={handleDelete}
+            data={productId}
+            title={"Bạn muốn xóa sản phẩm"}
+          />
+        )}
       </td>
     </tr>
   );

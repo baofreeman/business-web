@@ -10,24 +10,34 @@ export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // GET All product and filter product
     getProducts: builder.query({
-      query: ({ tag, color, size }) => ({
+      query: ({ category, tag, color, size }) => ({
         url:
-          !tag && !color && !size
+          !category && !tag && !color && !size
             ? `/product`
-            : tag && !color && !size
-            ? `/product/trait?tag=${tag}`
-            : !tag && color && !size
-            ? `/product/trait?color=${color}`
-            : !tag && !color && size
-            ? `/product/trait?size=${size}`
-            : tag && color && !size
+            : category && !tag && !color && !size
+            ? `/product/trait?category=${category}`
+            : category && tag && !color && !size
+            ? `/product/trait?category=${category}&tag=${tag}`
+            : category && tag && color && !size
+            ? `/product/trait?category=${category}&tag=${tag}&color=${color}`
+            : !category && tag && color && !size
             ? `product/trait?tag=${tag}&color=${color}`
-            : tag && !color && size
-            ? `product/trait?tag=${tag}&size=${size}`
-            : !tag && color && size
+            : !category && !tag && color && !size
+            ? `product/trait?color=${color}`
+            : category && !tag && color && size
+            ? `product/trait?category=${category}&color=${color}&size=${size}`
+            : category && !tag && color && !size
+            ? `product/trait?category=${category}&color=${color}`
+            : !category && !tag && !color && size
+            ? `product/trait?size=${size}`
+            : !category && !tag && color && size
             ? `product/trait?color=${color}&size=${size}`
-            : tag && color && size
+            : !category && tag && color && size
             ? `product/trait?tag=${tag}&color=${color}&size=${size}`
+            : !category && tag && !color && size
+            ? `product/trait?tag=${tag}&size=${size}`
+            : category && tag && color && size
+            ? `product/trait?category=${category}&tag=${tag}&color=${color}&size=${size}`
             : `/product`,
         validateStatus: (res, result) => {
           return res.status === 200 && !result.isError;
@@ -64,6 +74,32 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       ],
     }),
 
+    updateProduct: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/product`,
+          method: "PATCH",
+          body: body,
+        };
+      },
+      invalidatesTags: (result, error, arg) => [
+        { type: "Product", id: arg?._id },
+      ],
+    }),
+
+    deleteProduct: builder.mutation({
+      query: ({ productId }) => {
+        return {
+          url: `/product`,
+          method: "DELETE",
+          body: { productId },
+        };
+      },
+      invalidatesTags: (result, error, arg) => [
+        { type: "Product", id: arg?._id },
+      ],
+    }),
+
     // POST item in product
     getItem: builder.query({
       query: (itemId) => ({
@@ -90,6 +126,8 @@ export const {
   useGetItemQuery,
   useAddProductMutation,
   useSeachProductQuery,
+  useDeleteProductMutation,
+  useUpdateProductMutation,
 } = productsApiSlice;
 
 export const selectProductResult =

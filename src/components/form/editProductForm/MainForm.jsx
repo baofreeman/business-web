@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import Input from "../../ui/Input/Input";
 import Select from "../../ui/Select/Select";
 import Textarea from "../../ui/Textarea/Textarea";
+import { useUpdateProductMutation } from "../../../api/productsApiSlice";
+import Button from "../../ui/Button/Button";
+import { toast } from "react-toastify";
 
 const MainForm = ({ product }) => {
   const {
@@ -12,12 +15,28 @@ const MainForm = ({ product }) => {
     setValue,
     formState: { errors },
   } = useForm();
+  const [updateProduct] = useUpdateProductMutation();
   useEffect(() => {
     setValue("name", product?.name);
     setValue("category", product?.category);
     setValue("description", product?.description);
   }, []);
-  const onSubmit = (data) => {};
+
+  const onSubmit = async (data) => {
+    const newData = {
+      id: product?._id,
+      ...data,
+    };
+    try {
+      const res = await updateProduct(newData);
+      if (res.data) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      return toast.success(error.message);
+    }
+  };
+
   return (
     <div className="flex flex-col p-4 border rounded-md gap-4">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -57,7 +76,9 @@ const MainForm = ({ product }) => {
             />
           </div>
         </section>
-        <input type="submit" />
+        <Button size="l" design="primary" width="120" type={"submit"}>
+          sửa sản phẩm
+        </Button>
       </form>
     </div>
   );

@@ -1,7 +1,6 @@
-import React, { memo, useRef } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { useGetProductsQuery } from "../../api/productsApiSlice";
-import { useDispatch } from "react-redux";
-import { setSibarRight } from "../../api/toggleSlice";
+import { useDispatch, useSelector } from "react-redux";
 import {
   createSearchParams,
   useNavigate,
@@ -9,19 +8,23 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { convertPrice } from "../../config/convertPrice";
+import { selectSidebarRight, setSidebarRight } from "../../api/toggleSlice";
 
-const TabItem = ({ productId }) => {
+const ItemProduct = ({ productId }) => {
   //Get params
   const [searchParams] = useSearchParams();
   const params = Object.fromEntries(searchParams.entries());
+
   const { category } = useParams();
+  const categoryQuery = searchParams.get("category");
   const tag = searchParams.get("tag");
   const color = searchParams.get("color");
   const size = searchParams.get("size");
+  const openSidebarRight = useSelector(selectSidebarRight);
 
   //GET product filter or allproduct
   const { product } = useGetProductsQuery(
-    { tag, color, size },
+    { category: categoryQuery, tag, color, size },
     {
       selectFromResult: ({ data }) => ({ product: data?.entities[productId] }),
     }
@@ -29,14 +32,16 @@ const TabItem = ({ productId }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [active, setActive] = useState(false);
   const srRef = useRef();
 
   const handleSR = () => {
-    dispatch(setSibarRight(true));
+    if (openSidebarRight == false) {
+      dispatch(setSidebarRight(true));
+    }
     navigate({
-      pathname: category ? `/shop/${category}` : "/shop",
+      pathname: "/shop",
       search: createSearchParams({
-        ...params,
         productId: product?._id,
       }).toString(),
     });
@@ -48,12 +53,31 @@ const TabItem = ({ productId }) => {
   );
   let min = price && Math.min(...price[0]);
   let max = price && Math.max(...price[0]);
+  const refProduct = useRef();
+  const selectedProduct = () => {
+    const defaultValue = refProduct.current.getAttribute("defaultValue");
+    if (defaultValue === productId) {
+      setActive(true);
+    }
+  };
+
+  useEffect(() => {
+    selectedProduct();
+    console.log(active);
+  }, [productId]);
+
   return (
-    <div className="w-full outline hover:outline-orange hover:outline-4 focus-within:outline-orange focus-within:outline-4 rounded">
+    <div
+      data-active={active}
+      ref={refProduct}
+      defaultValue={productId}
+      className={`w-full outline data-[active=true]:outline-orange hover:outline-orange hover:outline-4 rounded `}
+      onClick={selectedProduct}
+    >
       <div
         className="w-full h-full pb-[20px] sm:pb-[10px] border rounded cursor-pointer"
         ref={srRef}
-        onClick={handleSR}
+        onClick={() => handleSR()}
       >
         <section className="w-full flex flex-col relative p-0 gap-4 uppercase">
           <div className="w-full block pb-[150%] relative">
@@ -82,4 +106,4 @@ const TabItem = ({ productId }) => {
   );
 };
 
-export default memo(TabItem);
+export default memo(ItemProduct);

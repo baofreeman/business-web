@@ -20,7 +20,7 @@ const Select = ({
         onChange={onChange}
         {...props}
       >
-        <option value={""}>{`Chọn ${label}`}</option>
+        <option value={""}>{`${label}`}</option>
         {children}
       </select>
       {error ? <Errors>{error}</Errors> : null}
