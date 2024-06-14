@@ -70,14 +70,14 @@ const ModalItem = () => {
             </div>
           </div>
           <div className="flex w-[70%] gap-2 h-[100%] sm:flex-col">
-            <div className="flex flex-row gap-4 w-[70%] sm:w-full sm:flex-col flex-wrap sm:h-[72px] overflow-scroll no-scrollbar">
+            <div className="flex flex-row gap-4 w-[70%] sm:w-full sm:flex-col flex-wrap sm:h-[72px] overflow-y-scroll scroll-smooth lg:no-scrollbar xl:no-scrollbar 2xl:no-scrollbar sm:overflow-x-scroll sm:overflow-y-hidden">
               {items?.map((item) => (
                 <div
                   key={item?._id}
                   className="flex flex-col basic-1/2 grow min-w-0 items-start h-[100%] gap-2 border rounded p-[10px] uppercase"
                 >
                   <h1 className="cursor-pointers w-full">{item.tag}</h1>
-                  <div className="flex flex-col sm:h-[62px] w-full items-start h-[100%] justify-between gap-2 sm:flex-nowrap overflow-scroll no-scrollbar">
+                  <div className="flex flex-col sm:h-[62px] w-full items-start h-[100%] justify-between gap-2 sm:flex-nowrap scroll-smooth overflow-y-scroll">
                     {item.model.map((z, index) => (
                       <div
                         key={z._id}
