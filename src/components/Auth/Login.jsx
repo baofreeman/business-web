@@ -3,14 +3,12 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../ui/Input/Input";
 import Button from "../ui/Button/Button";
-import { useCreateUserMutation } from "../../api/usersApiSlice";
 import Errors from "../ui/Errors/Errors";
 import { schema } from "./ValidateRegister";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../api/authApiSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../api/authSlice";
-import useAuth from "../../hook/useAuth";
 import usePersist from "../../hook/usePresist";
 import { toast } from "react-toastify";
 

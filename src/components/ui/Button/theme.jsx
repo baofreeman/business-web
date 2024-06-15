@@ -20,10 +20,10 @@ export const ButtonDesign = {
 };
 
 export const ButtonSize = {
-  s: "w-full py-2 px-4 text-md flex items-center justify-center sm:py-1 sm:px-2 sm:text-xs md:py-2 md:px-4 z-10",
-  "s-link": "text-md flex items-center justify-center sm:text-sm z-10",
-  m: "w-full py-3 px-4 text-md flex items-center justify-center sm:py-2 sm:px-3 sm:text-sm md:py-3 md:px-4 z-10",
-  l: "w-full py-3 px-4 text-base flex items-center justify-center sm:py-2 sm:px-3 sm:text-sm md:py-3 md:px-4 z-10",
+  s: "w-full py-2 px-4 text-md flex items-center justify-center sm:py-1 sm:px-2 md:py-2 md:px-4 z-10",
+  "s-link": "text-md flex items-center justify-center z-10",
+  m: "w-full py-3 px-4 text-md flex items-center justify-center sm:py-2 sm:px-3 md:py-3 md:px-4 z-10",
+  l: "w-full py-3 px-4 text-md flex items-center justify-center sm:py-2 sm:px-3 md:py-3 md:px-4 z-10",
 };
 
 export const ButtonWidth = {

@@ -1,11 +1,6 @@
 import { useState } from "react";
 import Button from "../Button/Button";
-import {
-  createSearchParams,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../../hook/useAuth";
 import { useSendLogOutMutation } from "../../../api/authApiSlice";
 import Input from "../Input/Input";
@@ -16,15 +11,16 @@ const Header = ({ darkMode, toggleDark }) => {
   const navigate = useNavigate();
   const [showUser, setShowUser] = useState(false);
   const location = useLocation();
-  const { category } = useParams();
   const pathname = location.pathname;
   const [key, setKey] = useState("");
   const { username, isAdmin } = useAuth();
   const [sendLogOut, { isLoading }] = useSendLogOutMutation();
   const [toggleModal, setToggleModal] = useState(false);
-  const handleLogOut = () => {
-    sendLogOut();
+
+  const handleLogOut = async () => {
+    await sendLogOut();
     navigate("/login");
+    window.location.reload();
   };
   const {
     register,
@@ -89,7 +85,7 @@ const Header = ({ darkMode, toggleDark }) => {
 
   const changeTheme = darkMode ? `right-1` : `left-1`;
   return (
-    <header className="w-full flex h-[62px] sm:h-[48px] sm:px-[10px] px-[24px] my-0 mx-auto z-1 dark:bg-black border-b">
+    <header className="w-full flex h-[62px] sm:h-[48px] sm:px-[10px] px-[24px] my-0 mx-auto z-1 border-b">
       <nav className="w-full flex text-silver my-0 mx-auto items-center justify-between sm:gap-2">
         <div
           className={`flex gap-16 sm:gap-1 items-center sm:justify-start flex-1 sm:flex-none`}

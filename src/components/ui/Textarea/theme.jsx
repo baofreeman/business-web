@@ -7,7 +7,7 @@ export const TextareaDesign = {
 };
 
 export const TextareaSize = {
-  s: "w-full py-2 px-4 text-md flex items-center justify-center sm:py-1 sm:px-2 sm:text-xs md:py-2 md:px-4 z-10 resize-none overflow-auto",
-  m: "w-full py-3 px-4 text-md flex items-center justify-center sm:py-3 sm:px-5 sm:text-xs md:py-3 md:px-6 z-10 resize-none overflow-auto",
-  l: "w-full py-3 px-4 text-base flex items-center justify-center sm:py-3 sm:px-5 sm:text-xs md:py-3 md:px-6 z-10 resize-none overflow-auto",
+  s: "w-full py-2 px-4 text-md flex items-center justify-center sm:py-1 sm:px-2 md:py-2 md:px-4 z-10 resize-none overflow-auto",
+  m: "w-full py-3 px-4 text-md flex items-center justify-center sm:py-3 sm:px-5 md:py-3 md:px-6 z-10 resize-none overflow-auto",
+  l: "w-full py-3 px-4 text-md flex items-center justify-center sm:py-3 sm:px-5 md:py-3 md:px-6 z-10 resize-none overflow-auto",
 };

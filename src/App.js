@@ -6,7 +6,6 @@ import LayoutTab from "./components/Layout/LayoutTab";
 import Admin from "./page/Admin";
 import Shop from "./page/Shop";
 import Cart from "./page/Cart";
-import CheckoutForm from "./components/form/checkoutForm/CheckoutForm";
 import { ROLES } from "./config/roles";
 import AllProduct from "./components/Shop/AllProduct";
 import DetailItem from "./components/Shop/DetailItem";
@@ -21,17 +20,19 @@ import AddProduct from "./components/Admin/Products/AddProduct";
 import EditProduct from "./components/Admin/Products/EditProduct";
 import Users from "./components/Admin/User/Users";
 import Order from "./components/Admin/Orders/Order";
+import CheckoutDetail from "./components/Checkout/CheckoutDetail";
+import NotFound from "./page/NotFound";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Public />} />
-          <Route path="/register" element={<Register />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-
           <Route element={<PersistLogin />}>
+            <Route index element={<Public />} />
+            <Route path="/register" element={<Register />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+
             <Route element={<Prefresh />}>
               <Route element={<LayoutTab />}>
                 {/* Admin */}
@@ -67,12 +68,13 @@ function App() {
 
                 {/* Checkout */}
                 <Route path="/checkout">
-                  <Route index element={<CheckoutForm />} />
+                  <Route index element={<CheckoutDetail />} />
                   <Route path="success" element={<CheckoutSuccess />} />
                 </Route>
               </Route>
             </Route>
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </>

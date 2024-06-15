@@ -2,7 +2,7 @@ import React from "react";
 import useAuth from "../../hook/useAuth";
 import Button from "../ui/Button/Button";
 
-const TabFilterCart = () => {
+const FilterCart = () => {
   const { username } = useAuth();
   return (
     <div className="w-full">
@@ -23,4 +23,4 @@ const TabFilterCart = () => {
   );
 };
 
-export default TabFilterCart;
+export default FilterCart;

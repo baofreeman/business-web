@@ -15,16 +15,20 @@ const ItemProduct = ({ productId }) => {
   const [searchParams] = useSearchParams();
   const params = Object.fromEntries(searchParams.entries());
 
-  const { category } = useParams();
   const categoryQuery = searchParams.get("category");
-  const tag = searchParams.get("tag");
-  const color = searchParams.get("color");
-  const size = searchParams.get("size");
+  const tagQuery = searchParams.get("tag");
+  const colorQuery = searchParams.get("color");
+  const sizeQuery = searchParams.get("size");
   const openSidebarRight = useSelector(selectSidebarRight);
 
   //GET product filter or allproduct
   const { product } = useGetProductsQuery(
-    { category: categoryQuery, tag, color, size },
+    {
+      category: categoryQuery,
+      tag: tagQuery,
+      color: colorQuery,
+      size: sizeQuery,
+    },
     {
       selectFromResult: ({ data }) => ({ product: data?.entities[productId] }),
     }
@@ -71,11 +75,11 @@ const ItemProduct = ({ productId }) => {
       data-active={active}
       ref={refProduct}
       defaultValue={productId}
-      className={`w-full outline data-[active=true]:outline-orange hover:outline-orange hover:outline-4 rounded `}
+      className={`w-full outline dark:outline-gray data-[active=true]:outline-orange dark:hover:outline-orange hover:outline-orange hover:outline-4 rounded`}
       onClick={selectedProduct}
     >
       <div
-        className="w-full h-full pb-[20px] sm:pb-[10px] border rounded cursor-pointer"
+        className="w-full h-full pb-[20px] sm:pb-[10px] rounded cursor-pointer"
         ref={srRef}
         onClick={() => handleSR()}
       >

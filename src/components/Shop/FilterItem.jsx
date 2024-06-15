@@ -16,17 +16,17 @@ import Button from "../ui/Button/Button";
 const FilterItem = () => {
   const navigate = useNavigate();
   //Set params
-  const [queryCategory, setQueryCategory] = useState("");
-  const [queryTag, setQueryTag] = useState("");
-  const [queryColor, setQueryColor] = useState("");
-  const [querySize, setQuerySize] = useState("");
+  const [catQuery, setCatQuery] = useState("");
+  const [tagQuery, setTagQuery] = useState("");
+  const [colorQuery, setColorQuery] = useState("");
+  const [sizeQuery, setSizeQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const { category } = useParams();
   const params = Object.fromEntries(searchParams.entries());
   searchParams.delete("productId");
 
   const subCategoryOption = subCategory.find(
-    (item) => item.category === queryCategory
+    (item) => item.category === catQuery
   ); // filter category
 
   const optionCategies = () => {
@@ -59,61 +59,61 @@ const FilterItem = () => {
     </option>
   )); // filter size
 
-  //check queryTag
+  //check tagQuery
 
   useEffect(() => {
-    if (queryCategory !== "") {
+    if (catQuery !== "") {
       navigate({
         pathname: `/shop`,
         search: createSearchParams({
           ...params,
-          category: queryCategory,
+          category: catQuery,
         }).toString(),
       });
     }
     return () => {};
-  }, [queryCategory]);
+  }, [catQuery]);
 
   useEffect(() => {
-    if (queryTag !== "") {
+    if (tagQuery !== "") {
       navigate({
         pathname: `/shop`,
         search: createSearchParams({
           ...params,
-          tag: queryTag,
+          tag: tagQuery,
         }).toString(),
       });
     }
     return () => {};
-  }, [queryTag]);
+  }, [tagQuery]);
 
-  //check querycolor
+  //check colorQuery
   useEffect(() => {
-    if (queryColor !== "") {
+    if (colorQuery !== "") {
       navigate({
         pathname: `/shop`,
         search: createSearchParams({
           ...params,
-          color: queryColor,
+          color: colorQuery,
         }).toString(),
       });
     }
     return () => {};
-  }, [queryColor]);
+  }, [colorQuery]);
 
-  //check querySize
+  //check sizeQuery
   useEffect(() => {
-    if (querySize !== "") {
+    if (sizeQuery !== "") {
       navigate({
         pathname: `/shop`,
         search: createSearchParams({
           ...params,
-          size: querySize,
+          size: sizeQuery,
         }).toString(),
       });
     }
     return () => {};
-  }, [querySize]);
+  }, [sizeQuery]);
 
   const handleCategory = (e) => {
     const value = e.target.value;
@@ -122,26 +122,26 @@ const FilterItem = () => {
       searchParams.delete("category");
       setSearchParams(searchParams);
     } else {
-      setQueryCategory(value);
+      setCatQuery(value);
     }
     console.log(value);
   };
 
   const handleQuery = (e) => {
-    setQueryTag(e.target.value);
+    setTagQuery(e.target.value);
   };
   const handleColor = (e) => {
-    setQueryColor(e.target.value);
+    setColorQuery(e.target.value);
   };
   const handleSize = (e) => {
-    setQuerySize(e.target.value);
+    setSizeQuery(e.target.value);
   };
 
   const resetQuery = () => {
-    setQueryCategory("");
-    setQueryTag("");
-    setQueryColor("");
-    setQuerySize("");
+    setCatQuery("");
+    setTagQuery("");
+    setColorQuery("");
+    setSizeQuery("");
   };
 
   const handleReset = () => {
@@ -154,18 +154,18 @@ const FilterItem = () => {
   };
 
   useEffect(() => {
-    if (category && queryCategory) {
+    if (category && catQuery) {
       resetQuery();
     }
-  }, [category, queryCategory]);
+  }, [category, catQuery]);
 
-  const tagCss = queryTag
+  const tagCss = tagQuery
     ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
     : "text-silver px-3 py-2";
-  const sizeCss = querySize
+  const sizeCss = sizeQuery
     ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
     : "text-silver px-3 py-2";
-  const colorCss = queryColor
+  const colorCss = colorQuery
     ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
     : "text-silver px-3 py-2";
   return (
@@ -176,7 +176,7 @@ const FilterItem = () => {
           <h1 className={`sm:text-sm sm:px-3 sm:hidden ${tagCss}`}>Danh mục</h1>
           <Select
             design="basic"
-            value={queryCategory}
+            value={catQuery}
             onChange={(e) => handleCategory(e)}
             label={"Danh mục"}
           >
@@ -189,9 +189,9 @@ const FilterItem = () => {
           </h1>
           <Select
             design="basic"
-            value={queryTag}
+            value={tagQuery}
             onChange={(e) => handleQuery(e)}
-            disabled={!queryCategory}
+            disabled={!catQuery}
             label={"Kiểu dáng"}
           >
             {optionSub}
@@ -203,7 +203,7 @@ const FilterItem = () => {
           </h1>
           <Select
             design="basic"
-            value={queryColor}
+            value={colorQuery}
             onChange={(e) => handleColor(e)}
             label={"Màu sắc"}
           >
@@ -214,7 +214,7 @@ const FilterItem = () => {
           <h1 className={`sm:text-sm sm:px-3 sm:hidden ${sizeCss}`}>Size</h1>
           <Select
             design="basic"
-            value={querySize}
+            value={sizeQuery}
             onChange={(e) => handleSize(e)}
             label={"Kích cỡ"}
           >
@@ -225,13 +225,13 @@ const FilterItem = () => {
         <div className="flex flex-col gap-3 md:flex-row sm:gap-1">
           <Button
             design={
-              queryTag || queryCategory || queryColor || querySize
+              tagQuery || catQuery || colorQuery || sizeQuery
                 ? "basic"
                 : "disable"
             }
             onClick={handleReset}
             size="s"
-            disabled={!queryTag && !queryCategory && !queryColor && !querySize}
+            disabled={!tagQuery && !catQuery && !colorQuery && !sizeQuery}
           >
             reset
           </Button>

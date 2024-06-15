@@ -8,7 +8,7 @@ import {
 import Button from "../ui/Button/Button";
 import { convertPrice } from "../../config/convertPrice";
 
-export const TabCart = () => {
+const SubCart = () => {
   const totalPrice = useSelector(selectTotalAmount);
   const totalQuatity = useSelector(selectTotalQuatity);
   const cart = useSelector(selectCartItem);
@@ -48,3 +48,5 @@ export const TabCart = () => {
     </div>
   );
 };
+
+export default SubCart;

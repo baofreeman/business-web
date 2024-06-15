@@ -15,10 +15,10 @@ const Layout = () => {
     <div className={`${darkMode ? "dark" : ""}`}>
       <div
         style={{ height: "100vh" }}
-        className="flex flex-col w-screen h-screen max-h-full my-0 mx-auto"
+        className="flex flex-col w-screen h-screen max-h-full my-0 mx-auto dark:zz3d"
       >
         <Header darkMode={darkMode} toggleDark={toggleDark} />
-        <main className="dark:bg-black dark:zz3d flex-1 min-h-0">
+        <main className="flex-1 min-h-0">
           <Outlet />
         </main>
         <ToastContainer

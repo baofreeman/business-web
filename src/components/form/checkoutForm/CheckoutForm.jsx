@@ -164,13 +164,13 @@ const CheckoutForm = () => {
           </div>
           <div className="flex md:flex-col sm:flex-col gap-16 md:gap-[20px] sm:gap-4 pb-[20px] sm:pb-[10px]">
             <div className="flex w-full gap-2">
-              <label className="basis-1/2">Chọn tỉnh thành</label>
+              <label className="basis-1/2">Tỉnh thành</label>
               <Select
                 size={"m"}
                 design={"basic"}
                 placeholder="Thành phố/Tỉnh"
                 name="province"
-                label={"tỉnh/thành"}
+                label={"Tỉnh/Thành"}
                 register={register}
                 onChange={(e) => handleProvince(e)}
                 error={errors.province && errors.province?.message}
@@ -183,14 +183,14 @@ const CheckoutForm = () => {
               </Select>
             </div>
             <div className="flex w-full gap-2">
-              <label className="basis-1/2">Chọn quận huyện</label>
+              <label className="basis-1/2">Quận huyện</label>
               <Select
                 size={"m"}
                 design={"basic"}
                 placeholder="Quận/Huyện"
                 name="district"
                 register={register}
-                label={"quận/huyện"}
+                label={"Quận/Huyện"}
                 onChange={(e) => handleDistrict(e)}
                 error={errors.district && errors.district?.message}
               >

@@ -2,15 +2,14 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 
 import DetailItem from "../../Shop/DetailItem";
-import SidebarAdmin from "../SideBarLeft/SidebarAdmin";
-import { TabCart } from "../../Cart/TabCart";
-import TabCheckout from "../../Checkout/TabCheckout";
+import SubCart from "../../Cart/SubCart";
+import SubCheckout from "../../Checkout/SubCheckout";
 
 const SidebarRight = () => {
   const location = useLocation();
   if (location.pathname.includes("/shop")) return <DetailItem />;
-  if (location.pathname.includes("/cart")) return <TabCart />;
-  if (location.pathname.includes("/checkout")) return <TabCheckout />;
+  if (location.pathname.includes("/cart")) return <SubCart />;
+  if (location.pathname.includes("/checkout")) return <SubCheckout />;
 };
 
 export default SidebarRight;

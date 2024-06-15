@@ -10,7 +10,7 @@ import { shippingValue } from "../../services/option";
 import { convertPrice } from "../../config/convertPrice";
 import Loading from "../ui/Loading/Loading";
 
-const TabCheckout = () => {
+const SubCheckout = () => {
   const cart = useSelector(selectCartItem);
   const itemsPrice = useSelector(selectTotalAmount);
   const totalQuatity = useSelector(selectTotalQuatity);
@@ -36,7 +36,7 @@ const TabCheckout = () => {
   }, [roles]);
 
   return (
-    <div className="overflow-auto no-scrollbar w-full">
+    <div className="overflow-y-scroll no-scrollbar w-full">
       <section className="w-full">
         <table className="w-full p-[20px] sm:p-[0px] uppercase">
           <thead className="sm:text-xs">
@@ -47,7 +47,7 @@ const TabCheckout = () => {
               <th className="text-center px-2 py-4 sm:p-1">Giá</th>
             </tr>
           </thead>
-          <tbody className="sm:text-xs">
+          <tbody className="sm:text-sm">
             {cart?.map((i) => (
               <tr className="w-full" key={i.subCategory.model.skus._id}>
                 <td
@@ -83,7 +83,7 @@ const TabCheckout = () => {
           </tbody>
         </table>
       </section>
-      <div className="border rounded p-[10px] mt-[20px] sm:my-[10px] sm:p-[6px] sm:text-xs">
+      <div className="border rounded p-[10px] mt-[20px] sm:my-[10px] sm:p-[6px] sm:text-sm">
         <div className="rounded px-[20px] py-[10px] sm:px-[6px] sm:py-[4px] flex gap-2">
           <h1>Tổng sản phẩm: </h1>
           <span className="text-orange">{totalQuatity}</span>
@@ -109,4 +109,4 @@ const TabCheckout = () => {
   );
 };
 
-export default TabCheckout;
+export default SubCheckout;

@@ -13,7 +13,7 @@ const PersistLogin = () => {
   const [refresh, { isUninitialized, isLoading, isSuccess, isError, error }] =
     useRefreshMutation();
   useEffect(() => {
-    if (effectRan.current === false || process.env.NODE_ENV !== "developmemt") {
+    if (effectRan.current === false || process.env.NODE_ENV !== "development") {
       const verifyRefreshToken = async () => {
         console.log("verifyting refresh token");
         try {
@@ -30,13 +30,13 @@ const PersistLogin = () => {
 
   let content;
   if (!persist || persist == false) {
-    // console.log("no persist");
+    console.log("no persist");
     content = <Outlet />;
   } else if (isLoading) {
-    // console.log("is loading");
+    console.log("is loading");
     content = <p>Loading...</p>;
   } else if (isError) {
-    // console.log("Error");
+    console.log("Error");
     content = (
       <p>
         {error?.data?.message}
@@ -44,10 +44,10 @@ const PersistLogin = () => {
       </p>
     );
   } else if (isSuccess && trueSuccess) {
-    // console.log("success");
+    console.log("success");
     content = <Outlet />;
   } else if (token && isUninitialized) {
-    // console.log("token and uninit");
+    console.log("token and uninit");
     content = <Outlet />;
   }
   return content;

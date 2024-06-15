@@ -6,17 +6,17 @@ import { selectSidebarLeft, selectSidebarRight } from "../../api/toggleSlice";
 
 const AllProduct = () => {
   const [searchParams] = useSearchParams();
-  const tagParam = searchParams.get("tag");
-  const categoryParam = searchParams.get("category");
-  const colorParam = searchParams.get("color");
-  const sizeParam = searchParams.get("size");
+  const tagQuery = searchParams.get("tag");
+  const catQuery = searchParams.get("category");
+  const colorQuery = searchParams.get("color");
+  const sizeQuery = searchParams.get("size");
 
   const { products } = useGetProductsQuery(
     {
-      category: categoryParam,
-      tag: tagParam,
-      color: colorParam,
-      size: sizeParam,
+      category: catQuery,
+      tag: tagQuery,
+      color: colorQuery,
+      size: sizeQuery,
     },
     {
       selectFromResult: ({ data }) => {
