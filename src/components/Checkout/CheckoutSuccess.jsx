@@ -13,7 +13,7 @@ const CheckoutSuccess = () => {
     refetchOnMountOrArgChange: true,
   });
   const text = `Nếu có thay đổi về đơn hàng vui lòng liên hệ
-  Hotline: 0909090909 hoặc email: test@gmail.com
+  Hotline: 0935791884 hoặc email: freeman.dev10@gmail.com
   để được nhân viên hỗ trợ. Xin cám ơn.`;
   return (
     <div className="flex flex-col items-center justify-center w-full gap-4">

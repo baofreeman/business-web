@@ -3,6 +3,8 @@ import { useGetProductsQuery } from "../../api/productsApiSlice";
 import { useSearchParams } from "react-router-dom";
 import ModelDetail from "./ModalDetail";
 import "react-toastify/dist/ReactToastify.css";
+import ArrowIcon from "../../assets/icons/ArrowIcon";
+import ImgIcon from "../../assets/icons/ImgIcon";
 
 const DetailItem = () => {
   const [searchParams] = useSearchParams();
@@ -65,32 +67,13 @@ const DetailItem = () => {
               </div>
             ))}
             <a className="prev" onClick={preSlide}>
-              <div className="p-3 rotate-90 cursor-pointer absolute left-0 select-none">
-                <svg
-                  className="fill-silver hover:fill-white"
-                  width="24"
-                  height="14"
-                  viewBox="0 0 12 7"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M1.71429 0H0V1.71429H1.71429V3.42857H3.42857V5.14286H5.14286V6.85714H6.85714V5.14286H8.57143V3.42857H10.2857V1.71429H12V0H10.2857V1.71429H8.57143V3.42857H6.85714V5.14286H5.14286V3.42857H3.42857V1.71429H1.71429V0Z"></path>
-                </svg>
+              <div className="p-3 cursor-pointer absolute left-0 select-none">
+                <ArrowIcon rotate={"90deg"} width={24} height={14} />
               </div>
             </a>
             <a className="next" onClick={nextSlide}>
-              <div
-                className="p-3 cursor-pointer absolute right-0 select-none"
-                style={{ rotate: "-90deg" }}
-              >
-                <svg
-                  className="fill-silver hover:fill-white"
-                  width="24"
-                  height="14"
-                  viewBox="0 0 12 7"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M1.71429 0H0V1.71429H1.71429V3.42857H3.42857V5.14286H5.14286V6.85714H6.85714V5.14286H8.57143V3.42857H10.2857V1.71429H12V0H10.2857V1.71429H8.57143V3.42857H6.85714V5.14286H5.14286V3.42857H3.42857V1.71429H1.71429V0Z"></path>
-                </svg>
+              <div className="p-3 cursor-pointer absolute right-0 select-none">
+                <ArrowIcon rotate={"-90deg"} width={24} height={14} />
               </div>
             </a>
           </div>
@@ -101,19 +84,7 @@ const DetailItem = () => {
       ) : (
         <div className="p-[12px]">
           <div className="w-full h-[300px] border rounded bg-gray opacity-50 flex flex-col items-center justify-center">
-            <svg
-              width="60%"
-              height="60%"
-              viewBox="0 0 16 15"
-              fill="#929292"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M0.800551 0H0.8V0.8H0V0.800034H0.8V1.60003H0V12.8H0.8V13.6V13.6V14.4H0V14.4H16V0H15.9994V0.8H15.2003H15.1994H14.4003V0H1.60055V0.8H0.800551V0ZM14.4 1.6V12.8H1.6V1.6H14.4ZM9.6 4.8H8V6.4H6.4V8H4.8V9.6H3.2V11.2H4.8V9.6H6.4V8H8V6.4H9.6V8H11.2V9.6H12.8V8H11.2V6.4H9.6V4.8ZM4.8 3.2H3.2V4.8H4.8V3.2ZM15.1994 13.6V12.8H15.9994V13.6V13.6V14.4H15.2003H15.1994H14.4003V13.6H15.1994ZM1.60055 13.6H0.800551V14.4H1.60055V13.6ZM15.9994 0.800034H15.1994V1.60003H15.9994V0.800034Z"
-              ></path>
-            </svg>
+            <ImgIcon />
             <h1>Chọn sản phẩm để xem chi tiết</h1>
           </div>
         </div>

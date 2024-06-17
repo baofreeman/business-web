@@ -14,7 +14,7 @@ const SubCart = () => {
   const cart = useSelector(selectCartItem);
   return (
     <div
-      className="w-full flex flex-col sm:justify-center gap-2 sm:gap-0 p-[20px] sm:p-[0px]"
+      className="w-full flex flex-col sm:justify-center gap-6 sm:gap-0 p-[20px] sm:p-[0px]"
       style={{ height: "100%" }}
     >
       <div className="border rounded p-[10px] sm:px-[4px] sm:py-[2px]">

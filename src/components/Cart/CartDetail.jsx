@@ -9,6 +9,8 @@ import {
 import { convertPrice } from "../../config/convertPrice";
 import Button from "../ui/Button/Button";
 import Modal from "../ui/Modal/Modal";
+import DeleteIcon from "../../assets/icons/DeleteIcon";
+import ArrowIcon from "../../assets/icons/ArrowIcon";
 
 const CartDetail = () => {
   const [modal, setModal] = useState(false);
@@ -78,16 +80,8 @@ const CartDetail = () => {
                 <td className="border px-2 text-center py-4 w-[20%]">
                   <div className="flex gap-5 items-center justify-center select-none">
                     <div onClick={() => handleIncr(i)}>
-                      <div className="border rounded p-3 rotate-180 cursor-pointer">
-                        <svg
-                          className="fill-silver hover:fill-white"
-                          width="12"
-                          height="7"
-                          viewBox="0 0 12 7"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M1.71429 0H0V1.71429H1.71429V3.42857H3.42857V5.14286H5.14286V6.85714H6.85714V5.14286H8.57143V3.42857H10.2857V1.71429H12V0H10.2857V1.71429H8.57143V3.42857H6.85714V5.14286H5.14286V3.42857H3.42857V1.71429H1.71429V0Z"></path>
-                        </svg>
+                      <div className="border rounded p-3 cursor-pointer">
+                        <ArrowIcon width={12} height={7} rotate={"180deg"} />
                       </div>
                     </div>
                     <h1 className="text-orange">{i?.qty}</h1>
@@ -102,15 +96,7 @@ const CartDetail = () => {
                             : "border rounded p-3 cursor-pointer"
                         }
                       >
-                        <svg
-                          className="fill-silver hover:fill-white"
-                          width="12"
-                          height="7"
-                          viewBox="0 0 12 7"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M1.71429 0H0V1.71429H1.71429V3.42857H3.42857V5.14286H5.14286V6.85714H6.85714V5.14286H8.57143V3.42857H10.2857V1.71429H12V0H10.2857V1.71429H8.57143V3.42857H6.85714V5.14286H5.14286V3.42857H3.42857V1.71429H1.71429V0Z"></path>
-                        </svg>
+                        <ArrowIcon width={12} height={7} rotate={"0deg"} />
                       </div>
                     </div>
                   </div>
@@ -118,19 +104,8 @@ const CartDetail = () => {
                 <td className="border px-2 text-center py-4 select-none w-[20%]">
                   {convertPrice(i?.subCategory.model.skus.price)}
                 </td>
-                <td
-                  className="border px-2 text-center py-4 select-none w-[20%]"
-                  onClick={() => handleToggleModal(i)}
-                >
-                  <svg
-                    className="fill-silver hover:fill-white cursor-pointer"
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M0 0H1.71429V1.71429H0V0ZM3.42857 3.42857H1.71429V1.71429H3.42857V3.42857ZM5.14286 5.14286H3.42857V3.42857H5.14286V5.14286ZM6.85714 5.14286H5.14286V6.85714H3.42857V8.57143H1.71429V10.2857H0V12H1.71429V10.2857H3.42857V8.57143H5.14286V6.85714H6.85714V8.57143H8.57143V10.2857H10.2857V12H12V10.2857H10.2857V8.57143H8.57143V6.85714H6.85714V5.14286ZM8.57143 3.42857V5.14286H6.85714V3.42857H8.57143ZM10.2857 1.71429V3.42857H8.57143V1.71429H10.2857ZM10.2857 1.71429V0H12V1.71429H10.2857Z"></path>
-                  </svg>
+                <td className="border px-2 text-center py-4 select-none w-[20%]">
+                  <DeleteIcon handleToggleModal={() => handleToggleModal(i)} />
                 </td>
                 {modal && (
                   <Modal

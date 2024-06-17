@@ -3,7 +3,9 @@ import usePersist from "../../hook/usePresist";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../api/authSlice";
 import { useRefreshMutation } from "../../api/authApiSlice";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Button from "../ui/Button/Button";
+import Loading from "../ui/Loading/Loading";
 
 const PersistLogin = () => {
   const [persist] = usePersist();
@@ -30,18 +32,17 @@ const PersistLogin = () => {
 
   let content;
   if (!persist || persist == false) {
-    console.log("no persist");
     content = <Outlet />;
   } else if (isLoading) {
-    console.log("is loading");
-    content = <p>Loading...</p>;
+    content = <Loading />;
   } else if (isError) {
-    console.log("Error");
     content = (
-      <p>
+      <div className="w-full flex flex-col gap-4 items-center justify-center h-[100%]">
         {error?.data?.message}
-        <Link to={"/login"}>Please Login</Link>
-      </p>
+        <Button size="m" design="primary" to={"/login"}>
+          Please Login
+        </Button>
+      </div>
     );
   } else if (isSuccess && trueSuccess) {
     console.log("success");
