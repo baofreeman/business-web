@@ -67,11 +67,7 @@ const Public = () => {
   return (
     <div className="w-full relative dark:bg-black" style={{ height: "100%" }}>
       <div className="w-full overflow-hidden" style={{ height: "100%" }}>
-        <div
-          ref={pageRef}
-          className="w-screen h-screen"
-          style={{ height: "100vh" }}
-        >
+        <div ref={pageRef} className="w-screen h-[100vh] sm:h-full">
           {imageCatelog.map((item, index) => (
             <div
               key={item.image}
