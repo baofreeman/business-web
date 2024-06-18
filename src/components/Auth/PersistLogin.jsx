@@ -36,6 +36,7 @@ const PersistLogin = () => {
   } else if (isLoading) {
     content = <Loading />;
   } else if (isError) {
+    window.location("/shop");
     content = (
       <div className="w-full flex flex-col gap-4 items-center justify-center h-[100%]">
         {error?.data?.message}

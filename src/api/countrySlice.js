@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const countryApi = "https://vapi.vnappmob.com/api/province";
-
-export const fetchProvince = createAsyncThunk("country/province", async () => {
+export const fetchProvince = createAsyncThunk(`country/province`, async () => {
   try {
-    const res = await axios.get(`${countryApi}`);
+    const res = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/country/provinces`
+    );
     return res.data;
   } catch (error) {
     return error.message;
@@ -13,10 +13,17 @@ export const fetchProvince = createAsyncThunk("country/province", async () => {
 });
 
 export const fetchDistrict = createAsyncThunk(
-  "country/district",
+  `country/district`,
   async (provinceId) => {
     try {
-      const res = await axios.get(`${countryApi}/district/${provinceId}`);
+      const res = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/country/districts/${provinceId}`,
+        {
+          data: {
+            provinceId: provinceId,
+          },
+        }
+      );
       return res.data;
     } catch (error) {
       return error.message;

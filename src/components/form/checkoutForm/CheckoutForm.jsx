@@ -67,7 +67,6 @@ const CheckoutForm = () => {
   useEffect(() => {
     fetchDistrictApi();
   }, [province]);
-
   const handleProvince = (e) => {
     setProvince(e.target.value);
     clearErrors("province");
