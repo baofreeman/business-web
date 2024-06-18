@@ -40,7 +40,10 @@ const PersistLogin = () => {
       <div className="w-full flex flex-col gap-4 items-center justify-center h-[100%]">
         {error?.data?.message}
         <Button size="m" design="primary" to={"/login"}>
-          Please Login
+          Đăng nhập
+        </Button>
+        <Button size="m" design="primary" to={"/shop"}>
+          Shop
         </Button>
       </div>
     );

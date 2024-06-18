@@ -89,7 +89,7 @@ const Public = () => {
           ))}
         </div>
       </div>
-      <div className="absolute bottom-0 w-full px-[40px] h-[200px] sm:h-[100px] sm:px-[10px]">
+      <div className="absolute bottom-0 w-full px-[40px] h-[200px] sm:hidden">
         <div
           className="w-full relative flex gap-8 sm:gap-4 pb-[20px]"
           style={{ height: "100%" }}
@@ -100,7 +100,7 @@ const Public = () => {
               className="w-full flex items-center h-[100%] relative"
             >
               <div
-                className={`rounded-lg h-[250px] w-[250px] md:h-[100px] md:w-[100px] absolute bottom-20 cursor-pointer gap-8 sm:hidden flex items-end justify-center`}
+                className={`rounded-lg h-[250px] w-[250px] md:h-[100px] md:w-[100px] absolute bottom-20 cursor-pointer gap-8 flex items-end justify-center`}
                 style={{
                   backgroundImage: `url(${item.image})`,
                   backgroundRepeat: "no-repeat",
