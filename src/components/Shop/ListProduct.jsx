@@ -1,4 +1,3 @@
-import React from "react";
 import { useGetProductsQuery } from "../../api/productsApiSlice";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -6,12 +5,12 @@ import ItemProduct from "./ItemProduct";
 import { selectSidebarLeft, selectSidebarRight } from "../../api/toggleSlice";
 
 const ListProduct = () => {
-  //Get params
+  // GET params.
   const { category } = useParams();
   const openSR = useSelector(selectSidebarRight);
   const openSL = useSelector(selectSidebarLeft);
 
-  // GET product filter
+  // GET product filter.
   const { productFilter } = useGetProductsQuery("allProduct", {
     selectFromResult: ({ data }) => {
       if (category === "tất cả") {
@@ -26,6 +25,7 @@ const ListProduct = () => {
       };
     },
   });
+
   let gridCols =
     openSL && openSR
       ? "grid-cols-4 grid-auto"
@@ -34,6 +34,7 @@ const ListProduct = () => {
       : !openSL || !openSR
       ? "grid-cols-6 grid-auto"
       : null;
+
   let tabItem = null;
   tabItem = productFilter?.length
     ? productFilter.map((productId) => (

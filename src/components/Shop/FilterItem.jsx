@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   color,
   optionCategory,
@@ -15,7 +15,8 @@ import {
 import Button from "../ui/Button/Button";
 const FilterItem = () => {
   const navigate = useNavigate();
-  //Set params
+
+  // Set query params.
   const [catQuery, setCatQuery] = useState("");
   const [tagQuery, setTagQuery] = useState("");
   const [colorQuery, setColorQuery] = useState("");
@@ -25,10 +26,10 @@ const FilterItem = () => {
   const params = Object.fromEntries(searchParams.entries());
   searchParams.delete("productId");
 
+  // Filter category.
   const subCategoryOption = subCategory.find(
     (item) => item.category === catQuery
-  ); // filter category
-
+  );
   const optionCategies = () => {
     let optionAll = ["tất cả"];
     const optionCatCustom = optionCategory.filter(
@@ -41,26 +42,28 @@ const FilterItem = () => {
     ));
   };
 
+  // Filter tag.
   const optionSub = subCategoryOption?.data?.map((item) => (
     <option key={item} value={item}>
       {item}
     </option>
-  )); // filter tag
+  ));
 
+  // Filter color.
   const colorOption = color.map((item) => (
     <option key={item} value={item}>
       {item}
     </option>
-  )); // filter color
+  ));
 
+  // Filter size.
   const sizeOption = size.map((item) => (
     <option key={item} value={item}>
       {item}
     </option>
-  )); // filter size
+  ));
 
-  //check tagQuery
-
+  // Check categoryQuery.
   useEffect(() => {
     if (catQuery !== "") {
       navigate({
@@ -74,6 +77,7 @@ const FilterItem = () => {
     return () => {};
   }, [catQuery]);
 
+  // Check tagQuery.
   useEffect(() => {
     if (tagQuery !== "") {
       navigate({
@@ -87,7 +91,7 @@ const FilterItem = () => {
     return () => {};
   }, [tagQuery]);
 
-  //check colorQuery
+  // Check colorQuery.
   useEffect(() => {
     if (colorQuery !== "") {
       navigate({
@@ -101,7 +105,7 @@ const FilterItem = () => {
     return () => {};
   }, [colorQuery]);
 
-  //check sizeQuery
+  // Check sizeQuery.
   useEffect(() => {
     if (sizeQuery !== "") {
       navigate({
@@ -115,28 +119,33 @@ const FilterItem = () => {
     return () => {};
   }, [sizeQuery]);
 
+  // Select category.
   const handleCategory = (e) => {
     const value = e.target.value;
     if (value === "") {
-      console.log("mount");
       searchParams.delete("category");
       setSearchParams(searchParams);
     } else {
       setCatQuery(value);
     }
-    console.log(value);
   };
 
-  const handleQuery = (e) => {
+  // Select tag.
+  const handleTag = (e) => {
     setTagQuery(e.target.value);
   };
+
+  // Select color.
   const handleColor = (e) => {
     setColorQuery(e.target.value);
   };
+
+  // Select size.
   const handleSize = (e) => {
     setSizeQuery(e.target.value);
   };
 
+  // Reset all query.
   const resetQuery = () => {
     setCatQuery("");
     setTagQuery("");
@@ -153,12 +162,14 @@ const FilterItem = () => {
     setSearchParams(searchParams);
   };
 
+  // If path /shop/:category && catgory query => reset query, rediect /shop/:category.
   useEffect(() => {
     if (category && catQuery) {
       resetQuery();
     }
   }, [category, catQuery]);
 
+  // Css selected query.
   const tagCss = tagQuery
     ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
     : "text-silver px-3 py-2";
@@ -168,6 +179,7 @@ const FilterItem = () => {
   const colorCss = colorQuery
     ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
     : "text-silver px-3 py-2";
+
   return (
     <div className="w-full h-max flex flex-col gap-4 relative md:flex-row sm:flex-row md:justify-between sm:justify-between sm:px-4">
       <h1 className="text-base sm:hidden md:hidden">Lọc</h1>
@@ -190,7 +202,7 @@ const FilterItem = () => {
           <Select
             design="basic"
             value={tagQuery}
-            onChange={(e) => handleQuery(e)}
+            onChange={(e) => handleTag(e)}
             disabled={!catQuery}
             label={"Kiểu dáng"}
           >

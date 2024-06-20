@@ -10,18 +10,22 @@ import EditIcon from "../../../assets/icons/EditIcon";
 import DeleteIcon from "../../../assets/icons/DeleteIcon";
 
 const ProductExtent = ({ productId }) => {
+  const [modal, setModal] = useState(false);
+
   const { product } = useGetProductsQuery("allProduct", {
     selectFromResult: ({ data }) => ({
       product: data?.entities[productId],
     }),
-  });
-  const [modal, setModal] = useState(false);
+  }); // GET product based on productId.
 
-  const [deleteProduct] = useDeleteProductMutation();
+  const [deleteProduct] = useDeleteProductMutation(); // Delete mutation.
+
+  //Toggle modal.
   const handleToggleModal = () => {
     setModal((prev) => !prev);
   };
 
+  // Delete product based on productId.
   const handleDelete = async (productId) => {
     try {
       const res = await deleteProduct({ productId });

@@ -1,4 +1,7 @@
-import React from "react";
+/**
+ * Create Store cart, auth, country, toggle, ApiSlice products, orders, users.
+ */
+
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./apiSlice";
 import toggleSlice from "./toggleSlice";

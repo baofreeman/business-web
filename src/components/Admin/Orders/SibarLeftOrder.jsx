@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../../ui/Button/Button";
 import { useLocation } from "react-router-dom";
 
-const TabSibarLeftOrder = () => {
+const SibarLeftOrder = () => {
   const location = useLocation();
   const pathname = location.pathname;
   return (
@@ -22,4 +22,4 @@ const TabSibarLeftOrder = () => {
   );
 };
 
-export default TabSibarLeftOrder;
+export default SibarLeftOrder;

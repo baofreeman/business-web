@@ -1,32 +1,38 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   useDeleteUserMutation,
   useGetUsersQuery,
 } from "../../../api/usersApiSlice";
-import Button from "../../ui/Button/Button";
 import Modal from "../../ui/Modal/Modal";
 import DeleteIcon from "../../../assets/icons/DeleteIcon";
+import { toast } from "react-toastify";
 
 const UserExtent = ({ userId }) => {
+  const [modal, setModal] = useState(false);
+
   const { user } = useGetUsersQuery("allUsers", {
     selectFromResult: ({ data }) => ({
       user: data?.entities[userId],
     }),
-  });
-  const [modal, setModal] = useState(false);
+  }); // GET user based on userId
+
   const [deleteUser] = useDeleteUserMutation();
 
+  // Toggle modal.
   const handleToggleModal = () => {
     setModal((prev) => !prev);
   };
 
+  // Delete user.
   const handleDelete = async () => {
     try {
-      await deleteUser({ userId: user?._id });
+      const res = await deleteUser({ userId: user?._id });
+      toast.success(res?.data?.message);
     } catch (error) {
       return error;
     }
   };
+
   return (
     <tr>
       <td className="border px-8 py-4">{user?._id}</td>

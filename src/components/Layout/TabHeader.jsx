@@ -9,7 +9,7 @@ import HeaderCheckout from "../Checkout/HeaderCheckout";
 import CartIcon from "../../assets/icons/CartIcon";
 
 const TabHeader = () => {
-  const totalQuantity = useSelector(selectTotalQuatity);
+  const totalQuantity = useSelector(selectTotalQuatity); // GET total quantity.
   const location = useLocation();
   const pathname = location.pathname;
 

@@ -3,7 +3,8 @@ import useAuth from "../../hook/useAuth";
 import Button from "../ui/Button/Button";
 
 const FilterCart = () => {
-  const { username } = useAuth();
+  const { username } = useAuth(); // Authentication
+
   return (
     <div className="w-full">
       {!username ? (

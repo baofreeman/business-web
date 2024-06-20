@@ -9,9 +9,10 @@ import Button from "../ui/Button/Button";
 import { convertPrice } from "../../config/convertPrice";
 
 const SubCart = () => {
-  const totalPrice = useSelector(selectTotalAmount);
-  const totalQuatity = useSelector(selectTotalQuatity);
-  const cart = useSelector(selectCartItem);
+  const totalPrice = useSelector(selectTotalAmount); // GET total price.
+  const totalQuatity = useSelector(selectTotalQuatity); // GET total quantity.
+  const cart = useSelector(selectCartItem); // GET cart.
+
   return (
     <div
       className="w-full flex flex-col sm:justify-center gap-6 sm:gap-0 p-[20px] sm:p-[0px]"

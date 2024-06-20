@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useFieldArray, useForm, useFormContext } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import Select from "../../ui/Select/Select";
@@ -15,10 +14,12 @@ const SkuForm = ({
   watch,
   onChange,
 }) => {
+  // Field Array SET skus.
   const { fields, append, remove } = useFieldArray({
     name: `subCategory.${nestIndex}.model.${modelIndex}.skus`,
     control,
   });
+
   const optionSize = size.map((item) => (
     <option key={item} value={item}>
       {item}
@@ -30,6 +31,7 @@ const SkuForm = ({
       {item}
     </option>
   ));
+
   const category = watch("category");
   const randomSku = makeid(5);
   return (

@@ -1,7 +1,5 @@
-import React from "react";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 import SkuForm from "./SkuForm";
-import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import Select from "../../ui/Select/Select";
 import { color } from "../../../services/option";
@@ -15,6 +13,7 @@ const ModelForm = ({
   onChange,
   watch,
 }) => {
+  // Field Array SET model.
   const { fields, append, remove } = useFieldArray({
     name: `subCategory.${nestIndex}.model`,
     control,

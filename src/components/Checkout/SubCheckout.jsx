@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   selectCartItem,
@@ -11,11 +11,13 @@ import { convertPrice } from "../../config/convertPrice";
 import Loading from "../ui/Loading/Loading";
 
 const SubCheckout = () => {
-  const cart = useSelector(selectCartItem);
-  const itemsPrice = useSelector(selectTotalAmount);
-  const totalQuatity = useSelector(selectTotalQuatity);
+  const cart = useSelector(selectCartItem); // GET cart.
+  const itemsPrice = useSelector(selectTotalAmount); // GET total price.
+  const totalQuatity = useSelector(selectTotalQuatity); // GET total quantity.
   const [shipping, setShipping] = useState();
   const { roles } = useAuth();
+
+  // Total price = total price cart + shipping price.
   const totalPrice = useMemo(() => {
     let total = 0;
     if (roles.length) {
@@ -27,6 +29,7 @@ const SubCheckout = () => {
     }
   }, [roles]);
 
+  // Check roles Custommer => freeship.
   useEffect(() => {
     if (roles.length) {
       setShipping(shippingValue[0]);

@@ -11,23 +11,33 @@ import {
 } from "../../assets/img";
 import Button from "../ui/Button/Button";
 import { useNavigate } from "react-router-dom";
+
 const Public = () => {
-  const pageRef = useRef();
   const imageCatelog = [
     { category: "áo", image: image1, link: "/shop/áo" },
     { category: "quần", image: image2, link: "/shop/quần" },
     { category: "nón", image: image3, link: "/shop/nón" },
   ];
+
+  const imageList = [
+    { category: "áo", image: ao, link: "/shop/áo" },
+    { category: "quần", image: quan, link: "/shop/quần" },
+    { category: "thắt lưng", image: thatlung, link: "/shop/thắt%20lưng" },
+    { category: "giày", image: giay, link: "/shop/giày" },
+    { category: "nón", image: non, link: "/shop/nón" },
+  ];
+
+  const pageRef = useRef();
   const refs = imageCatelog;
 
-  // Render image
+  // Render image.
   const childRefs = useMemo(
     () => refs?.map(() => createRef()),
     [refs?.join(",")]
   );
   let currentSlide = 0;
 
-  // Scroll page 100vh
+  // Scroll page 100vh.
   useLayoutEffect(() => {
     const scrollPage = (index) => {
       childRefs?.forEach((slide, i) => {
@@ -57,13 +67,6 @@ const Public = () => {
     navigate(e);
   };
 
-  const imageList = [
-    { category: "áo", image: ao, link: "/shop/áo" },
-    { category: "quần", image: quan, link: "/shop/quần" },
-    { category: "thắt lưng", image: thatlung, link: "/shop/thắt%20lưng" },
-    { category: "giày", image: giay, link: "/shop/giày" },
-    { category: "nón", image: non, link: "/shop/nón" },
-  ];
   return (
     <div className="w-full relative dark:bg-black" style={{ height: "100%" }}>
       <div className="w-full overflow-hidden" style={{ height: "100%" }}>
@@ -71,7 +74,7 @@ const Public = () => {
           {imageCatelog.map((item, index) => (
             <div
               key={item.image}
-              className="w-full cursor-pointer duration-700"
+              className="w-full cursor-pointer duration-700 h-[100vh]"
               ref={childRefs[index]}
               onClick={() => handleLink(item.link)}
               style={{ height: "100%" }}

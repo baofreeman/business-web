@@ -7,7 +7,8 @@ const OrderExtent = ({ orderId }) => {
     selectFromResult: ({ data }) => ({
       order: data?.entities[orderId],
     }),
-  });
+  }); // GET order based orderId.
+
   return (
     <tr>
       <td className="border px-8 py-4">{order?._id}</td>

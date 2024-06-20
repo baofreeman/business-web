@@ -1,4 +1,3 @@
-import React from "react";
 import { useGetProductsQuery } from "../../../api/productsApiSlice";
 import ProductExtent from "./ProductExtent";
 
@@ -7,7 +6,8 @@ const Products = () => {
     selectFromResult: ({ data }) => ({
       products: data?.ids.map((id) => id),
     }),
-  });
+  }); // GET all products
+
   let content;
 
   content = products.length
@@ -19,6 +19,7 @@ const Products = () => {
           <h1>Không có sản phẩm</h1>
         </div>
       ));
+
   return (
     <div className="p-10 w-full">
       <section className="w-full">

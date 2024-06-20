@@ -7,13 +7,16 @@ const Order = () => {
     selectFromResult: ({ data }) => ({
       orders: data?.ids.map((id) => id),
     }),
-  });
+  }); // GET all orders.
+
   let content;
+
   content = orders?.length ? (
     orders.map((orderId) => <OrderExtent key={orderId} orderId={orderId} />)
   ) : (
-    <p>No orders</p>
+    <p>Không có đơn hàng</p>
   );
+
   return (
     <div className="p-10 w-full">
       <section className="w-full">

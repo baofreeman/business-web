@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   useGetItemQuery,
@@ -13,24 +13,25 @@ import Loading from "../ui/Loading/Loading";
 
 const ModalItem = () => {
   const [searchParams] = useSearchParams();
-  const productId = searchParams.get("productId");
+  const productId = searchParams.get("productId"); // GET productId params
   const [isColor, setIsColor] = useState("");
   const [itemId, setItemId] = useState("");
   const dispatch = useDispatch();
 
-  // GET products
+  // GET product.
   const { product } = useGetProductsQuery("allProduct", {
     selectFromResult: ({ data }) => ({
       product: data?.entities[productId],
     }),
   });
 
-  // GET detail Product
+  // GET variants Product.
   const { data: item, isLoading } = useGetItemQuery(itemId, {
     pollingInterval: 6600000,
     refetchOnMountOrArgChange: true,
     skip: false,
   });
+
   const items = product?.subCategory.flatMap(({ tag, model, _id }) => ({
     tag,
     model,

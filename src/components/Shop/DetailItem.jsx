@@ -9,13 +9,15 @@ import ImgIcon from "../../assets/icons/ImgIcon";
 const DetailItem = () => {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("productId");
+
+  // GET all product.
   const { product } = useGetProductsQuery("allProduct", {
     selectFromResult: ({ data }) => ({
       product: data?.entities[productId],
     }),
   });
 
-  //render image
+  // Render image.
   const refs = product?.productImg;
   const childRefs = useMemo(
     () => refs?.map(() => createRef()),
@@ -29,7 +31,7 @@ const DetailItem = () => {
     });
   };
 
-  //Silde Image
+  //Slide image.
   const preSlide = () => {
     currentSlide = (currentSlide - 1 + childRefs?.length) % childRefs?.length;
     showSlide(currentSlide);

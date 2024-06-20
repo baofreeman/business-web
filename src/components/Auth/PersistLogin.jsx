@@ -8,16 +8,17 @@ import Button from "../ui/Button/Button";
 import Loading from "../ui/Loading/Loading";
 
 const PersistLogin = () => {
-  const [persist] = usePersist();
-  const token = useSelector(selectCurrentUser);
+  const [persist] = usePersist(); // Use persist.
+  const token = useSelector(selectCurrentUser); // GET token current user.
   const effectRan = useRef(false);
   const [trueSuccess, setTrueSuccess] = useState(false);
   const [refresh, { isUninitialized, isLoading, isSuccess, isError, error }] =
-    useRefreshMutation();
+    useRefreshMutation(); // Refresh mutation.
+
+  // Check persist and verify refresh token.
   useEffect(() => {
     if (effectRan.current === false || process.env.NODE_ENV !== "development") {
       const verifyRefreshToken = async () => {
-        console.log("verifyting refresh token");
         try {
           await refresh();
           setTrueSuccess(true);
@@ -31,11 +32,14 @@ const PersistLogin = () => {
   }, []);
 
   let content;
+
   if (!persist || persist == false) {
+    // Don't persist
     content = <Outlet />;
   } else if (isLoading) {
     content = <Loading />;
   } else if (isError) {
+    // If error redirect Shop. Don't need login.
     window.location("/shop");
     content = (
       <div className="w-full flex flex-col gap-4 items-center justify-center h-[100%]">
@@ -55,6 +59,7 @@ const PersistLogin = () => {
     console.log("token and uninit");
     content = <Outlet />;
   }
+
   return content;
 };
 

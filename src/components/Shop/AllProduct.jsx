@@ -6,11 +6,14 @@ import { selectSidebarLeft, selectSidebarRight } from "../../api/toggleSlice";
 
 const AllProduct = () => {
   const [searchParams] = useSearchParams();
+
+  // GET query params.
   const tagQuery = searchParams.get("tag");
   const catQuery = searchParams.get("category");
   const colorQuery = searchParams.get("color");
   const sizeQuery = searchParams.get("size");
 
+  // GET product based on query
   const { products } = useGetProductsQuery(
     {
       category: catQuery,
@@ -24,6 +27,8 @@ const AllProduct = () => {
       },
     }
   );
+
+  // Toggle sidebar.
   const openSR = useSelector(selectSidebarRight);
   const openSL = useSelector(selectSidebarLeft);
 
@@ -37,6 +42,7 @@ const AllProduct = () => {
       : null;
 
   let tabItem = null;
+
   tabItem = products?.length
     ? products.map((productId) => (
         <ItemProduct key={productId} productId={productId} />

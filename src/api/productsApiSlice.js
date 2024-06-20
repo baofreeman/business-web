@@ -1,14 +1,26 @@
+/**
+ * Add new product at Admin panel, includes name, desc, image, variants, color, price, sku.
+ * Update products.
+ * Delete products.
+ * Get all products.
+ * Get Variants of product.
+ * Search, filter products based on query params.
+ */
+
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "./apiSlice";
 
+// Product Apdapter
 const productAdapter = createEntityAdapter({
   selectId: (product) => product?._id,
 });
+
+// InitState Product
 const initialState = productAdapter.getInitialState();
 
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // GET All product and filter product
+    // GET All product and filter product based on query params.
     getProducts: builder.query({
       query: ({ category, tag, color, size }) => ({
         url:
@@ -59,7 +71,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       },
     }),
 
-    // POST product
+    // POST product based on form at Admin panel.
     addProduct: builder.mutation({
       query: (body) => {
         return {
@@ -74,6 +86,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       ],
     }),
 
+    // Update product based on form at Admin panel.
     updateProduct: builder.mutation({
       query: (body) => {
         return {
@@ -87,6 +100,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       ],
     }),
 
+    // Delete product bases on productId.
     deleteProduct: builder.mutation({
       query: ({ productId }) => {
         return {
@@ -100,7 +114,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       ],
     }),
 
-    // POST item in product
+    // Get Variants of Product bases on productId.
     getItem: builder.query({
       query: (itemId) => ({
         url: `/product/${itemId}`,
@@ -110,6 +124,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "Product", id }],
     }),
 
+    // Search product based on name.
     seachProduct: builder.query({
       query: (key) => ({
         url: `/product/search/${key}`,
@@ -140,6 +155,7 @@ const selectProductData = createSelector(
   }
 );
 
+// Select get all product.
 export const { selectAll: selectAllProducts } = productAdapter.getSelectors(
   (state) => selectProductData(state) ?? initialState
 );

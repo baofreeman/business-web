@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../ui/Header/Header";
 import { ToastContainer } from "react-toastify";
@@ -13,10 +13,7 @@ const Layout = () => {
 
   return (
     <div className={`${darkMode ? "dark" : ""}`}>
-      <div
-        style={{ height: "100vh" }}
-        className="flex flex-col w-screen h-screen max-h-full my-0 mx-auto dark:zz3d"
-      >
+      <div className="flex flex-col w-screen h-[100vh] max-h-full my-0 mx-auto dark:zz3d">
         <Header darkMode={darkMode} toggleDark={toggleDark} />
         <main className="flex-1 min-h-0">
           <Outlet />

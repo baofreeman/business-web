@@ -5,7 +5,8 @@ import Button from "../ui/Button/Button";
 import ArrowIcon from "../../assets/icons/ArrowIcon";
 
 const HeaderCart = () => {
-  const totalQuantity = useSelector(selectTotalQuatity);
+  const totalQuantity = useSelector(selectTotalQuatity); // GET Total quantity.
+
   return (
     <div className="flex w-full gap-8 justify-between items-center">
       <div className="flex gap-2 items-center">

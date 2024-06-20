@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import SubForm from "./SubForm";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
@@ -18,9 +17,11 @@ const BasicForm = ({
   trigger,
   watch,
 }) => {
+  // Select category.
   const handleCategory = (e) => {
     setValue("category", e.target.value);
   };
+
   return (
     <form
       className="flex flex-col gap-8 sm:gap-4 w-full justify-center items-center"

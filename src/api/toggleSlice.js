@@ -1,3 +1,7 @@
+/**
+ * Toggle sidebar right and left to reponsive layout.
+ */
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const toggleSlice = createSlice({

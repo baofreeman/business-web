@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+/**
+ * Use React hook form.
+ * Use Field Array set subCategoy, model, skus
+ *
+ */
+
+import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import BasicForm from "./BasicForm";
 import { schema } from "./ValidateForm";
 import { useAddProductMutation } from "../../../api/productsApiSlice";
 import Errors from "../../ui/Errors/Errors";
+import Loading from "../../ui/Loading/Loading";
 
 const MainForm = () => {
   const [subErr, setSubErr] = useState("");
-  let status;
   const {
     register,
     control,
@@ -23,8 +29,8 @@ const MainForm = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const [addProduct, { isLoading, isSuccess, isError, error }] =
-    useAddProductMutation();
+
+  const [addProduct, { isLoading, isSuccess }] = useAddProductMutation();
   const onSubmit = async (data) => {
     const { name, description, category, subCategory, productImg } = data;
     if (!subCategory.length > 0) {
@@ -42,8 +48,8 @@ const MainForm = () => {
         formData.append("productImg", productImg[i]);
       }
       const res = await addProduct(formData);
-      if (isLoading) return (status = <p>Loading...</p>);
-      if (isSuccess) return (status = <p>{res.data.message}</p>);
+      if (isLoading) return <Loading />;
+      if (isSuccess) return <p>{res.data.message}</p>;
     } catch (error) {
       return error.message;
     }

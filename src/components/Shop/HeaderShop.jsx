@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createSearchParams,
   useLocation,
@@ -15,7 +15,7 @@ const HeaderShop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const params = Object.fromEntries(searchParams.entries());
 
-  // SET category
+  // SET category.
   const handleCategory = (e) => {
     const value = e.target.value;
     setCategory(value);
@@ -27,7 +27,7 @@ const HeaderShop = () => {
     setSearchParams(searchParams);
   };
 
-  // Check category, if category navigate /shop/category. if category == all then render all product
+  // Check category, if category navigate /shop/:category. if category == all then render all product.
   useEffect(() => {
     if (category !== "" && !Object.keys(params).length) {
       navigate({

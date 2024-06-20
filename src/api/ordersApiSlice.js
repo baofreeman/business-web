@@ -1,14 +1,24 @@
+/**
+ * Add new Order based on CartState.
+ * Get all order.
+ */
+
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "./apiSlice";
 
+// Order Adapter
 const orderAdapter = createEntityAdapter({
   selectId: (order) => order?._id,
 });
+
+// InitState Order
 const initialState = orderAdapter.getInitialState();
 
+// OrderSlice
 export const ordersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getOrder: builder.query({
+      // Get all orders.
       query: () => ({
         url: `/order`,
         validateStatus: (res, result) => {
@@ -30,6 +40,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
     }),
 
     addOrder: builder.mutation({
+      // Add new order based on CartState.
       query: (body) => {
         return {
           url: "/order",
@@ -45,11 +56,15 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetOrderQuery, useAddOrderMutation } = ordersApiSlice;
+export const { useGetOrderQuery, useAddOrderMutation } = ordersApiSlice; // Used.
+
 export const selectOrderResult = ordersApiSlice.endpoints.getOrder.select();
+
 const selectOrderData = createSelector(selectOrderResult, (orderResult) => {
   return orderResult.data;
 });
+
 export const { selectAll: selectAllOrder } = orderAdapter.getSelectors(
+  // Select get all orders.
   (state) => selectOrderData(state) ?? initialState
 );

@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import Input from "../../ui/Input/Input";
-import Select from "../../ui/Select/Select";
 import Textarea from "../../ui/Textarea/Textarea";
 import { useUpdateProductMutation } from "../../../api/productsApiSlice";
 import Button from "../../ui/Button/Button";
@@ -11,15 +10,15 @@ const MainForm = ({ product }) => {
   const {
     register,
     handleSubmit,
-    control,
     setValue,
     formState: { errors },
   } = useForm();
   const [updateProduct] = useUpdateProductMutation();
+
   useEffect(() => {
-    setValue("name", product?.name);
-    setValue("category", product?.category);
-    setValue("description", product?.description);
+    setValue("name", product.name);
+    setValue("category", product.category);
+    setValue("description", product.description);
   }, []);
 
   const onSubmit = async (data) => {

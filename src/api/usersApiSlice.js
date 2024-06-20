@@ -1,3 +1,9 @@
+/**
+ * Add new User based on username and password.
+ * Get all users at Admin panel.
+ * Delete users at Admin panel.
+ */
+
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "./apiSlice";
 
@@ -8,6 +14,7 @@ const initialState = userAdapter.getInitialState();
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // Get all users.
     getUsers: builder.query({
       query: () => ({
         url: `/user`,
@@ -28,18 +35,21 @@ export const userApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "User", id: "LIST" }];
       },
     }),
+
+    // Add new user.
     createUser: builder.mutation({
-      query: ({ userId }) => {
+      query: (data) => {
         return {
           url: "/user",
           method: "POST",
-          body: userId,
+          body: data,
           formData: true,
         };
       },
       invalidatesTags: (result, error, arg) => [{ type: "User", id: arg?._id }],
     }),
 
+    // Delete user.
     deleteUser: builder.mutation({
       query: (body) => {
         return {
@@ -62,6 +72,8 @@ export const selectOrderResult = userApiSlice.endpoints.getUsers.select();
 const selectUserData = createSelector(selectOrderResult, (orderResult) => {
   return orderResult.data;
 });
+
+// Select get all users.
 export const { selectAll: selectAllOrder } = userAdapter.getSelectors(
   (state) => selectUserData(state) ?? initialState
 );

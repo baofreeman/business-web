@@ -11,15 +11,18 @@ const Users = () => {
     pollingInterval: 60000000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
-  });
+  }); // GET all Users.
+
   let content;
   let user;
+
   if (isLoading) return (content = <Loading />);
   user = users ? (
     users.ids.map((user) => <UserExtent key={user} userId={user} />)
   ) : (
-    <p>No users</p>
+    <p>Không có người dùng</p>
   );
+
   if (isSuccess)
     return (content = (
       <div className="p-10 w-full">

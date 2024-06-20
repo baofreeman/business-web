@@ -1,16 +1,15 @@
-import React from "react";
 import { useLocation } from "react-router-dom";
-import TabFilterProductAdmin from "../../Admin/Products/TabFilterProductAdmin";
-import TabSibarLeftOrder from "../../Admin/Orders/TabSibarLeftOrder";
+import FilterProductAdmin from "../../Admin/Products/FilterProductAdmin";
+import SibarLeftOrder from "../../Admin/Orders/SibarLeftOrder";
 
 const SidebarAdmin = () => {
   const location = useLocation();
   const pathname = location.pathname;
   if (pathname.includes("/admin/products")) {
-    return <TabFilterProductAdmin />;
+    return <FilterProductAdmin />;
   }
   if (pathname.includes("/admin/orders")) {
-    return <TabSibarLeftOrder />;
+    return <SibarLeftOrder />;
   }
 };
 

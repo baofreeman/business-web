@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../ui/Input/Input";
 import Button from "../ui/Button/Button";
@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Register = () => {
+  const [roles] = useState(["Custommer"]); // Set roles.
+  const [createUser] = useCreateUserMutation(); // Create user mutation.
   const navigate = useNavigate();
-  const [roles] = useState(["Custommer"]);
   const [msg, setMsg] = useState();
+
   const {
     register,
     handleSubmit,
@@ -20,32 +22,37 @@ const Register = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const [createUser] = useCreateUserMutation();
 
   const onSubmit = async (data) => {
     const { username, password } = data;
+
+    // Data User.
     const newData = {
       username,
       password,
       roles,
     };
+
     try {
       const res = await createUser(newData);
       if (res.error) {
-        setMsg(res.error.data.message);
-        toast.success("Đăng ký thất bại");
+        const { message } = res.error.data;
+        setMsg(message);
+        return toast.error(message);
       }
       if (window.history.state && window.history.state.idx > 0) {
         navigate(-1);
       }
+
       if (res.data) {
-        toast.success("Đăng ký thành công");
         navigate("/shop");
+        return toast.success(res.data.message);
       }
     } catch (error) {
       return error;
     }
   };
+
   return (
     <section
       className="flex flex-col gap-6 w-full justify-center items-center"

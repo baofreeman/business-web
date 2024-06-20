@@ -1,27 +1,29 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { useGetProductsQuery } from "../../api/productsApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createSearchParams,
   useNavigate,
-  useParams,
   useSearchParams,
 } from "react-router-dom";
 import { convertPrice } from "../../config/convertPrice";
 import { selectSidebarRight, setSidebarRight } from "../../api/toggleSlice";
 
 const ItemProduct = ({ productId }) => {
-  //Get params
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [active, setActive] = useState(false);
+  const refProduct = useRef();
+  const srRef = useRef();
   const [searchParams] = useSearchParams();
-  const params = Object.fromEntries(searchParams.entries());
-
+  // GET params.
   const categoryQuery = searchParams.get("category");
   const tagQuery = searchParams.get("tag");
   const colorQuery = searchParams.get("color");
   const sizeQuery = searchParams.get("size");
   const openSidebarRight = useSelector(selectSidebarRight);
 
-  //GET product filter or allproduct
+  //GET product filter or allproduct.
   const { product } = useGetProductsQuery(
     {
       category: categoryQuery,
@@ -34,11 +36,7 @@ const ItemProduct = ({ productId }) => {
     }
   );
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [active, setActive] = useState(false);
-  const srRef = useRef();
-
+  // Toggle sidebar right when click item.
   const handleSR = () => {
     if (openSidebarRight == false) {
       dispatch(setSidebarRight(true));
@@ -51,13 +49,14 @@ const ItemProduct = ({ productId }) => {
     });
   };
 
-  //Caculating Price
+  // Caculating price min-max of product.
   const price = product?.subCategory?.flatMap(({ model }) =>
     model?.map(({ skus }) => skus.map(({ price }) => price))
   );
   let min = price && Math.min(...price[0]);
   let max = price && Math.max(...price[0]);
-  const refProduct = useRef();
+
+  // Active product.
   const selectedProduct = () => {
     const defaultValue = refProduct.current.getAttribute("defaultValue");
     if (defaultValue === productId) {
@@ -67,7 +66,6 @@ const ItemProduct = ({ productId }) => {
 
   useEffect(() => {
     selectedProduct();
-    console.log(active);
   }, [productId]);
 
   return (

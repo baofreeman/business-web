@@ -1,3 +1,5 @@
+// Create random id.
+
 function makeid(length) {
   let result = "";
   const characters =

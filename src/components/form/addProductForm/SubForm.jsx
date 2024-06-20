@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { FormProvider, useFieldArray, useFormContext } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 import ModelForm from "./ModelForm";
 import Button from "../../ui/Button/Button";
-import Input from "../../ui/Input/Input";
 import Select from "../../ui/Select/Select";
 import { subCategory } from "../../../services/option";
 const SubForm = ({
@@ -16,6 +12,7 @@ const SubForm = ({
   trigger,
   watch,
 }) => {
+  // Field Array SET subCatagory.
   const { fields, append, remove } = useFieldArray({
     name: "subCategory",
     control,

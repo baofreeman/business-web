@@ -1,17 +1,6 @@
-import React from "react";
-import { useGetOrderQuery } from "../../api/ordersApiSlice";
 import Button from "../ui/Button/Button";
 
 const CheckoutSuccess = () => {
-  const {
-    data: orders,
-    isLoading,
-    isSuccess,
-  } = useGetOrderQuery("allOrders", {
-    pollingInterval: 60000000,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-  });
   const text = `Nếu có thay đổi về đơn hàng vui lòng liên hệ
   Hotline: 0935791884 hoặc email: freeman.dev10@gmail.com
   để được nhân viên hỗ trợ. Xin cám ơn.`;
