@@ -1,37 +1,62 @@
 import { useSelector } from "react-redux";
-import { useGetProductsQuery } from "../../api/productsApiSlice";
-import { useSearchParams } from "react-router-dom";
+import { getSelectors, useGetProductsQuery } from "../../api/productsApiSlice";
+import { useLocation } from "react-router-dom";
 import ItemProduct from "./ItemProduct";
 import { selectSidebarLeft, selectSidebarRight } from "../../api/toggleSlice";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { Loading } from "../ui/index";
+import { useInView } from "react-intersection-observer";
+import useScroll from "../../hook/useScroll";
 
 const AllProduct = () => {
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
 
-  // GET query params.
-  const tagQuery = searchParams.get("tag");
-  const catQuery = searchParams.get("category");
-  const colorQuery = searchParams.get("color");
-  const sizeQuery = searchParams.get("size");
+  useLayoutEffect(() => {
+    setPage(1);
+  }, [location.pathname]);
 
-  // GET product based on query
-  const { products } = useGetProductsQuery(
-    {
-      category: catQuery,
-      tag: tagQuery,
-      color: colorQuery,
-      size: sizeQuery,
-    },
-    {
-      selectFromResult: ({ data }) => {
-        return { products: data?.ids.map((id) => id) };
-      },
-    }
+  const { isFetching, isSuccess } = useGetProductsQuery(
+    { page: page },
+    { refetchOnMountOrArgChange: true }
   );
+  const { selectIds } = getSelectors({
+    page: page,
+  });
+
+  const products = useSelector(selectIds);
+  const [executeScroll, elRef] = useScroll();
+
+  useEffect(() => {
+    executeScroll();
+  }, []);
+
+  const { ref, inView } = useInView({
+    trackVisibility: true,
+    delay: 500,
+    root: null,
+    rootMargin: "-500px",
+  });
+
+  const loadMore = useCallback(() => {
+    setPage((prev) => prev + 1);
+    setLoading(true);
+  }, []);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [page]);
+
+  useEffect(() => {
+    if (inView) {
+      loadMore();
+    }
+  }, [inView, loadMore]);
 
   // Toggle sidebar.
   const openSR = useSelector(selectSidebarRight);
   const openSL = useSelector(selectSidebarLeft);
-
   let gridCols =
     openSL && openSR
       ? "grid-cols-4 grid-auto"
@@ -40,19 +65,42 @@ const AllProduct = () => {
       : !openSL || !openSR
       ? "grid-cols-6 grid-auto"
       : null;
-
   let tabItem = null;
 
-  tabItem = products?.length
-    ? products.map((productId) => (
-        <ItemProduct key={productId} productId={productId} />
-      ))
-    : (tabItem = (
-        <span className="text-center m-auto col-span-4">Không có sản phẩm</span>
-      ));
+  tabItem =
+    isSuccess && products?.length
+      ? products.map((productId) => (
+          <ItemProduct key={productId} productId={productId} />
+        ))
+      : (tabItem = (
+          <span className="text-center m-auto col-span-4">
+            Không có sản phẩm
+          </span>
+        ));
+
+  // (tabItem = (
+  //   <span className="text-center m-auto col-span-4">Không có sản phẩm</span>
+  // ))
+
   return (
     <>
-      <div className={`grid ${gridCols} gap-4 relative`}>{tabItem}</div>
+      <div ref={elRef} />
+      <div className={`grid ${gridCols} gap-4 relative`}>
+        {isFetching && (
+          <div className="w-full col-span-4 m-auto flex items-center justify-center">
+            <Loading />
+          </div>
+        )}
+        {tabItem}
+      </div>
+      {products.length > 0 && (
+        <div
+          ref={ref}
+          className="w-full col-span-4 m-auto py-10 flex items-center justify-center"
+        >
+          {loading && <Loading />}
+        </div>
+      )}
     </>
   );
 };

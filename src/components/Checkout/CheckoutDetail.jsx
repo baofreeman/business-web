@@ -1,4 +1,4 @@
-import CheckoutForm from "../form/checkoutForm/CheckoutForm";
+import { CheckoutForm } from "./index";
 
 const CheckoutDetail = () => {
   return <CheckoutForm />;

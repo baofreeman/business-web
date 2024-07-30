@@ -1,24 +1,20 @@
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../api/authSlice";
-import { jwtDecode } from "jwt-decode";
+import { useGetUserQuery } from "../api/authApiSlice";
 
 const useAuth = () => {
-  const token = useSelector(selectCurrentUser); // GET access token current user.
-  let isAdmin = false;
-  let isCustommer = false;
-  let status = "Custommer";
+  let user = {
+    username: "",
+    userId: undefined,
+    roles: ["user"],
+  };
 
-  // Check token => check roles.
-  if (token) {
-    const decoded = jwtDecode(token);
-    const { username, roles } = decoded.UserInfo;
-    isAdmin = roles.includes("Admin");
-    isCustommer = roles.includes("Custommer");
-    if (isAdmin) status = "Admin";
-    if (isCustommer) status = "Custommer";
-    return { username, roles, status, isAdmin, isCustommer };
-  }
-  return { username: "", roles: [], isAdmin, isCustommer, status };
+  const { currentUser } = useGetUserQuery("currentUser", {
+    selectFromResult: ({ data }) => ({
+      currentUser: data?.user,
+    }),
+  });
+  user = { ...currentUser, userId: currentUser?._id };
+
+  return user;
 };
 
 export default useAuth;

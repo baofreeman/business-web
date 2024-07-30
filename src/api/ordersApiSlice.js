@@ -20,7 +20,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
     getOrder: builder.query({
       // Get all orders.
       query: () => ({
-        url: `/order`,
+        url: `/order/all-order`,
         validateStatus: (res, result) => {
           return res.status === 200 && !result.isError;
         },
@@ -43,7 +43,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
       // Add new order based on CartState.
       query: (body) => {
         return {
-          url: "/order",
+          url: "/order/create-order",
           method: "POST",
           body: body,
           formData: true,

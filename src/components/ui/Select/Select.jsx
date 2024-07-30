@@ -1,4 +1,3 @@
-import React from "react";
 import { SelectDesign } from "./theme";
 import Errors from "../Errors/Errors";
 
@@ -23,7 +22,7 @@ const Select = ({
         <option value={""}>{`${label}`}</option>
         {children}
       </select>
-      {error ? <Errors>{error}</Errors> : null}
+      {error && <Errors>{error}</Errors>}
     </div>
   );
 };

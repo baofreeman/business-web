@@ -1,6 +1,5 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { useGetOrderQuery } from "../../../api/ordersApiSlice";
-import { Link } from "react-router-dom";
 
 const OrderExtent = ({ orderId }) => {
   const { order } = useGetOrderQuery("allOrder", {
@@ -8,7 +7,7 @@ const OrderExtent = ({ orderId }) => {
       order: data?.entities[orderId],
     }),
   }); // GET order based orderId.
-
+  console.log(order);
   return (
     <tr>
       <td className="border px-8 py-4">{order?._id}</td>
@@ -19,10 +18,10 @@ const OrderExtent = ({ orderId }) => {
         <h1>{order?.billingAddress.phone}</h1>
       </td>
       <td className="border px-8 py-4">
-        {order?.items.map((i) => (
-          <div>
-            <h1>{i.name}</h1>
-            <h1>{i.qty}</h1>
+        {order?.items.map((item, index) => (
+          <div key={index}>
+            <h1>{item.name}</h1>
+            <h1>{item.qty}</h1>
           </div>
         ))}
       </td>

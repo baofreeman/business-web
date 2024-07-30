@@ -5,7 +5,7 @@ import {
 } from "../../../api/productsApiSlice";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import Modal from "../../ui/Modal/Modal";
+import Modal from "../../ui/Modal";
 import EditIcon from "../../../assets/icons/EditIcon";
 import DeleteIcon from "../../../assets/icons/DeleteIcon";
 

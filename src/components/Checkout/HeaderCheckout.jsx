@@ -1,6 +1,5 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../ui/Button/Button";
+import { Button } from "../ui/index";
 import ArrowIcon from "../../assets/icons/ArrowIcon";
 
 const HeaderCheckout = () => {

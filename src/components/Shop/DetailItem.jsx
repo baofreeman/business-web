@@ -10,14 +10,16 @@ const DetailItem = () => {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("productId");
 
-  // GET all product.
-  const { product } = useGetProductsQuery("allProduct", {
-    selectFromResult: ({ data }) => ({
-      product: data?.entities[productId],
-    }),
-  });
-
-  // Render image.
+  // // GET all product.
+  const { product } = useGetProductsQuery(
+    {},
+    {
+      selectFromResult: ({ data }) => ({
+        product: data?.entities[productId],
+      }),
+    }
+  );
+  // // Render image.
   const refs = product?.productImg;
   const childRefs = useMemo(
     () => refs?.map(() => createRef()),
@@ -46,7 +48,7 @@ const DetailItem = () => {
       {product ? (
         <>
           <div
-            className="w-full overflow-hidden overflow-scroll no-scrollbar relative flex items-center"
+            className="w-full overflow-scroll no-scrollbar relative flex items-center"
             style={{
               margin: "auto",
             }}

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetProductsQuery } from "../../../api/productsApiSlice";
-import EditForm from "../../form/editProductForm/EditForm";
-import Loading from "../../ui/Loading/Loading";
+import EditForm from "../form/editProduct/EditForm";
+import Loading from "../../ui/Loading";
 
 const EditProduct = () => {
   const { productId } = useParams(); // GET param productId.

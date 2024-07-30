@@ -6,19 +6,17 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { optionCategory } from "../../services/option";
-import Button from "../ui/Button/Button";
+import queryString from "query-string";
+import { Button } from "../ui/index";
 
 const HeaderShop = () => {
   const [category, setCategory] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const params = Object.fromEntries(searchParams.entries());
+  const search = queryString.parse(location.search);
 
-  // SET category.
-  const handleCategory = (e) => {
-    const value = e.target.value;
-    setCategory(value);
+  const resetSearch = () => {
     searchParams.delete("productId");
     searchParams.delete("category");
     searchParams.delete("tag");
@@ -27,22 +25,29 @@ const HeaderShop = () => {
     setSearchParams(searchParams);
   };
 
-  // Check category, if category navigate /shop/:category. if category == all then render all product.
+  const handleCategory = (e) => {
+    resetSearch();
+    const value = e.target.value;
+    setCategory(value);
+  };
+
   useEffect(() => {
-    if (category !== "" && !Object.keys(params).length) {
+    if (category !== "" && Object.keys(search).length === 0) {
       navigate({
         pathname: `/shop/${category}`,
       });
-    } else {
-      setCategory("");
+    }
+    if (Object.keys(search).length > 0 && !search.productId) {
+      console.log(category);
+
       navigate({
-        pathname: `/shop`,
+        pathname: `/shop/filter`,
         search: createSearchParams({
-          ...params,
+          ...search,
         }).toString(),
       });
     }
-  }, [category, location.pathname]);
+  }, [location.pathname, category, navigate]);
 
   return (
     <ul className="flex w-full dark:text-silver">
@@ -50,7 +55,7 @@ const HeaderShop = () => {
         <li key={item}>
           <Button
             size="m"
-            design={category === item ? `link-active` : "link-basic"}
+            design={true ? `link-active` : "link-basic"}
             value={item}
             onClick={(e) => handleCategory(e)}
           >

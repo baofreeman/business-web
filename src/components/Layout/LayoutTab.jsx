@@ -1,19 +1,6 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { useGetProductsQuery } from "../../api/productsApiSlice";
-import TabHeader from "../Layout/TabHeader";
-import SidebarRight from "../SideBar/SidebarRight/SidebarRight";
-import Footer from "../ui/Footer/Footer";
-import { useDispatch, useSelector } from "react-redux";
-import SidebarLeft from "../SideBar/SideBarLeft/SidebarLeft";
-import ModalDetail from "../Shop/ModalDetail";
-import Loading from "../ui/Loading/Loading";
+import { getSelectors, useGetProductsQuery } from "../../api/productsApiSlice";
 import {
   selectSidebarLeft,
   selectSidebarRight,
@@ -21,16 +8,19 @@ import {
   setSidebarRight,
 } from "../../api/toggleSlice";
 import ArrowIcon from "../../assets/icons/ArrowIcon";
+import { TabHeader } from "../Layout/index";
+import { Footer, Loading } from "../ui/index";
+import { useDispatch, useSelector } from "react-redux";
+import { SidebarLeft, SidebarRight } from "../SideBar/index";
+import { ModalDetail } from "../Shop/index";
 
 const LayoutTab = () => {
   // GET all product
-  const { isLoading, isSuccess } = useGetProductsQuery("allProduct", {
-    pollingInterval: 60000000,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-  });
-  const location = useLocation();
+  const { isLoading, isSuccess } = useGetProductsQuery({});
+  const { selectAll } = getSelectors({});
+  const products = useSelector(selectAll);
 
+  const location = useLocation();
   // set ref element
   const pageRef = useRef();
   const slRef = useRef();
@@ -128,11 +118,11 @@ const LayoutTab = () => {
       pageRef.current?.classList.remove("page-tab-layout-nosb");
       pageRef.current?.classList.remove("page-tab-layout-right");
     } else {
-      console.log({
-        mount: "dual",
-        left: openSidebarLeft,
-        right: openSidebarRight,
-      });
+      // console.log({
+      //   mount: "dual",
+      //   left: openSidebarLeft,
+      //   right: openSidebarRight,
+      // });
       pageRef.current?.classList.add("page-tab-layout");
       srRef.current?.classList.remove("hidden");
       slRef.current?.classList.remove("hidden");

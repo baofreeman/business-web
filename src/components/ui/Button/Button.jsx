@@ -1,4 +1,3 @@
-import React from "react";
 import { ButtonDesign, ButtonPostion, ButtonSize, ButtonWidth } from "./theme";
 import { Link } from "react-router-dom";
 

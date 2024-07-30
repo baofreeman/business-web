@@ -1,5 +1,4 @@
 /**
- * Add new User based on username and password.
  * Get all users at Admin panel.
  * Delete users at Admin panel.
  */
@@ -14,10 +13,10 @@ const initialState = userAdapter.getInitialState();
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // Get all users.
+    // Get all users with admin role
     getUsers: builder.query({
       query: () => ({
-        url: `/user`,
+        url: `/user/all-user`,
         validateStatus: (res, result) => {
           return res.status === 200 && !result.isError;
         },
@@ -36,24 +35,11 @@ export const userApiSlice = apiSlice.injectEndpoints({
       },
     }),
 
-    // Add new user.
-    createUser: builder.mutation({
-      query: (data) => {
-        return {
-          url: "/user",
-          method: "POST",
-          body: data,
-          formData: true,
-        };
-      },
-      invalidatesTags: (result, error, arg) => [{ type: "User", id: arg?._id }],
-    }),
-
-    // Delete user.
+    // Delete user with admin role
     deleteUser: builder.mutation({
       query: (body) => {
         return {
-          url: "/user",
+          url: "/user/delete-user",
           method: "DELETE",
           body: body,
         };
@@ -63,11 +49,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const {
-  useGetUsersQuery,
-  useCreateUserMutation,
-  useDeleteUserMutation,
-} = userApiSlice;
+export const { useGetUsersQuery, useDeleteUserMutation } = userApiSlice;
 export const selectOrderResult = userApiSlice.endpoints.getUsers.select();
 const selectUserData = createSelector(selectOrderResult, (orderResult) => {
   return orderResult.data;

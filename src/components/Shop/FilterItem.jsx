@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
-import {
-  color,
-  optionCategory,
-  size,
-  subCategory,
-} from "../../services/option";
+import { color, size, subCategory } from "../../services/option";
 import Select from "../ui/Select/Select";
 import {
   createSearchParams,
+  useLocation,
   useNavigate,
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import Button from "../ui/Button/Button";
+import { Button } from "../ui/index";
+import { optionCategiesCustom } from "../../utils/convert";
+import queryString from "query-string";
+
 const FilterItem = () => {
   const navigate = useNavigate();
 
@@ -23,24 +22,17 @@ const FilterItem = () => {
   const [sizeQuery, setSizeQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const { category } = useParams();
-  const params = Object.fromEntries(searchParams.entries());
+  const location = useLocation();
+
+  const search = queryString.parse(location.search);
   searchParams.delete("productId");
 
   // Filter category.
   const subCategoryOption = subCategory.find(
     (item) => item.category === catQuery
   );
-  const optionCategies = () => {
-    let optionAll = ["tất cả"];
-    const optionCatCustom = optionCategory.filter(
-      (item) => !optionAll.includes(item)
-    );
-    return optionCatCustom.map((item) => (
-      <option key={item} value={item}>
-        {item}
-      </option>
-    ));
-  };
+
+  const optionCategies = optionCategiesCustom;
 
   // Filter tag.
   const optionSub = subCategoryOption?.data?.map((item) => (
@@ -63,86 +55,84 @@ const FilterItem = () => {
     </option>
   ));
 
-  // Check categoryQuery.
   useEffect(() => {
-    if (catQuery !== "") {
-      navigate({
-        pathname: `/shop`,
-        search: createSearchParams({
-          ...params,
-          category: catQuery,
-        }).toString(),
-      });
-    }
-    return () => {};
+    searchParams.delete("tag");
+    setSearchParams(searchParams);
+    //
   }, [catQuery]);
 
-  // Check tagQuery.
-  useEffect(() => {
-    if (tagQuery !== "") {
-      navigate({
-        pathname: `/shop`,
-        search: createSearchParams({
-          ...params,
-          tag: tagQuery,
-        }).toString(),
-      });
-    }
-    return () => {};
-  }, [tagQuery]);
-
-  // Check colorQuery.
-  useEffect(() => {
-    if (colorQuery !== "") {
-      navigate({
-        pathname: `/shop`,
-        search: createSearchParams({
-          ...params,
-          color: colorQuery,
-        }).toString(),
-      });
-    }
-    return () => {};
-  }, [colorQuery]);
-
-  // Check sizeQuery.
-  useEffect(() => {
-    if (sizeQuery !== "") {
-      navigate({
-        pathname: `/shop`,
-        search: createSearchParams({
-          ...params,
-          size: sizeQuery,
-        }).toString(),
-      });
-    }
-    return () => {};
-  }, [sizeQuery]);
-
-  // Select category.
   const handleCategory = (e) => {
+    searchParams.delete("tag");
+    setSearchParams(searchParams);
     const value = e.target.value;
-    if (value === "") {
+    setCatQuery(value);
+    if (value !== "") {
+      navigate({
+        pathname: `/shop/filter`,
+        search: createSearchParams({
+          ...search,
+          category: value,
+        }).toString(),
+      });
+    } else {
       searchParams.delete("category");
       setSearchParams(searchParams);
-    } else {
-      setCatQuery(value);
     }
   };
 
   // Select tag.
   const handleTag = (e) => {
+    const value = e.target.value;
     setTagQuery(e.target.value);
+
+    if (value !== "") {
+      navigate({
+        pathname: `/shop/filter`,
+        search: createSearchParams({
+          ...search,
+          tag: value,
+        }).toString(),
+      });
+    } else {
+      searchParams.delete("tag");
+      setSearchParams(searchParams);
+    }
   };
 
   // Select color.
   const handleColor = (e) => {
+    const value = e.target.value;
     setColorQuery(e.target.value);
+    if (value !== "") {
+      navigate({
+        pathname: `/shop/filter`,
+        search: createSearchParams({
+          ...search,
+          color: value,
+        }).toString(),
+      });
+    } else {
+      searchParams.delete("color");
+      setSearchParams(searchParams);
+    }
   };
 
   // Select size.
   const handleSize = (e) => {
+    const value = e.target.value;
     setSizeQuery(e.target.value);
+    if (value !== "") {
+      navigate({
+        pathname: `/shop/filter`,
+        search: createSearchParams({
+          ...search,
+          size: value,
+        }).toString(),
+      });
+    } else {
+      searchParams.delete("size");
+      setSearchParams(searchParams);
+    }
   };
 
   // Reset all query.

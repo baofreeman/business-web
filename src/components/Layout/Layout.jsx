@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../ui/Header/Header";
+import { Header } from "../Header/index";
 import { ToastContainer } from "react-toastify";
+import { useGetUserQuery } from "../../api/authApiSlice";
 
 const Layout = () => {
   const [darkMode, setDarkMode] = useState(true);
@@ -10,6 +11,8 @@ const Layout = () => {
   const toggleDark = () => {
     setDarkMode((prevDarkMode) => !prevDarkMode);
   };
+
+  const { data } = useGetUserQuery("currentUser");
 
   return (
     <div className={`${darkMode ? "dark" : ""}`}>

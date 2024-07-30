@@ -7,61 +7,52 @@
  * Search, filter products based on query params.
  */
 
-import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
-import { apiSlice } from "./apiSlice";
+import { createSelector, createEntityAdapter, current } from "@reduxjs/toolkit";
+import { productSlice } from "./apiSlice";
+import queryString from "query-string";
 
 // Product Apdapter
-const productAdapter = createEntityAdapter({
+export const productAdapter = createEntityAdapter({
   selectId: (product) => product?._id,
 });
 
 // InitState Product
-const initialState = productAdapter.getInitialState();
-
-export const productsApiSlice = apiSlice.injectEndpoints({
+export const initialState = productAdapter.getInitialState();
+let preArgs;
+export const productsApiSlice = productSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // GET All product and filter product based on query params.
+    //GET All product and filter product based on query params.
     getProducts: builder.query({
-      query: ({ category, tag, color, size }) => ({
-        url:
-          !category && !tag && !color && !size
-            ? `/product`
-            : category && !tag && !color && !size
-            ? `/product/trait?category=${category}`
-            : category && tag && !color && !size
-            ? `/product/trait?category=${category}&tag=${tag}`
-            : category && tag && color && !size
-            ? `/product/trait?category=${category}&tag=${tag}&color=${color}`
-            : !category && tag && color && !size
-            ? `product/trait?tag=${tag}&color=${color}`
-            : !category && !tag && color && !size
-            ? `product/trait?color=${color}`
-            : category && !tag && color && size
-            ? `product/trait?category=${category}&color=${color}&size=${size}`
-            : category && !tag && color && !size
-            ? `product/trait?category=${category}&color=${color}`
-            : !category && !tag && !color && size
-            ? `product/trait?size=${size}`
-            : !category && !tag && color && size
-            ? `product/trait?color=${color}&size=${size}`
-            : !category && tag && color && size
-            ? `product/trait?tag=${tag}&color=${color}&size=${size}`
-            : !category && tag && !color && size
-            ? `product/trait?tag=${tag}&size=${size}`
-            : category && tag && color && size
-            ? `product/trait?category=${category}&tag=${tag}&color=${color}&size=${size}`
-            : `/product`,
-        validateStatus: (res, result) => {
-          return res.status === 200 && !result.isError;
-        },
-      }),
-      keepUnusedDataFor: 5,
-      serializeQueryArgs: ({ queryArgs }) => queryArgs,
-      transformResponse: (res, meta, arg) => {
+      query: ({ page }) => {
+        return {
+          url: page ? `/product/?page=${page}` : "/product",
+          method: "GET",
+          params: { ...page },
+        };
+      },
+
+      transformResponse: (res) => {
         const loadProducts = res.map((product) => product);
         return productAdapter.setAll(initialState, loadProducts);
       },
-      providesTags: (result, error, arg) => {
+      keepUnusedDataFor: 5,
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        if (Object.keys(queryArgs).length === 0) return endpointName;
+        if (queryArgs) return `ScrollingPage`;
+      },
+      merge: (cached, newItems, { arg }) => {
+        const { page } = arg;
+        if (page >= 1) {
+          const select = productAdapter.getSelectors().selectAll(newItems);
+          console.log(select);
+          const currentCached = productAdapter.getSelectors().selectAll(cached);
+          return productAdapter.setAll(initialState, [
+            ...currentCached,
+            ...select,
+          ]);
+        }
+      },
+      providesTags: (result) => {
         if (result?.ids) {
           return [
             { type: "Product", id: "LIST" },
@@ -71,11 +62,100 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       },
     }),
 
-    // POST product based on form at Admin panel.
+    getProductsCategory: builder.query({
+      query: ({ category, page }) => {
+        console.log("Start........", { category: category, page: page });
+        if (page === 1) {
+          preArgs = { category, page };
+        }
+        return {
+          url: `/product/${category}?page=${page}`,
+          method: "GET",
+          params: { ...page },
+        };
+      },
+
+      transformResponse: (res) => {
+        const loadProducts = res.map((product) => product);
+        return productAdapter.setAll(initialState, loadProducts);
+      },
+      keepUnusedDataFor: 5,
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        if (Object.keys(queryArgs).length === 0) return endpointName;
+        if (queryArgs) return endpointName;
+      },
+      merge: (cached, newItems, { arg }) => {
+        const { category, page } = arg;
+
+        console.log("Merge......", arg);
+        console.log("Prev......", preArgs);
+        const select = productAdapter.getSelectors().selectAll(newItems);
+        if (category !== preArgs.category || page === 1) {
+          preArgs = arg;
+          return productAdapter.setAll(initialState, [...select]);
+        }
+        const currentCached = productAdapter.getSelectors().selectAll(cached);
+        return productAdapter.setAll(initialState, [
+          ...currentCached,
+          ...select,
+        ]);
+      },
+      providesTags: (result) => {
+        if (result?.ids) {
+          return [
+            { type: "Product", id: "LIST" },
+            ...result?.ids.map((id) => ({ type: "Product", id })),
+          ];
+        } else return [{ type: "Product", id: "LIST" }];
+      },
+      // forceRefetch: ({ currentArgs, previousArg }) => {
+      //   return currentArgs !== previousArg;
+      // },
+    }),
+
+    getFilterProducts: builder.query({
+      query: ({ search, page }) => {
+        const parser = queryString.stringify(search);
+        console.log(search, page);
+        const url = parser && `/product/filter/?${parser}&page=${page}`;
+        return {
+          url: url,
+          method: "GET",
+          params: { ...search, ...page },
+        };
+      },
+      transformResponse: (res) => {
+        const loadProducts = res.map((product) => product);
+        return productAdapter.setAll(initialState, loadProducts);
+      },
+      keepUnusedDataFor: 5,
+      serializeQueryArgs: ({ endpointName, queryArgs }) => queryArgs.search,
+      merge: (cached, newItems, { arg }) => {
+        const { page, category } = arg;
+        if (page >= 1) {
+          const select = productAdapter.getSelectors().selectAll(newItems);
+          const currentCached = productAdapter.getSelectors().selectAll(cached);
+          return productAdapter.setAll(initialState, [
+            ...currentCached,
+            ...select,
+          ]);
+        }
+        return productAdapter.setAll(initialState);
+      },
+      providesTags: (result) => {
+        if (result?.ids) {
+          return [
+            { type: "Product", id: "LIST" },
+            ...result?.ids.map((id) => ({ type: "Product", id })),
+          ];
+        } else return [{ type: "Product", id: "LIST" }];
+      },
+    }),
+
     addProduct: builder.mutation({
       query: (body) => {
         return {
-          url: "/product",
+          url: "/product/create-product",
           method: "POST",
           body: body,
           formData: true,
@@ -90,7 +170,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
     updateProduct: builder.mutation({
       query: (body) => {
         return {
-          url: `/product`,
+          url: `/product/update-product`,
           method: "PATCH",
           body: body,
         };
@@ -104,7 +184,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
     deleteProduct: builder.mutation({
       query: ({ productId }) => {
         return {
-          url: `/product`,
+          url: `/product/delete-product`,
           method: "DELETE",
           body: { productId },
         };
@@ -115,13 +195,13 @@ export const productsApiSlice = apiSlice.injectEndpoints({
     }),
 
     // Get Variants of Product bases on productId.
-    getItem: builder.query({
+    getVariants: builder.query({
       query: (itemId) => ({
-        url: `/product/${itemId}`,
+        url: `/product/variants/${itemId}`,
       }),
-      keepUnusedDataFor: 2,
+      keepUnusedDataFor: 5,
       transformErrorResponse: (response, meta, arg) => response.status,
-      providesTags: (result, error, id) => [{ type: "Product", id }],
+      providesTags: (result, error, id) => [{ type: "Variant", id }],
     }),
 
     // Search product based on name.
@@ -131,31 +211,84 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 2,
       transformErrorResponse: (response, meta, arg) => response.status,
-      providesTags: (result, error, id) => [{ type: "Product", id }],
+      providesTags: (result, error, id) => [{ type: "Search", id }],
     }),
   }),
 });
 
 export const {
   useGetProductsQuery,
-  useGetItemQuery,
+  useLazyGetProductsQuery,
+  useGetProductsCategoryQuery,
+  useGetFilterProductsQuery,
+  useLazyGetFilterProductsQuery,
   useAddProductMutation,
-  useSeachProductQuery,
+  useLazySeachProductQuery,
   useDeleteProductMutation,
   useUpdateProductMutation,
+  useLazyGetVariantsQuery,
 } = productsApiSlice;
 
 export const selectProductResult =
-  productsApiSlice.endpoints.getProducts.select();
+  productsApiSlice.endpoints.getProducts.select({});
 
-const selectProductData = createSelector(
+export const selectProductData = createSelector(
   selectProductResult,
-  (productResult) => {
-    return productResult.data;
-  }
+  (productResult) => productResult.data
 );
 
 // Select get all product.
-export const { selectAll: selectAllProducts } = productAdapter.getSelectors(
+export const {
+  selectAll: selectAllProducts,
+  selectById: selectProductById,
+  selectIds: selectProductsIds,
+} = productAdapter.getSelectors(
   (state) => selectProductData(state) ?? initialState
 );
+
+export const getSelectors = (query) => {
+  const selectSetup = productsApiSlice.endpoints.getProducts.select(query);
+  const adapterSelectors = createSelector(selectSetup, (result) =>
+    productAdapter.getSelectors(() => result?.data ?? initialState)
+  );
+  return {
+    selectAll: createSelector(adapterSelectors, (state) =>
+      state.selectAll(undefined)
+    ),
+    selectEntities: createSelector(adapterSelectors, (state) =>
+      state.selectEntities(undefined)
+    ),
+    selectIds: createSelector(adapterSelectors, (state) =>
+      state.selectIds(undefined)
+    ),
+    selectTotal: createSelector(adapterSelectors, (state) =>
+      state.selectTotal(undefined)
+    ),
+    selectById: (id) =>
+      createSelector(adapterSelectors, (state) => state.selectById(state, id)),
+  };
+};
+
+export const getFilterSelectors = (query) => {
+  const selectSetup =
+    productsApiSlice.endpoints.getProductsCategory.select(query);
+  const adapterSelectors = createSelector(selectSetup, (result) =>
+    productAdapter.getSelectors(() => result?.data ?? initialState)
+  );
+  return {
+    selectAll: createSelector(adapterSelectors, (state) =>
+      state.selectAll(undefined)
+    ),
+    selectEntities: createSelector(adapterSelectors, (state) =>
+      state.selectEntities(undefined)
+    ),
+    selectIds: createSelector(adapterSelectors, (state) =>
+      state.selectIds(undefined)
+    ),
+    selectTotal: createSelector(adapterSelectors, (state) =>
+      state.selectTotal(undefined)
+    ),
+    selectById: (id) =>
+      createSelector(adapterSelectors, (state) => state.selectById(state, id)),
+  };
+};

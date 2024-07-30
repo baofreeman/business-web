@@ -1,53 +1,66 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useRef } from "react";
 import { useGetProductsQuery } from "../../api/productsApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createSearchParams,
+  useLocation,
   useNavigate,
-  useSearchParams,
+  useParams,
 } from "react-router-dom";
 import { convertPrice } from "../../config/convertPrice";
 import { selectSidebarRight, setSidebarRight } from "../../api/toggleSlice";
+import queryString from "query-string";
 
 const ItemProduct = ({ productId }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [active, setActive] = useState(false);
-  const refProduct = useRef();
+  const location = useLocation();
+  const search = queryString.parse(location.search);
+  const { category } = useParams();
   const srRef = useRef();
-  const [searchParams] = useSearchParams();
-  // GET params.
-  const categoryQuery = searchParams.get("category");
-  const tagQuery = searchParams.get("tag");
-  const colorQuery = searchParams.get("color");
-  const sizeQuery = searchParams.get("size");
   const openSidebarRight = useSelector(selectSidebarRight);
 
-  //GET product filter or allproduct.
+  // GET params.
+
+  // GET product filter or allproduct.
   const { product } = useGetProductsQuery(
+    {},
     {
-      category: categoryQuery,
-      tag: tagQuery,
-      color: colorQuery,
-      size: sizeQuery,
-    },
-    {
-      selectFromResult: ({ data }) => ({ product: data?.entities[productId] }),
+      selectFromResult: ({ data }) => {
+        return { product: data?.entities[productId] };
+      },
+      refetchOnMountOrArgChange: true,
     }
   );
 
   // Toggle sidebar right when click item.
-  const handleSR = () => {
-    if (openSidebarRight == false) {
+  const handleSR = useCallback(() => {
+    if (openSidebarRight === false) {
       dispatch(setSidebarRight(true));
     }
     navigate({
-      pathname: "/shop",
+      pathname:
+        location.pathname === "/shop"
+          ? "/shop"
+          : location.pathname.includes("/shop/filter")
+          ? "/shop/filter"
+          : category
+          ? `/shop/${category}`
+          : "/shop",
       search: createSearchParams({
         productId: product?._id,
       }).toString(),
     });
-  };
+  }, [
+    category,
+    location.pathname,
+    dispatch,
+    product?._id,
+    openSidebarRight,
+    navigate,
+  ]);
+
+  console.log(category);
 
   // Caculating price min-max of product.
   const price = product?.subCategory?.flatMap(({ model }) =>
@@ -56,55 +69,42 @@ const ItemProduct = ({ productId }) => {
   let min = price && Math.min(...price[0]);
   let max = price && Math.max(...price[0]);
 
-  // Active product.
-  const selectedProduct = () => {
-    const defaultValue = refProduct.current.getAttribute("defaultValue");
-    if (defaultValue === productId) {
-      setActive(true);
-    }
-  };
-
-  useEffect(() => {
-    selectedProduct();
-  }, [productId]);
-
   return (
-    <div
-      data-active={active}
-      ref={refProduct}
-      defaultValue={productId}
-      className={`w-full outline dark:outline-gray data-[active=true]:outline-orange dark:hover:outline-orange hover:outline-orange hover:outline-4 rounded`}
-      onClick={selectedProduct}
-    >
+    <>
       <div
-        className="w-full h-full pb-[20px] sm:pb-[10px] rounded cursor-pointer"
-        ref={srRef}
-        onClick={() => handleSR()}
+        className={`w-full outline dark:outline-gray data-[active=true]:outline-orange dark:hover:outline-orange hover:outline-orange hover:outline-4 rounded`}
       >
-        <section className="w-full flex flex-col relative p-0 gap-4 uppercase">
-          <div className="w-full block pb-[150%] relative">
-            <img
-              className="w-full max-h-full absolute top-0 left-0 right-0 object-cover"
-              src={product?.productImg[0]?.url}
-              alt="No product"
-            />
-          </div>
-          <div className="flex flex-col justify-between items-center px-[10px] gap-2 sm:gap-1 w-full flex-1">
-            <h1 className="flex-1 w-full justify-center items-center text-md whitespace-nowrap overflow-hidden text-ellipsis">
-              {product?.name}
-            </h1>
-            <div className="text-sm flex justify-between items-center w-full gap-2 sm:gap-1">
-              <h1 className="text-silver sm:hidden">Giá</h1>
-              <h1 className="text-sm text-silver whitespace-wrap text-center">
-                {max === min
-                  ? convertPrice(max)
-                  : `${convertPrice(min)} - ${convertPrice(max)}`}
-              </h1>
+        <div
+          className="w-full h-full pb-[20px] sm:pb-[10px] rounded cursor-pointer"
+          ref={srRef}
+          onClick={() => handleSR()}
+        >
+          <section className="w-full flex flex-col relative p-0 gap-4 uppercase">
+            <div className="w-full block pb-[150%] relative">
+              <img
+                className="w-full max-h-full absolute top-0 left-0 right-0 object-cover"
+                src={product?.productImg[0]?.url}
+                alt="No product"
+                loading="lazy"
+              />
             </div>
-          </div>
-        </section>
+            <div className="flex flex-col justify-between items-center px-[10px] gap-2 sm:gap-1 w-full flex-1">
+              <h1 className="flex-1 w-full justify-center items-center text-md whitespace-nowrap overflow-hidden text-ellipsis">
+                {product?.name}
+              </h1>
+              <div className="text-sm flex justify-between items-center w-full gap-2 sm:gap-1">
+                <h1 className="text-silver sm:hidden">Giá</h1>
+                <h1 className="text-sm text-silver whitespace-wrap text-center">
+                  {max === min
+                    ? convertPrice(max)
+                    : `${convertPrice(min)} - ${convertPrice(max)}`}
+                </h1>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

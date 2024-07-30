@@ -2,11 +2,14 @@ import { useGetProductsQuery } from "../../../api/productsApiSlice";
 import ProductExtent from "./ProductExtent";
 
 const Products = () => {
-  const { products } = useGetProductsQuery("allProduct", {
-    selectFromResult: ({ data }) => ({
-      products: data?.ids.map((id) => id),
-    }),
-  }); // GET all products
+  const { products } = useGetProductsQuery(
+    // { search: {}, page: 1 },
+    {
+      selectFromResult: ({ data }) => ({
+        products: data?.ids.map((id) => id),
+      }),
+    }
+  ); // GET all products
 
   let content;
 

@@ -9,7 +9,7 @@ import {
   quan,
   thatlung,
 } from "../../assets/img";
-import Button from "../ui/Button/Button";
+import { Button } from "../ui/index";
 import { useNavigate } from "react-router-dom";
 
 const Public = () => {

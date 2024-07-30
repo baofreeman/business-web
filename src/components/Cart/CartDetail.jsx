@@ -7,8 +7,7 @@ import {
   selectCartItem,
 } from "../../api/cartSlice";
 import { convertPrice } from "../../config/convertPrice";
-import Button from "../ui/Button/Button";
-import Modal from "../ui/Modal/Modal";
+import { Modal, Button } from "../ui/index";
 import DeleteIcon from "../../assets/icons/DeleteIcon";
 import ArrowIcon from "../../assets/icons/ArrowIcon";
 

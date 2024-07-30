@@ -1,4 +1,3 @@
-import React from "react";
 import { SelectDesign } from "./theme";
 import Errors from "../Errors/Errors";
 

@@ -1,11 +1,11 @@
-import Button from "../ui/Button/Button";
+import { Button } from "../ui/index";
 import { useSelector } from "react-redux";
 import { selectTotalQuatity } from "../../api/cartSlice";
 import { useLocation } from "react-router-dom";
-import HeaderShop from "../Shop/HeaderShop";
-import HeaderCart from "../Cart/HeaderCart";
-import HeaderAdmin from "../Admin/HeaderAdmin";
-import HeaderCheckout from "../Checkout/HeaderCheckout";
+import { HeaderShop } from "../Shop/index";
+import { HeaderCart } from "../Cart/index";
+import { HeaderAdmin } from "../Admin/index";
+import { HeaderCheckout } from "../Checkout/index";
 import CartIcon from "../../assets/icons/CartIcon";
 
 const TabHeader = () => {

@@ -8,35 +8,35 @@ import {
 import useAuth from "../../hook/useAuth";
 import { shippingValue } from "../../services/option";
 import { convertPrice } from "../../config/convertPrice";
-import Loading from "../ui/Loading/Loading";
+import { Loading } from "../ui/index";
 
 const SubCheckout = () => {
   const cart = useSelector(selectCartItem); // GET cart.
   const itemsPrice = useSelector(selectTotalAmount); // GET total price.
   const totalQuatity = useSelector(selectTotalQuatity); // GET total quantity.
   const [shipping, setShipping] = useState();
-  const { roles } = useAuth();
+  const { userId } = useAuth();
 
   // Total price = total price cart + shipping price.
   const totalPrice = useMemo(() => {
     let total = 0;
-    if (roles.length) {
+    if (userId) {
       total = itemsPrice + shippingValue[0];
       return total;
     } else {
       total = itemsPrice + shippingValue[1];
       return total;
     }
-  }, [roles]);
+  }, [userId]);
 
   // Check roles Custommer => freeship.
   useEffect(() => {
-    if (roles.length) {
+    if (userId) {
       setShipping(shippingValue[0]);
     } else {
       setShipping(shippingValue[1]);
     }
-  }, [roles]);
+  }, [userId]);
 
   return (
     <div className="overflow-y-scroll no-scrollbar w-full">

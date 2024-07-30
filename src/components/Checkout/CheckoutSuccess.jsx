@@ -1,4 +1,4 @@
-import Button from "../ui/Button/Button";
+import { Button } from "../ui/index";
 
 const CheckoutSuccess = () => {
   const text = `Nếu có thay đổi về đơn hàng vui lòng liên hệ

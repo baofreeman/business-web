@@ -1,54 +1,116 @@
 import { apiSlice } from "./apiSlice";
-import { logOut, setCredentials } from "./authSlice";
+
+// Invalidate tag mutation
+const invalidatesTags = (result) => (result ? ["UNAUTHORIZED"] : []);
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // Login
-    login: builder.mutation({
+    registerUser: builder.mutation({
       query: (credentials) => ({
-        url: "/auth",
+        url: "/auth/register",
         method: "POST",
         body: { ...credentials },
+        headers: { "Content-Type": "application/json" },
       }),
+      invalidatesTags,
+    }),
+    verifyEmail: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/verify-email",
+        method: "POST",
+        body: { ...credentials },
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: (result) => {
+        console.log(result);
+        return result ? ["UNAUTHORIZED"] : [];
+      },
+    }),
+
+    resetPasswordLink: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/reset-password-link",
+        method: "POST",
+        body: { ...credentials },
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags,
+    }),
+
+    resetPassword: builder.mutation({
+      query: (data) => {
+        const { id, token, ...values } = data;
+        const actualData = { ...values };
+        return {
+          url: `/auth/reset-password/${id}/${token}`,
+          method: "POST",
+          body: { ...actualData },
+          headers: { "Content-Type": "application/json" },
+        };
+      },
+      invalidatesTags,
+    }),
+
+    // Login
+    loginUser: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/login",
+        method: "POST",
+        body: { ...credentials },
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags,
+    }),
+
+    getUser: builder.query({
+      query: () => ({
+        url: "/auth/me",
+        method: "GET",
+        credentials: "include",
+      }),
+      providesTags: (result, error) => {
+        return result
+          ? [{ type: "Auth", id: result?.user?._id }]
+          : error?.status === 401
+          ? ["UNAUTHORIZED"]
+          : ["UNKNOWN_ERROR"];
+      },
+    }),
+
+    changePassword: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/change-password",
+        method: "POST",
+        body: { ...credentials },
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags,
     }),
 
     // Logout
-    sendLogOut: builder.mutation({
-      query: () => ({
-        url: "/auth/logout",
-        method: "POST",
-      }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(logOut());
-          setTimeout(() => {
-            dispatch(apiSlice.util.resetApiState());
-          }, 1000);
-        } catch (error) {
-          return error;
-        }
+    logoutUser: builder.mutation({
+      query: () => {
+        return {
+          url: "/auth/logout",
+          method: "POST",
+          body: {},
+          credentials: "include",
+        };
       },
-    }),
-
-    //refresh token
-    refresh: builder.mutation({
-      query: () => ({
-        url: "/auth/refresh",
-        method: "GET",
-      }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          const { accessToken } = data;
-          dispatch(setCredentials({ accessToken }));
-        } catch (error) {
-          return error;
-        }
-      },
+      invalidatesTags,
     }),
   }),
 });
 
-export const { useLoginMutation, useSendLogOutMutation, useRefreshMutation } =
-  authApiSlice;
+export const {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+  useVerifyEmailMutation,
+  useGetUserQuery,
+  useLogoutUserMutation,
+  useChangePasswordMutation,
+  useResetPasswordLinkMutation,
+  useResetPasswordMutation,
+} = authApiSlice;
