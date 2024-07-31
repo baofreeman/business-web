@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { color, size, subCategory } from "../../services/option";
 import Select from "../ui/Select/Select";
 import {
@@ -15,21 +15,24 @@ import queryString from "query-string";
 const FilterItem = () => {
   const navigate = useNavigate();
 
+  const initialValues = {
+    tag: "",
+    color: "",
+    size: "",
+  };
+
   // Set query params.
-  const [catQuery, setCatQuery] = useState("");
-  const [tagQuery, setTagQuery] = useState("");
-  const [colorQuery, setColorQuery] = useState("");
-  const [sizeQuery, setSizeQuery] = useState("");
+  const [state, setState] = useState(initialValues);
   const [searchParams, setSearchParams] = useSearchParams();
   const { category } = useParams();
   const location = useLocation();
 
-  const search = queryString.parse(location.search);
-  searchParams.delete("productId");
+  // const search = queryString.parse(location.search);
+  // searchParams.delete("productId");
 
   // Filter category.
   const subCategoryOption = subCategory.find(
-    (item) => item.category === catQuery
+    (item) => item.category === category
   );
 
   const optionCategies = optionCategiesCustom;
@@ -55,130 +58,72 @@ const FilterItem = () => {
     </option>
   ));
 
-  useEffect(() => {
-    searchParams.delete("tag");
-    setSearchParams(searchParams);
-    //
-  }, [catQuery]);
-
   const handleCategory = (e) => {
-    searchParams.delete("tag");
-    setSearchParams(searchParams);
     const value = e.target.value;
-    setCatQuery(value);
-    if (value !== "") {
-      navigate({
-        pathname: `/shop/filter`,
-        search: createSearchParams({
-          ...search,
-          category: value,
-        }).toString(),
-      });
-    } else {
-      searchParams.delete("category");
-      setSearchParams(searchParams);
-    }
+    value ? navigate(`/shop/${value}`) : navigate("/shop");
   };
 
-  // Select tag.
   const handleTag = (e) => {
     const value = e.target.value;
-    setTagQuery(e.target.value);
-
-    if (value !== "") {
-      navigate({
-        pathname: `/shop/filter`,
-        search: createSearchParams({
-          ...search,
-          tag: value,
-        }).toString(),
-      });
-    } else {
-      searchParams.delete("tag");
-      setSearchParams(searchParams);
-    }
+    setState({ ...state, tag: value });
   };
 
-  // Select color.
   const handleColor = (e) => {
     const value = e.target.value;
-    setColorQuery(e.target.value);
-    if (value !== "") {
-      navigate({
-        pathname: `/shop/filter`,
-        search: createSearchParams({
-          ...search,
-          color: value,
-        }).toString(),
-      });
-    } else {
-      searchParams.delete("color");
-      setSearchParams(searchParams);
-    }
+    setState({ ...state, color: value });
   };
 
-  // Select size.
   const handleSize = (e) => {
     const value = e.target.value;
-    setSizeQuery(e.target.value);
-    if (value !== "") {
-      navigate({
-        pathname: `/shop/filter`,
-        search: createSearchParams({
-          ...search,
-          size: value,
-        }).toString(),
-      });
-    } else {
-      searchParams.delete("size");
-      setSearchParams(searchParams);
-    }
-  };
-
-  // Reset all query.
-  const resetQuery = () => {
-    setCatQuery("");
-    setTagQuery("");
-    setColorQuery("");
-    setSizeQuery("");
+    setState({ ...state, size: value });
   };
 
   const handleReset = () => {
-    resetQuery();
-    searchParams.delete("category");
+    setState({ tag: "", color: "", size: "" });
     searchParams.delete("tag");
     searchParams.delete("color");
     searchParams.delete("size");
     setSearchParams(searchParams);
   };
 
-  // If path /shop/:category && catgory query => reset query, rediect /shop/:category.
   useEffect(() => {
-    if (category && catQuery) {
-      resetQuery();
+    handleReset();
+  }, [category]);
+
+  useEffect(() => {
+    const fn = (state) =>
+      Object.fromEntries(Object.entries(state).filter(([, v]) => v !== ""));
+    const result = fn(state);
+    if (Object.keys(result).length > 0) {
+      navigate({
+        pathname: `/shop/${category}`,
+        search: createSearchParams({ ...result }).toString(),
+      });
     }
-  }, [category, catQuery]);
+  }, [state]);
 
   // Css selected query.
-  const tagCss = tagQuery
+  const catCss = category
     ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
     : "text-silver px-3 py-2";
-  const sizeCss = sizeQuery
+  const tagCss = state.tag
     ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
     : "text-silver px-3 py-2";
-  const colorCss = colorQuery
+  const sizeCss = state.size
     ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
     : "text-silver px-3 py-2";
-
+  const colorCss = state.color
+    ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
+    : "text-silver px-3 py-2";
   return (
     <div className="w-full h-max flex flex-col gap-4 relative md:flex-row sm:flex-row md:justify-between sm:justify-between sm:px-4">
       <h1 className="text-base sm:hidden md:hidden">Lọc</h1>
       <section className="text-md w-full flex flex-col gap-8 md:flex-row md:justify-between sm:flex-row md:gap-4 sm:gap-2 sm:justify-between sm:items-center">
         <div className="flex flex-col gap-3 md:flex-row sm:gap-1">
-          <h1 className={`sm:text-sm sm:px-3 sm:hidden ${tagCss}`}>Danh mục</h1>
+          <h1 className={`sm:text-sm sm:px-3 sm:hidden ${catCss}`}>Danh mục</h1>
           <Select
             design="basic"
-            value={catQuery}
+            value={category || ""}
             onChange={(e) => handleCategory(e)}
             label={"Danh mục"}
           >
@@ -191,9 +136,9 @@ const FilterItem = () => {
           </h1>
           <Select
             design="basic"
-            value={tagQuery}
+            value={state.tag}
             onChange={(e) => handleTag(e)}
-            disabled={!catQuery}
+            disabled={!category}
             label={"Kiểu dáng"}
           >
             {optionSub}
@@ -205,7 +150,8 @@ const FilterItem = () => {
           </h1>
           <Select
             design="basic"
-            value={colorQuery}
+            value={state.color}
+            disabled={!category}
             onChange={(e) => handleColor(e)}
             label={"Màu sắc"}
           >
@@ -216,7 +162,8 @@ const FilterItem = () => {
           <h1 className={`sm:text-sm sm:px-3 sm:hidden ${sizeCss}`}>Size</h1>
           <Select
             design="basic"
-            value={sizeQuery}
+            value={state.size}
+            disabled={!category}
             onChange={(e) => handleSize(e)}
             label={"Kích cỡ"}
           >
@@ -227,13 +174,13 @@ const FilterItem = () => {
         <div className="flex flex-col gap-3 md:flex-row sm:gap-1">
           <Button
             design={
-              tagQuery || catQuery || colorQuery || sizeQuery
+              Object.values(state).every((value) => value.length > 0)
                 ? "basic"
                 : "disable"
             }
             onClick={handleReset}
             size="s"
-            disabled={!tagQuery && !catQuery && !colorQuery && !sizeQuery}
+            disabled={Object.values(state).every((value) => value.length === 0)}
           >
             reset
           </Button>

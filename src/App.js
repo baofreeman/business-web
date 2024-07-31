@@ -80,8 +80,8 @@ function App() {
               {/* Shop */}
               <Route path="/shop" element={<Shop />}>
                 <Route index element={<AllProduct />} />
-                <Route path=":category" element={<ListProduct />} />
-                <Route path="filter" element={<FilterProducts />} />
+                <Route path=":category" element={<FilterProducts />} />
+                {/* <Route path=":category" element={<ListProduct />} /> */}
                 {/* <Route path="product" element={<DetailItem />} /> */}
               </Route>
               <Route path="/cart">

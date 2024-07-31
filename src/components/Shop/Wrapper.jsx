@@ -1,51 +1,35 @@
-import {
-  getFilterSelectors,
-  useGetProductsCategoryQuery,
-} from "../../api/productsApiSlice";
-import { selectSidebarLeft, selectSidebarRight } from "../../api/toggleSlice";
-import { useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { getSelectors, useGetProductsQuery } from "../../api/productsApiSlice";
+import { useLocation } from "react-router-dom";
 import ItemProduct from "./ItemProduct";
+import { selectSidebarLeft, selectSidebarRight } from "../../api/toggleSlice";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { Loading } from "../ui/index";
 import { useInView } from "react-intersection-observer";
 import useScroll from "../../hook/useScroll";
 
-const ListProduct = () => {
-  // GET params.
-  const { category } = useParams();
-  const openSR = useSelector(selectSidebarRight);
-  const openSL = useSelector(selectSidebarLeft);
-  const [hasMore, setHasMore] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
+const Wrapper = ({ children }) => {
   const location = useLocation();
-
-  const resetPage = useCallback(() => {
-    setPage(1);
-  }, []);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [page, setPage] = useState(1);
 
   useLayoutEffect(() => {
-    resetPage();
-  }, [category]);
+    setPage(1);
+  }, [location.pathname]);
 
-  const { isFetching, isSuccess } = useGetProductsCategoryQuery(
-    {
-      category,
-      page,
-    },
-    {
-      refetchOnMountOrArgChange: true,
-    }
+  const { isFetching, isSuccess } = useGetProductsQuery(
+    { page: page },
+    { refetchOnMountOrArgChange: true }
   );
-  const { selectIds } = getFilterSelectors({
-    category,
+
+  const { selectIds } = getSelectors({
     page: page,
   });
-
   const products = useSelector(selectIds);
 
   const [executeScroll, elRef] = useScroll();
+
   useEffect(() => {
     executeScroll();
   }, []);
@@ -54,28 +38,29 @@ const ListProduct = () => {
     trackVisibility: true,
     delay: 500,
     root: null,
-    rootMargin: "200px",
-    threshold: 0,
+    rootMargin: "-500px",
   });
 
-  // const loadMore = useCallback(() => {
-
-  // }, []);
+  const loadMore = useCallback(() => {
+    setPage((prev) => prev + 1);
+    setLoading(true);
+  }, []);
 
   useEffect(() => {
-    (() => {
-      setHasMore(products.length > 0);
-      setLoading(false);
-    })();
-  }, [products.length, page]);
+    setHasMore(products?.length > 0);
+    setLoading(false);
+  }, [products?.length, page]);
 
   useEffect(() => {
     if (inView && hasMore) {
-      setPage((prev) => prev + 1);
-      setLoading(true);
+      console.log(inView, hasMore);
+      loadMore();
     }
-  }, [inView, hasMore]);
+  }, [inView, loadMore, hasMore]);
 
+  // Toggle sidebar.
+  const openSR = useSelector(selectSidebarRight);
+  const openSL = useSelector(selectSidebarLeft);
   let gridCols =
     openSL && openSR
       ? "grid-cols-4 grid-auto"
@@ -85,6 +70,7 @@ const ListProduct = () => {
       ? "grid-cols-6 grid-auto"
       : null;
   let tabItem = null;
+
   tabItem =
     isSuccess && products?.length
       ? products.map((productId) => (
@@ -95,6 +81,11 @@ const ListProduct = () => {
             Không có sản phẩm
           </span>
         ));
+
+  // (tabItem = (
+  //   <span className="text-center m-auto col-span-4">Không có sản phẩm</span>
+  // ))
+
   return (
     <>
       <div ref={elRef} />
@@ -106,7 +97,7 @@ const ListProduct = () => {
         )}
         {tabItem}
       </div>
-      {products?.length > 0 && (
+      {products.length > 0 && (
         <div
           ref={ref}
           className="w-full col-span-4 m-auto py-10 flex items-center justify-center"
@@ -118,4 +109,4 @@ const ListProduct = () => {
   );
 };
 
-export default ListProduct;
+export default Wrapper;

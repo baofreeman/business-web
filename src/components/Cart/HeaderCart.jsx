@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import { selectTotalQuatity } from "../../api/cartSlice";
 import Button from "../ui/Button/Button";

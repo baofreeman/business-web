@@ -4,5 +4,4 @@ export { default as FilterItem } from "./FilterItem";
 export { default as FilterProducts } from "./FilterProducts";
 export { default as HeaderShop } from "./HeaderShop";
 export { default as ItemProduct } from "./ItemProduct";
-export { default as ListProduct } from "./ListProduct";
 export { default as ModalDetail } from "./ModalDetail";

@@ -1,32 +1,39 @@
 import { useSelector } from "react-redux";
 import { useGetFilterProductsQuery } from "../../api/productsApiSlice";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ItemProduct from "./ItemProduct";
 import { selectSidebarLeft, selectSidebarRight } from "../../api/toggleSlice";
 import queryString from "query-string";
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Loading } from "../ui/index";
 import { useInView } from "react-intersection-observer";
 import useScroll from "../../hook/useScroll";
+
+let page = 1;
 
 const FilterProducts = () => {
   const location = useLocation();
   const search = queryString.parse(location.search);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  useLayoutEffect(() => {
+  const { category } = useParams();
+  const navigate = useNavigate();
+  const resetPage = useCallback(() => {
     setPage(1);
-  }, [location.search, location.pathname]);
-
-  const [executeScroll, elRef] = useScroll();
-  useEffect(() => {
-    executeScroll();
   }, []);
 
+  useEffect(() => {
+    resetPage();
+  }, [location.pathname, location.search]);
+
   const { products } = useGetFilterProductsQuery(
-    { search, page: page },
+    { category, search, page },
     {
       selectFromResult: ({ data }) => {
         return { products: data?.ids.map((id) => id) };
@@ -35,34 +42,28 @@ const FilterProducts = () => {
     }
   );
 
-  // console.log(products);
+  const [executeScroll, elRef] = useScroll();
+
+  useEffect(() => {
+    executeScroll();
+  }, []);
+
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [page]);
+
+  useEffect(() => {
+    if (inView) {
+      setPage((prev) => prev + 1);
+      setIsLoading(true);
+    }
+  }, [inView]);
+
   // Toggle sidebar.
   const openSR = useSelector(selectSidebarRight);
   const openSL = useSelector(selectSidebarLeft);
-  const { ref, inView } = useInView({
-    trackVisibility: true,
-    delay: 5000,
-    root: null,
-    threshold: 0,
-  });
-
-  useEffect(() => {
-    (() => {
-      setHasMore(products?.length > 0);
-      setIsLoading(false);
-    })();
-  }, [products?.length, page]);
-
-  const loadMore = useCallback(() => {
-    setPage((page) => page + 1);
-    setIsLoading(true);
-  }, []);
-
-  useEffect(() => {
-    if (inView && hasMore) {
-      loadMore();
-    }
-  }, [inView, loadMore, hasMore]);
 
   let gridCols =
     openSL && openSR
@@ -86,7 +87,14 @@ const FilterProducts = () => {
   return (
     <>
       <div ref={elRef} />
-      <div className={`grid ${gridCols} gap-4 relative`}>{tabItem}</div>
+      <div className={`grid ${gridCols} gap-4 relative`}>
+        {/* {isFetching && (
+          <div className="w-full col-span-4 m-auto flex items-center justify-center">
+            <Loading />
+          </div>
+        )} */}
+        {tabItem}
+      </div>
       {products?.length > 0 && (
         <div
           ref={ref}

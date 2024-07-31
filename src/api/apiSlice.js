@@ -22,18 +22,8 @@ const productSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_SERVER_URL,
     paramsSerializer: (params) => {
-      // if (params !== "" && params.search && params.page) {
-      //   return queryString.stringify(params.search, params.page);
-      // }
-      // if (params !== "" && params.page) {
-      //   return queryString.stringify(params.page);
-      // }
-      if (params !== "") {
-        return queryString.stringify({
-          search: params.search,
-          page: params.page,
-        });
-      }
+      console.log(params);
+      return queryString.stringify(params.search, { arrayFormat: "none" });
     },
     credentials: "include",
   }),

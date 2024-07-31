@@ -1,17 +1,16 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import {
   selectCartItem,
   selectTotalAmount,
   selectTotalQuatity,
 } from "../../api/cartSlice";
-import Button from "../ui/Button/Button";
+import { Button } from "../ui/index";
 import { convertPrice } from "../../config/convertPrice";
 
 const SubCart = () => {
-  const totalPrice = useSelector(selectTotalAmount); // GET total price.
-  const totalQuatity = useSelector(selectTotalQuatity); // GET total quantity.
-  const cart = useSelector(selectCartItem); // GET cart.
+  const totalPrice = useSelector(selectTotalAmount); // GET total price
+  const totalQuatity = useSelector(selectTotalQuatity); // GET total quantity
+  const cart = useSelector(selectCartItem); // GET cart
 
   return (
     <div

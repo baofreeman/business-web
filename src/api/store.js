@@ -17,7 +17,10 @@ const store = configureStore({
     country: countrySlice,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware, productSlice.middleware),
+    getDefaultMiddleware().concat([
+      apiSlice.middleware,
+      productSlice.middleware,
+    ]),
   devTools: true,
 });
 

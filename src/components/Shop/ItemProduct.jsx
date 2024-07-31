@@ -1,5 +1,5 @@
 import { memo, useCallback, useRef } from "react";
-import { useGetProductsQuery } from "../../api/productsApiSlice";
+import { getSelectors, useGetProductsQuery } from "../../api/productsApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createSearchParams,
@@ -39,28 +39,13 @@ const ItemProduct = ({ productId }) => {
       dispatch(setSidebarRight(true));
     }
     navigate({
-      pathname:
-        location.pathname === "/shop"
-          ? "/shop"
-          : location.pathname.includes("/shop/filter")
-          ? "/shop/filter"
-          : category
-          ? `/shop/${category}`
-          : "/shop",
+      pathname: category ? `/shop/${category}` : "/shop",
       search: createSearchParams({
+        ...search,
         productId: product?._id,
       }).toString(),
     });
-  }, [
-    category,
-    location.pathname,
-    dispatch,
-    product?._id,
-    openSidebarRight,
-    navigate,
-  ]);
-
-  console.log(category);
+  }, []);
 
   // Caculating price min-max of product.
   const price = product?.subCategory?.flatMap(({ model }) =>

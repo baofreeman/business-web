@@ -10,7 +10,7 @@ import useScroll from "../../hook/useScroll";
 
 const AllProduct = () => {
   const location = useLocation();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
 
   useLayoutEffect(() => {
@@ -21,13 +21,13 @@ const AllProduct = () => {
     { page: page },
     { refetchOnMountOrArgChange: true }
   );
+
   const { selectIds } = getSelectors({
     page: page,
   });
-
   const products = useSelector(selectIds);
-  const [executeScroll, elRef] = useScroll();
 
+  const [executeScroll, elRef] = useScroll();
   useEffect(() => {
     executeScroll();
   }, []);
@@ -36,23 +36,19 @@ const AllProduct = () => {
     trackVisibility: true,
     delay: 500,
     root: null,
-    rootMargin: "-500px",
+    rootMargin: "200px",
   });
 
-  const loadMore = useCallback(() => {
-    setPage((prev) => prev + 1);
-    setLoading(true);
-  }, []);
-
   useEffect(() => {
-    setLoading(false);
+    isSuccess && setIsLoading(false);
   }, [page]);
 
   useEffect(() => {
     if (inView) {
-      loadMore();
+      setPage((prev) => prev + 1);
+      setIsLoading(true);
     }
-  }, [inView, loadMore]);
+  }, [inView]);
 
   // Toggle sidebar.
   const openSR = useSelector(selectSidebarRight);
@@ -98,7 +94,7 @@ const AllProduct = () => {
           ref={ref}
           className="w-full col-span-4 m-auto py-10 flex items-center justify-center"
         >
-          {loading && <Loading />}
+          {isLoading && <Loading />}
         </div>
       )}
     </>

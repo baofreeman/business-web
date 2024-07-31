@@ -24,10 +24,11 @@ export const productsApiSlice = productSlice.injectEndpoints({
     //GET All product and filter product based on query params.
     getProducts: builder.query({
       query: ({ page }) => {
+        console.log(page);
         return {
-          url: page ? `/product/?page=${page}` : "/product",
+          url: page ? `/product?page=${page}` : "/product",
           method: "GET",
-          params: { ...page },
+          params: { page },
         };
       },
 
@@ -62,33 +63,28 @@ export const productsApiSlice = productSlice.injectEndpoints({
       },
     }),
 
-    getProductsCategory: builder.query({
-      query: ({ category, page }) => {
-        console.log("Start........", { category: category, page: page });
+    getFilterProducts: builder.query({
+      query: ({ category, search, page }) => {
+        console.log(category, search, page);
+        const parser = queryString.stringify(search);
+        const url = `/product/${category}?${parser}&page=${page}`;
         if (page === 1) {
           preArgs = { category, page };
         }
         return {
-          url: `/product/${category}?page=${page}`,
+          url: url,
           method: "GET",
-          params: { ...page },
+          params: { search, page },
         };
       },
-
       transformResponse: (res) => {
         const loadProducts = res.map((product) => product);
         return productAdapter.setAll(initialState, loadProducts);
       },
       keepUnusedDataFor: 5,
-      serializeQueryArgs: ({ endpointName, queryArgs }) => {
-        if (Object.keys(queryArgs).length === 0) return endpointName;
-        if (queryArgs) return endpointName;
-      },
+      serializeQueryArgs: ({ endpointName, queryArgs }) => endpointName,
       merge: (cached, newItems, { arg }) => {
-        const { category, page } = arg;
-
-        console.log("Merge......", arg);
-        console.log("Prev......", preArgs);
+        const { page, category } = arg;
         const select = productAdapter.getSelectors().selectAll(newItems);
         if (category !== preArgs.category || page === 1) {
           preArgs = arg;
@@ -99,48 +95,6 @@ export const productsApiSlice = productSlice.injectEndpoints({
           ...currentCached,
           ...select,
         ]);
-      },
-      providesTags: (result) => {
-        if (result?.ids) {
-          return [
-            { type: "Product", id: "LIST" },
-            ...result?.ids.map((id) => ({ type: "Product", id })),
-          ];
-        } else return [{ type: "Product", id: "LIST" }];
-      },
-      // forceRefetch: ({ currentArgs, previousArg }) => {
-      //   return currentArgs !== previousArg;
-      // },
-    }),
-
-    getFilterProducts: builder.query({
-      query: ({ search, page }) => {
-        const parser = queryString.stringify(search);
-        console.log(search, page);
-        const url = parser && `/product/filter/?${parser}&page=${page}`;
-        return {
-          url: url,
-          method: "GET",
-          params: { ...search, ...page },
-        };
-      },
-      transformResponse: (res) => {
-        const loadProducts = res.map((product) => product);
-        return productAdapter.setAll(initialState, loadProducts);
-      },
-      keepUnusedDataFor: 5,
-      serializeQueryArgs: ({ endpointName, queryArgs }) => queryArgs.search,
-      merge: (cached, newItems, { arg }) => {
-        const { page, category } = arg;
-        if (page >= 1) {
-          const select = productAdapter.getSelectors().selectAll(newItems);
-          const currentCached = productAdapter.getSelectors().selectAll(cached);
-          return productAdapter.setAll(initialState, [
-            ...currentCached,
-            ...select,
-          ]);
-        }
-        return productAdapter.setAll(initialState);
       },
       providesTags: (result) => {
         if (result?.ids) {
