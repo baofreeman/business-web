@@ -27,6 +27,7 @@ import {
 } from "./components/Shop/index";
 
 import { CheckoutDetail, CheckoutSuccess } from "./components/Checkout/index";
+import Prefresh from "./features/Prefresh";
 
 function App() {
   return (
@@ -55,43 +56,45 @@ function App() {
             ></Route>
 
             {/* <Route element={<Prefresh />}> */}
-            <Route element={<LayoutTab />}>
-              {/* Admin */}
-              <Route element={<RequireAuth allowedRoles={[ROLES.admin]} />}>
-                <Route path="/admin" element={<Admin />}>
-                  <Route index element={<Products />} />
-                  <Route path="products">
+            <Route element={<Prefresh />}>
+              <Route element={<LayoutTab />}>
+                {/* Admin */}
+                <Route element={<RequireAuth allowedRoles={[ROLES.admin]} />}>
+                  <Route path="/admin" element={<Admin />}>
                     <Route index element={<Products />} />
-                    <Route path="create-product" element={<AddProduct />} />
-                    <Route
-                      path="edit-product/:productId"
-                      element={<EditProduct />}
-                    />
-                  </Route>
-                  <Route path="orders">
-                    <Route index element={<Orders />} />
-                  </Route>
-                  <Route path="users">
-                    <Route index element={<Users />} />
+                    <Route path="products">
+                      <Route index element={<Products />} />
+                      <Route path="create-product" element={<AddProduct />} />
+                      <Route
+                        path="edit-product/:productId"
+                        element={<EditProduct />}
+                      />
+                    </Route>
+                    <Route path="orders">
+                      <Route index element={<Orders />} />
+                    </Route>
+                    <Route path="users">
+                      <Route index element={<Users />} />
+                    </Route>
                   </Route>
                 </Route>
-              </Route>
 
-              {/* Shop */}
-              <Route path="/shop" element={<Shop />}>
-                <Route index element={<AllProduct />} />
-                <Route path=":category" element={<FilterProducts />} />
-                {/* <Route path=":category" element={<ListProduct />} /> */}
-                {/* <Route path="product" element={<DetailItem />} /> */}
-              </Route>
-              <Route path="/cart">
-                <Route index element={<Cart />} />
-              </Route>
+                {/* Shop */}
+                <Route path="/shop" element={<Shop />}>
+                  <Route index element={<AllProduct />} />
+                  <Route path=":category" element={<FilterProducts />} />
+                  {/* <Route path=":category" element={<ListProduct />} /> */}
+                  {/* <Route path="product" element={<DetailItem />} /> */}
+                </Route>
+                <Route path="/cart">
+                  <Route index element={<Cart />} />
+                </Route>
 
-              {/* Checkout */}
-              <Route path="/checkout">
-                <Route index element={<CheckoutDetail />} />
-                <Route path="success" element={<CheckoutSuccess />} />
+                {/* Checkout */}
+                <Route path="/checkout">
+                  <Route index element={<CheckoutDetail />} />
+                  <Route path="success" element={<CheckoutSuccess />} />
+                </Route>
               </Route>
             </Route>
           </Route>

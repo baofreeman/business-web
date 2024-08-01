@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 const Prefresh = () => {
   useEffect(() => {
     store.dispatch(
-      productsApiSlice.util.prefetch("getProducts", "allProduct", {
+      productsApiSlice.util.prefetch("getProducts", "getFilterProducts", {
         force: true,
       })
     );

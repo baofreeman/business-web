@@ -116,7 +116,7 @@ export const productsApiSlice = productSlice.injectEndpoints({
         };
       },
       invalidatesTags: (result, error, arg) => [
-        { type: "Product", id: arg?._id },
+        { type: "Product", id: "LIST" },
       ],
     }),
 
@@ -129,9 +129,7 @@ export const productsApiSlice = productSlice.injectEndpoints({
           body: body,
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: "Product", id: arg?._id },
-      ],
+      invalidatesTags: ["Product"],
     }),
 
     // Delete product bases on productId.
@@ -143,9 +141,7 @@ export const productsApiSlice = productSlice.injectEndpoints({
           body: { productId },
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: "Product", id: arg?._id },
-      ],
+      invalidatesTags: [{ type: "Product", id: "LIST" }],
     }),
 
     // Get Variants of Product bases on productId.

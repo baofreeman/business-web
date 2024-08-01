@@ -12,6 +12,7 @@ import { schema } from "./ValidateForm";
 import { useAddProductMutation } from "../../../../api/productsApiSlice";
 import Errors from "../../../ui/Errors/Errors";
 import Loading from "../../../ui/Loading";
+import { useNavigate } from "react-router-dom";
 
 const MainForm = () => {
   const [subErr, setSubErr] = useState("");
@@ -29,7 +30,7 @@ const MainForm = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
+  const navigate = useNavigate();
   const [addProduct, { isLoading, isSuccess }] = useAddProductMutation();
   const onSubmit = async (data) => {
     const { name, description, category, subCategory, productImg } = data;
@@ -50,6 +51,10 @@ const MainForm = () => {
       const res = await addProduct(formData);
       if (isLoading) return <Loading />;
       if (isSuccess) return <p>{res.data.message}</p>;
+      if (res.data) {
+        reset();
+        navigate("/admin/products");
+      }
     } catch (error) {
       return error.message;
     }

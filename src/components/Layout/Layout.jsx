@@ -7,12 +7,13 @@ import { useGetUserQuery } from "../../api/authApiSlice";
 const Layout = () => {
   const [darkMode, setDarkMode] = useState(true);
 
+  // Get current user
+  const {} = useGetUserQuery("currentUser");
+
   // Toggle light or dark screen
   const toggleDark = () => {
     setDarkMode((prevDarkMode) => !prevDarkMode);
   };
-
-  const { data } = useGetUserQuery("currentUser");
 
   return (
     <div className={`${darkMode ? "dark" : ""}`}>
