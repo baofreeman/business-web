@@ -1,14 +1,14 @@
-import SearchIcon from "../../assets/icons/SearchIcon";
-import { Input, Button, Loading } from "../ui/index";
-import DeleteIcon from "../../assets/icons/DeleteIcon";
-import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import { useLazySeachProductQuery } from "../../api/productsApiSlice";
+
+import { Input, Button, Loading, Errors } from "../ui";
+import DeleteIcon from "../../assets/icons/DeleteIcon";
+import SearchIcon from "../../assets/icons/SearchIcon";
 
 const Search = ({ toggleModal, setToggleModal }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const pathname = location.pathname;
+
   const {
     register,
     resetField,
@@ -116,6 +116,7 @@ const Search = ({ toggleModal, setToggleModal }) => {
               </h1>
             )}
           </div>
+          {isError && <Errors>{error.message}</Errors>}
         </div>
       )}
     </div>

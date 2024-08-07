@@ -1,4 +1,4 @@
-import { CheckoutForm } from "./index";
+import { CheckoutForm } from "./";
 
 const CheckoutDetail = () => {
   return <CheckoutForm />;

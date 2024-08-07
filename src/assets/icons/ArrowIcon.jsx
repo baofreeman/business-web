@@ -1,7 +1,7 @@
 const ArrowIcon = ({ rotate, width, height }) => {
   return (
     <svg
-      className="fill-silver hover:fill-black dark:hover:fill-white cursor-pointer"
+      className="fill-silver hover:fill-black dark:hover:fill-white"
       width={width}
       height={height}
       viewBox="0 0 12 7"

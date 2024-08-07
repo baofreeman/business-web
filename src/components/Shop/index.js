@@ -1,7 +1,7 @@
-export { default as AllProduct } from "./AllProduct";
-export { default as DetailItem } from "./DetailItem";
-export { default as FilterItem } from "./FilterItem";
+export { default as ListAllProduct } from "./ListAllProduct";
+export { default as DetailProduct } from "./DetailProduct";
 export { default as FilterProducts } from "./FilterProducts";
+export { default as ListFilterProducts } from "./ListFilterProducts";
 export { default as HeaderShop } from "./HeaderShop";
-export { default as ItemProduct } from "./ItemProduct";
+export { default as ProductExtend } from "./ProductExtend";
 export { default as ModalDetail } from "./ModalDetail";

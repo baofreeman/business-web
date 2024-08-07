@@ -1,33 +1,41 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
-  useGetProductsQuery,
+  getSelectors,
   useLazyGetVariantsQuery,
 } from "../../api/productsApiSlice";
 import { addToCart } from "../../api/cartSlice";
-import { useDispatch } from "react-redux";
-import { convertPrice } from "../../config/convertPrice";
-import { Loading, Select, Button } from "../ui/index";
+
+import { Loading, Select, Button, Errors } from "../ui";
+import { convertPrice } from "../../config";
 
 const ModalItem = () => {
   const [searchParams] = useSearchParams();
+  const [disable, setDisable] = useState("");
+
   const productId = searchParams.get("productId"); // GET productId params
   const [isColor, setIsColor] = useState("");
   const dispatch = useDispatch();
 
   // // GET product.
-  const { product } = useGetProductsQuery(
-    {},
-    {
-      selectFromResult: ({ data }) => ({
-        product: data?.entities[productId],
-      }),
-    }
-  );
+  // const { product } = useGetProductsQuery(
+  //   {},
+  //   {
+  //     selectFromResult: ({ data }) => ({
+  //       product: data?.entities[productId],
+  //     }),
+  //   }
+  // );
 
-  // // GET variants Product.
-  const [trigger, result, lastPromiseInfo] = useLazyGetVariantsQuery();
-  const { data, error, isError, isLoading, isFetching, currentData } = result;
+  const { selectById } = getSelectors({});
+  const product = useSelector(selectById(productId));
+
+  // // GET variants Product with lazy query
+  const [trigger, result] = useLazyGetVariantsQuery();
+  const { data, error, isError, isLoading } = result;
+
   const items = product?.subCategory.flatMap(({ tag, model, _id }) => ({
     tag,
     model,
@@ -37,18 +45,20 @@ const ModalItem = () => {
   // // Choose Size
   const handleSize = (e) => {
     let itemId = e.target.value;
+    setDisable(itemId);
     trigger(itemId);
   };
 
   // Add to cart
   const handleAddCart = async () => {
     if (result?.status === "fulfilled") {
-      console.log(data);
       await dispatch(addToCart(data[0]));
       trigger("");
+      setDisable("");
       setIsColor("");
     } else {
-      console.log(isError);
+      setDisable("");
+      return error.message;
     }
   };
   return (
@@ -72,7 +82,7 @@ const ModalItem = () => {
                 >
                   <h1 className="px-2 cursor-pointers w-full">{item.tag}</h1>
                   <div className="px-2 flex flex-col sm:h-[62px] w-full items-start h-[100%] justify-between gap-2 sm:flex-nowrap scroll-smooth overflow-y-scroll">
-                    {item.model.map((z, index) => (
+                    {item.model.map((z) => (
                       <div
                         key={z._id}
                         className="flex items-center gap-2 py-2 flex-1 w-full"
@@ -130,15 +140,16 @@ const ModalItem = () => {
               </div>
               <Button
                 size="m"
-                design={result?.status !== "fulfilled" ? "disable" : "primary"}
+                design={!disable ? "disable" : "primary"}
                 width="full"
                 onClick={handleAddCart}
-                disabled={result?.status !== "fulfilled"}
+                disabled={!disable}
               >
                 Thêm giỏ hàng
               </Button>
             </div>
           </div>
+          {isError && <Errors>{error.message}</Errors>}
         </div>
       ) : (
         <span className="text-silver flex justify-center items-center h-[100%] w-full">

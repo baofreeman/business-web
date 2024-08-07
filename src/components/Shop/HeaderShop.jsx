@@ -1,18 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
-import {
-  createSearchParams,
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
-import { optionCategory } from "../../services/option";
-import queryString from "query-string";
-import { Button } from "../ui/index";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+
+import { OPTIONCATEGORY } from "../../contants/option";
+import { Button } from "../ui";
 
 const HeaderShop = () => {
   const { category } = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -31,7 +23,7 @@ const HeaderShop = () => {
 
   return (
     <ul className="flex w-full dark:text-silver">
-      {optionCategory.map((item) => (
+      {OPTIONCATEGORY.map((item) => (
         <li key={item}>
           <Button
             size="m"

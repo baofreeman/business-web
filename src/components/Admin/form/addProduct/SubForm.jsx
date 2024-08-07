@@ -2,7 +2,8 @@ import { useFieldArray } from "react-hook-form";
 import ModelForm from "./ModelForm";
 import Button from "../../../ui/Button/Button";
 import Select from "../../../ui/Select/Select";
-import { subCategory } from "../../../../services/option";
+import { OPTIONCATEGORY, SUBCATEGORY } from "../../../../contants";
+
 const SubForm = ({
   register,
   control,
@@ -19,7 +20,9 @@ const SubForm = ({
   });
   const watchCategory = watch("category");
 
-  const filterSub = subCategory.filter(
+  console.log(watchCategory);
+
+  const filterSub = SUBCATEGORY.filter(
     (item) => item.category === watchCategory
   );
 

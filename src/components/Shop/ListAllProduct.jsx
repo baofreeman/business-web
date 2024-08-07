@@ -1,14 +1,17 @@
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { getSelectors, useGetProductsQuery } from "../../api/productsApiSlice";
 import { useLocation } from "react-router-dom";
-import ItemProduct from "./ItemProduct";
-import { selectSidebarLeft, selectSidebarRight } from "../../api/toggleSlice";
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { Loading } from "../ui/index";
 import { useInView } from "react-intersection-observer";
-import useScroll from "../../hook/useScroll";
 
-const AllProduct = () => {
+import { getSelectors, useGetProductsQuery } from "../../api/productsApiSlice";
+import { selectSidebarLeft, selectSidebarRight } from "../../api/sidebarSlice";
+
+import useScroll from "../../hook/useScroll";
+import ProductExtend from "./ProductExtend";
+
+import { Loading } from "../ui";
+
+const ListAllProduct = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -51,14 +54,14 @@ const AllProduct = () => {
   }, [inView]);
 
   // Toggle sidebar.
-  const openSR = useSelector(selectSidebarRight);
-  const openSL = useSelector(selectSidebarLeft);
+  const openSiderRight = useSelector(selectSidebarRight);
+  const openSidebarLeft = useSelector(selectSidebarLeft);
   let gridCols =
-    openSL && openSR
+    openSidebarLeft && openSiderRight
       ? "grid-cols-4 grid-auto"
-      : !openSL && !openSR
+      : !openSidebarLeft && !openSiderRight
       ? "grid-cols-8 grid-auto"
-      : !openSL || !openSR
+      : !openSidebarLeft || !openSiderRight
       ? "grid-cols-6 grid-auto"
       : null;
   let tabItem = null;
@@ -66,7 +69,7 @@ const AllProduct = () => {
   tabItem =
     isSuccess && products?.length
       ? products.map((productId) => (
-          <ItemProduct key={productId} productId={productId} />
+          <ProductExtend key={productId} productId={productId} />
         ))
       : (tabItem = (
           <span className="text-center m-auto col-span-4">
@@ -81,7 +84,7 @@ const AllProduct = () => {
   return (
     <>
       <div ref={elRef} />
-      <div className={`grid ${gridCols} gap-4 relative`}>
+      <div className={`grid gap-4 relative ${gridCols}`}>
         {isFetching && (
           <div className="w-full col-span-4 m-auto flex items-center justify-center">
             <Loading />
@@ -101,4 +104,4 @@ const AllProduct = () => {
   );
 };
 
-export default AllProduct;
+export default ListAllProduct;

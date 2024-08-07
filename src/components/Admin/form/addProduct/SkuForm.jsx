@@ -1,9 +1,8 @@
 import { useFieldArray } from "react-hook-form";
-import Input from "../../../ui/Input/Input";
-import Button from "../../../ui/Button/Button";
-import Select from "../../../ui/Select/Select";
-import { size, sizeNumber } from "../../../../services/option";
-import { makeid } from "../../../../config/random";
+import { Input, Button, Select } from "../../../ui";
+
+import { SIZE, SIZENUMBER } from "../../../../contants";
+import { randomId } from "../../../../config";
 
 const SkuForm = ({
   nestIndex,
@@ -20,20 +19,20 @@ const SkuForm = ({
     control,
   });
 
-  const optionSize = size.map((item) => (
+  const optionSize = SIZE.map((item) => (
     <option key={item} value={item}>
       {item}
     </option>
   ));
 
-  const optionSizeNumber = sizeNumber.map((item) => (
+  const optionSizeNumber = SIZENUMBER.map((item) => (
     <option key={item} value={item}>
       {item}
     </option>
   ));
 
   const category = watch("category");
-  const randomSku = makeid(5);
+  const randomSku = randomId(5);
   return (
     <div className="flex flex-col justify-center items-center gap-6 w-full">
       {fields.map((field, j) => {

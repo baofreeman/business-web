@@ -1,109 +1,186 @@
-import { useSelector } from "react-redux";
-import { useGetFilterProductsQuery } from "../../api/productsApiSlice";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import ItemProduct from "./ItemProduct";
-import { selectSidebarLeft, selectSidebarRight } from "../../api/toggleSlice";
-import queryString from "query-string";
+import { useCallback, useEffect, useState } from "react";
 import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
-import { Loading } from "../ui/index";
-import { useInView } from "react-intersection-observer";
-import useScroll from "../../hook/useScroll";
+  createSearchParams,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
-let page = 1;
+import { COLOR, SIZE, SUBCATEGORY } from "../../contants";
+import { convertCategies } from "../../config";
+import { Button, Select } from "../ui";
 
 const FilterProducts = () => {
-  const location = useLocation();
-  const search = queryString.parse(location.search);
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const { category } = useParams();
   const navigate = useNavigate();
-  const resetPage = useCallback(() => {
-    setPage(1);
-  }, []);
 
-  useEffect(() => {
-    resetPage();
-  }, [location.pathname, location.search]);
+  const initialValues = {
+    tag: "",
+    color: "",
+    size: "",
+  };
 
-  const { products } = useGetFilterProductsQuery(
-    { category, search, page },
-    {
-      selectFromResult: ({ data }) => {
-        return { products: data?.ids.map((id) => id) };
-      },
-      refetchOnMountOrArgChange: true,
-    }
+  // Set query params.
+  const [state, setState] = useState(initialValues);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { category } = useParams();
+
+  // Filter category.
+  const subCategoryOption = SUBCATEGORY.find(
+    (item) => item.category === category
   );
 
-  const [executeScroll, elRef] = useScroll();
+  const optionCategies = convertCategies;
+
+  // Filter tag.
+  const optionSub = subCategoryOption?.data?.map((item) => (
+    <option key={item} value={item} className="custom-option">
+      {item}
+    </option>
+  ));
+
+  // Filter color.
+  const colorOption = COLOR.map((item) => (
+    <option key={item} value={item} className="custom-option">
+      {item}
+    </option>
+  ));
+
+  // Filter size.
+  const sizeOption = SIZE.map((item) => (
+    <span key={item} value={item} className="custom-option">
+      {item}
+    </span>
+  ));
+
+  const handleCategory = (e) => {
+    const value = e.target.value;
+    value ? navigate(`/shop/${value}`) : navigate("/shop");
+  };
+
+  const handleTag = (e) => {
+    const value = e.target.value;
+    setState({ ...state, tag: value });
+  };
+
+  const handleColor = (e) => {
+    const value = e.target.value;
+    setState({ ...state, color: value });
+  };
+
+  const handleSize = (e) => {
+    const value = e.target.value;
+    setState({ ...state, size: value });
+  };
+
+  const handleReset = useCallback(() => {
+    setState({ tag: "", color: "", size: "" });
+    searchParams.delete("tag");
+    searchParams.delete("color");
+    searchParams.delete("size");
+    setSearchParams(searchParams);
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
-    executeScroll();
-  }, []);
-
-  const { ref, inView } = useInView();
+    handleReset();
+  }, [category]);
 
   useEffect(() => {
-    setIsLoading(false);
-  }, [page]);
-
-  useEffect(() => {
-    if (inView) {
-      setPage((prev) => prev + 1);
-      setIsLoading(true);
+    const fn = (state) =>
+      Object.fromEntries(Object.entries(state).filter(([, v]) => v !== ""));
+    const result = fn(state);
+    if (Object.keys(result).length > 0) {
+      navigate({
+        pathname: `/shop/${category}`,
+        search: createSearchParams({ ...result }).toString(),
+      });
     }
-  }, [inView]);
+  }, [state, category, navigate]);
 
-  // Toggle sidebar.
-  const openSR = useSelector(selectSidebarRight);
-  const openSL = useSelector(selectSidebarLeft);
-
-  let gridCols =
-    openSL && openSR
-      ? "grid-cols-4 grid-auto"
-      : !openSL && !openSR
-      ? "grid-cols-8 grid-auto"
-      : !openSL || !openSR
-      ? "grid-cols-6 grid-auto"
-      : null;
-
-  let tabItem = null;
-
-  tabItem = products?.length
-    ? products.map((productId) => (
-        <ItemProduct key={productId} productId={productId} />
-      ))
-    : (tabItem = (
-        <span className="text-center m-auto col-span-4">Không có sản phẩm</span>
-      ));
-
+  // Css selected query.
+  const catCss = category
+    ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
+    : "text-silver px-3 py-2";
+  const tagCss = state.tag
+    ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
+    : "text-silver px-3 py-2";
+  const sizeCss = state.size
+    ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
+    : "text-silver px-3 py-2";
+  const colorCss = state.color
+    ? "text-active drop-shadow-md bg-gray rounded px-3 py-2"
+    : "text-silver px-3 py-2";
   return (
-    <>
-      <div ref={elRef} />
-      <div className={`grid ${gridCols} gap-4 relative`}>
-        {/* {isFetching && (
-          <div className="w-full col-span-4 m-auto flex items-center justify-center">
-            <Loading />
-          </div>
-        )} */}
-        {tabItem}
-      </div>
-      {products?.length > 0 && (
-        <div
-          ref={ref}
-          className="w-full col-span-4 m-auto py-10 flex items-center justify-center"
-        >
-          {isLoading && <Loading />}
+    <div className="w-full h-max flex flex-col gap-4 relative md:flex-row sm:flex-row md:justify-between sm:justify-between sm:px-4">
+      <h1 className="text-base sm:hidden md:hidden">Lọc</h1>
+      <section className="text-md w-full flex flex-col gap-8 md:flex-row md:justify-between sm:flex-row md:gap-4 sm:gap-2 sm:justify-between sm:items-center">
+        <div className="flex flex-col gap-3 md:flex-row sm:gap-1">
+          <h1 className={`sm:text-sm sm:px-3 sm:hidden ${catCss}`}>Danh mục</h1>
+          <Select
+            design="basic"
+            value={category || ""}
+            onChange={(e) => handleCategory(e)}
+            label={"Danh mục"}
+          >
+            {optionCategies()}
+          </Select>
         </div>
-      )}
-    </>
+        <div className="flex flex-col gap-3 md:flex-row sm:gap-1">
+          <h1 className={`sm:text-sm sm:px-3 sm:hidden ${tagCss}`}>
+            Kiểu dáng
+          </h1>
+          <Select
+            design="basic"
+            value={state.tag}
+            onChange={(e) => handleTag(e)}
+            disabled={!category}
+            label={"Kiểu dáng"}
+          >
+            {optionSub}
+          </Select>
+        </div>
+        <div className="flex flex-col gap-3 md:flex-row sm:gap-1">
+          <h1 className={`sm:text-sm sm:px-3 sm:hidden ${colorCss}`}>
+            Màu sắc
+          </h1>
+          <Select
+            design="basic"
+            value={state.color}
+            disabled={!category}
+            onChange={(e) => handleColor(e)}
+            label={"Màu sắc"}
+          >
+            {colorOption}
+          </Select>
+        </div>
+        <div className="flex flex-col gap-3 md:flex-row sm:gap-1">
+          <h1 className={`sm:text-sm sm:px-3 sm:hidden ${sizeCss}`}>Size</h1>
+          <Select
+            design="basic"
+            value={state.size}
+            disabled={!category}
+            onChange={(e) => handleSize(e)}
+            label={"Kích cỡ"}
+          >
+            {sizeOption}
+          </Select>
+        </div>
+
+        <div className="flex flex-col gap-3 md:flex-row sm:gap-1">
+          <Button
+            design={
+              Object.values(state).every((value) => value.length > 0)
+                ? "basic"
+                : "disable"
+            }
+            onClick={handleReset}
+            size="s"
+            disabled={Object.values(state).every((value) => value.length === 0)}
+          >
+            reset
+          </Button>
+        </div>
+      </section>
+    </div>
   );
 };
 

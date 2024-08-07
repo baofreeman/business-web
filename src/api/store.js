@@ -4,7 +4,7 @@
 
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice, productSlice } from "./apiSlice";
-import toggleSlice from "./toggleSlice";
+import sidebarSlice from "./sidebarSlice";
 import cartSlice from "./cartSlice";
 import countrySlice from "./countrySlice";
 
@@ -12,7 +12,7 @@ const store = configureStore({
   reducer: {
     [productSlice.reducerPath]: productSlice.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
-    toggle: toggleSlice,
+    sidebar: sidebarSlice,
     cart: cartSlice,
     country: countrySlice,
   },

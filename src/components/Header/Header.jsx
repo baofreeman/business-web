@@ -1,8 +1,7 @@
 import { useState } from "react";
-import Button from "../ui/Button/Button";
-import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useLazySeachProductQuery } from "../../api/productsApiSlice";
+import { useLocation } from "react-router-dom";
+
+import { Button } from "../ui";
 import Logo from "../../assets/icons/Logo";
 import DarkIcon from "../../assets/icons/DarkIcon";
 import SunIcon from "../../assets/icons/SunIcon";
@@ -10,10 +9,9 @@ import Profile from "./Profile";
 import Search from "./Search";
 
 const Header = ({ darkMode, toggleDark }) => {
-  const navigate = useNavigate();
+  const [toggleModal, setToggleModal] = useState(false);
   const location = useLocation();
   const pathname = location.pathname;
-  const [toggleModal, setToggleModal] = useState(false);
 
   const showLogo = location.pathname !== "/" ? `sm:hidden` : `sm-flex`;
 
@@ -63,6 +61,7 @@ const Header = ({ darkMode, toggleDark }) => {
         {/* Search input */}
         <Search toggleModal={toggleModal} setToggleModal={setToggleModal} />
 
+        {/* Profile */}
         <div className="flex flex-1 sm:flex-none gap-2 items-center justify-end">
           <div
             onClick={toggleDark}

@@ -1,24 +1,10 @@
 import { ModalDetail } from "../../Shop";
 import { Outlet, useLocation } from "react-router-dom";
-import ArrowIcon from "../../../assets/icons/ArrowIcon";
-import { useSelector } from "react-redux";
-import {
-  selectSidebarLeft,
-  selectSidebarRight,
-} from "../../../api/toggleSlice";
+import ButtonSidebar from "./ButtonSidebar";
 
-const LayoutContent = ({
-  handleToggleSL,
-  handleToggleSR,
-  mainRef,
-  width,
-  height,
-  modelRef,
-  id,
-}) => {
+const LayoutContent = ({ mainRef, width, height, modelRef, id }) => {
   const { pathname } = useLocation();
-  const openSidebarRight = useSelector(selectSidebarRight);
-  const openSidebarLeft = useSelector(selectSidebarLeft);
+  const isShowSidebarButton = pathname.includes("/admin");
 
   return (
     <div
@@ -26,65 +12,13 @@ const LayoutContent = ({
       ref={mainRef}
       className="main-layout relative bg-white dark:bg-black"
     >
-      {pathname.includes("/admin") ? null : (
+      {!isShowSidebarButton && (
         <>
-          <button
-            onClick={handleToggleSL}
-            className="md:hidden sm:hidden flex absolute items-center border rounded-md justify-center top-[10px] w-[16px] h-[48px] bg-white dark:bg-black z-10"
-            style={
-              openSidebarLeft
-                ? {
-                    left: "-16px",
-                    borderRight: "none",
-                    borderTopRightRadius: "0px",
-                    borderBottomRightRadius: "0px",
-                  }
-                : {
-                    left: "0px",
-                    borderLeft: "none",
-                    borderTopLeftRadius: "0px",
-                    borderBottomLeftRadius: "0px",
-                  }
-            }
-          >
-            <div className="bg-white dark:bg-black">
-              <ArrowIcon
-                width={12}
-                height={7}
-                rotate={openSidebarLeft ? "90deg" : "-90deg"}
-              />
-            </div>
-          </button>
-
-          <button
-            onClick={handleToggleSR}
-            className="md:hidden sm:hidden flex absolute items-center border rounded-md justify-center top-[10px] w-[16px] h-[48px] bg-white dark:bg-black z-10"
-            style={
-              openSidebarRight
-                ? {
-                    right: "-16px",
-                    borderLeft: "none",
-                    borderTopLeftRadius: "0px",
-                    borderBottomLeftRadius: "0px",
-                  }
-                : {
-                    right: "0px",
-                    borderRight: "none",
-                    borderTopRightRadius: "0px",
-                    borderBottomRightRadius: "0px",
-                  }
-            }
-          >
-            <div className="bg-white dark:bg-black">
-              <ArrowIcon
-                width={12}
-                height={7}
-                rotate={openSidebarRight ? "-90deg" : "90deg"}
-              />
-            </div>
-          </button>
+          <ButtonSidebar design={"left"} />
+          <ButtonSidebar design={"right"} />
         </>
       )}
+
       <div
         className="w-full justify-center flex relative flex-col overflow-y-hidden"
         style={{ height: "100%" }}
@@ -99,14 +33,14 @@ const LayoutContent = ({
                 {<Outlet />}
               </div>
             </div>
-            {pathname.includes("/shop") ? (
+            {pathname.includes("/shop") && (
               <div
                 className="p-[12px] w-full h-[140px] border-t z-10"
                 ref={modelRef}
               >
                 <ModalDetail />
               </div>
-            ) : null}
+            )}
           </div>
         </div>
       </div>

@@ -1,9 +1,6 @@
 import SubForm from "./SubForm";
-import Input from "../../../ui/Input/Input";
-import Button from "../../../ui/Button/Button";
-import Select from "../../../ui/Select/Select";
-import { optionCategory } from "../../../../services/option";
-import Textarea from "../../../ui/Textarea/Textarea";
+import { Input, Button, Select, Textarea } from "../../../ui";
+import { convertCategies } from "../../../../config";
 
 const BasicForm = ({
   register,
@@ -65,11 +62,7 @@ const BasicForm = ({
             }}
             error={errors.category?.message}
           >
-            {optionCategory.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
+            {convertCategies()}
           </Select>
         </div>
 

@@ -1,5 +1,4 @@
-import { memo, useCallback, useRef } from "react";
-import { getSelectors, useGetProductsQuery } from "../../api/productsApiSlice";
+import { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createSearchParams,
@@ -7,17 +6,19 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { convertPrice } from "../../config/convertPrice";
-import { selectSidebarRight, setSidebarRight } from "../../api/toggleSlice";
-import queryString from "query-string";
 
-const ItemProduct = ({ productId }) => {
+import { useGetProductsQuery } from "../../api/productsApiSlice";
+import { selectSidebarRight, setSidebarRight } from "../../api/sidebarSlice";
+
+import queryString from "query-string";
+import { convertPrice } from "../../config";
+
+const ProductExtend = ({ productId }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const search = queryString.parse(location.search);
   const { category } = useParams();
-  const srRef = useRef();
   const openSidebarRight = useSelector(selectSidebarRight);
 
   // GET params.
@@ -34,9 +35,9 @@ const ItemProduct = ({ productId }) => {
   );
 
   // Toggle sidebar right when click item.
-  const handleSR = useCallback(() => {
+  const handleOpenProduct = () => {
     if (openSidebarRight === false) {
-      dispatch(setSidebarRight(true));
+      dispatch(setSidebarRight(!openSidebarRight));
     }
     navigate({
       pathname: category ? `/shop/${category}` : "/shop",
@@ -45,7 +46,7 @@ const ItemProduct = ({ productId }) => {
         productId: product?._id,
       }).toString(),
     });
-  }, []);
+  };
 
   // Caculating price min-max of product.
   const price = product?.subCategory?.flatMap(({ model }) =>
@@ -58,12 +59,9 @@ const ItemProduct = ({ productId }) => {
     <>
       <div
         className={`w-full outline dark:outline-gray data-[active=true]:outline-orange dark:hover:outline-orange hover:outline-orange hover:outline-4 rounded`}
+        onClick={handleOpenProduct}
       >
-        <div
-          className="w-full h-full pb-[20px] sm:pb-[10px] rounded cursor-pointer"
-          ref={srRef}
-          onClick={() => handleSR()}
-        >
+        <div className="w-full h-full pb-[20px] sm:pb-[10px] rounded cursor-pointer">
           <section className="w-full flex flex-col relative p-0 gap-4 uppercase">
             <div className="w-full block pb-[150%] relative">
               <img
@@ -93,4 +91,4 @@ const ItemProduct = ({ productId }) => {
   );
 };
 
-export default memo(ItemProduct);
+export default memo(ProductExtend);

@@ -1,12 +1,13 @@
 import { createRef, useMemo } from "react";
-import { useGetProductsQuery } from "../../api/productsApiSlice";
 import { useSearchParams } from "react-router-dom";
+
+import { useGetProductsQuery } from "../../api/productsApiSlice";
 import ModelDetail from "./ModalDetail";
-import "react-toastify/dist/ReactToastify.css";
+
 import ArrowIcon from "../../assets/icons/ArrowIcon";
 import ImgIcon from "../../assets/icons/ImgIcon";
 
-const DetailItem = () => {
+const DetailProduct = () => {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("productId");
 
@@ -96,4 +97,4 @@ const DetailItem = () => {
     </div>
   );
 };
-export default DetailItem;
+export default DetailProduct;

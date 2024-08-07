@@ -6,10 +6,7 @@ const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_SERVER_URL,
     paramsSerializer: (params) => {
-      console.log(params);
-      if (params !== "") {
-        return queryString.stringify(params);
-      }
+      if (params !== "") return queryString.stringify(params);
     },
     credentials: "include",
   }),
@@ -21,10 +18,8 @@ const productSlice = createApi({
   reducerPath: "productSlice",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_SERVER_URL,
-    paramsSerializer: (params) => {
-      console.log(params);
-      return queryString.stringify(params.search, { arrayFormat: "none" });
-    },
+    paramsSerializer: (params) =>
+      queryString.stringify(params.search, { arrayFormat: "none" }),
     credentials: "include",
   }),
   tagTypes: ["Product", "Search", "Variant"],

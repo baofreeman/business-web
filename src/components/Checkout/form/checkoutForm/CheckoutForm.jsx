@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Input, Select, Button, Textarea, Errors } from "../../../ui/index";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import {
   resetCart,
   selectCartItem,
@@ -15,13 +18,13 @@ import {
   getProvince,
 } from "../../../../api/countrySlice";
 import { useAddOrderMutation } from "../../../../api/ordersApiSlice";
-import { useNavigate } from "react-router-dom";
-import { schema } from "./ValidateCheckoutForm";
-import { yupResolver } from "@hookform/resolvers/yup";
+
 import useAuth from "../../../../hook/useAuth";
-import { shippingValue } from "../../../../services/option";
-import { convertPrice } from "../../../../config/convertPrice";
-import { toast } from "react-toastify";
+import { schema } from "./schema";
+
+import { Input, Select, Button, Textarea, Errors } from "../../../ui";
+import { SHIPPINGFEE } from "../../../../contants";
+import { convertPrice } from "../../../../config";
 
 const CheckoutForm = () => {
   const {
@@ -39,24 +42,31 @@ const CheckoutForm = () => {
   const [district, setDistrict] = useState();
   const [shipping, setShipping] = useState();
   const [payment, setPayment] = useState();
-  const cart = useSelector(selectCartItem);
-  const itemsPrice = useSelector(selectTotalAmount);
-  const totalQuantity = useSelector(selectTotalQuatity);
   const provinces = useSelector(getProvince);
   const districts = useSelector(getDistrict);
+
   const { username, userId } = useAuth();
+  const cart = useSelector(selectCartItem);
+
+  const itemsPrice = useSelector(selectTotalAmount);
+  const totalQuantity = useSelector(selectTotalQuatity);
+
   const fetchMyAPI = useCallback(async () => {
     await dispatch(fetchProvince());
   }, []);
+
   const fetchDistrictApi = useCallback(async () => {
     await dispatch(fetchDistrict(province));
   }, [province]);
+
   useEffect(() => {
     fetchMyAPI();
   }, []);
+
   useEffect(() => {
     fetchDistrictApi();
   }, [province]);
+
   const handleProvince = (e) => {
     setProvince(e.target.value);
     clearErrors("province");
@@ -75,9 +85,8 @@ const CheckoutForm = () => {
     setPayment(e.target.value);
     clearErrors("paymentMethod");
   };
-  const [addOrder, { isLoading, isSuccess, isError, error }] =
-    useAddOrderMutation();
-  console.log(userId, username);
+  const [addOrder, { isLoading, isError, error }] = useAddOrderMutation();
+
   const onSubmit = async (data) => {
     const {
       name,
@@ -113,18 +122,20 @@ const CheckoutForm = () => {
     };
     if (cart.length) {
       if (paymentMethod) {
-        const res = await addOrder(newData);
-        if (res.data?.url) {
-          // window.location.href = res.data?.url;
-          navigate(res.data?.url);
-          toast.success("Đặt hàng thành công");
-          dispatch(resetCart());
-        } else {
-          return error;
+        try {
+          const res = await addOrder(newData);
+          if (res.data) {
+            navigate(res.data?.url);
+            toast.success("Đặt hàng thành công");
+            dispatch(resetCart());
+          }
+        } catch {
+          if (isError) toast(error.message);
         }
       }
     }
   };
+
   return (
     <section className="flex flex-col p-[50px] sm:p-[0px] justify-center items-center w-full rounded gap-4">
       {cart.length ? (
@@ -214,7 +225,7 @@ const CheckoutForm = () => {
                     size={"m"}
                     type="radio"
                     design={"basic"}
-                    value={shippingValue[0]}
+                    value={SHIPPINGFEE[0]}
                     name="shippingPrice"
                     id="field-freeship"
                     onChange={(e) => handleChangeShipping(e)}
@@ -225,7 +236,7 @@ const CheckoutForm = () => {
                   <label
                     htmlFor="field-freeship"
                     className={
-                      shipping === shippingValue[0] || username
+                      shipping === SHIPPINGFEE[0] || username
                         ? "text-active cursor-pointer"
                         : "cursor-pointer"
                     }
@@ -243,7 +254,7 @@ const CheckoutForm = () => {
                     size={"m"}
                     type="radio"
                     design={"basic"}
-                    value={shippingValue[1]}
+                    value={SHIPPINGFEE[1]}
                     name="shippingPrice"
                     id="field-fast"
                     onChange={(e) => handleChangeShipping(e)}
@@ -254,7 +265,7 @@ const CheckoutForm = () => {
                   <label
                     htmlFor="field-fast"
                     className={
-                      shipping === shippingValue[1] || !username
+                      shipping === SHIPPINGFEE[1] || !username
                         ? "text-active cursor-pointer"
                         : "cursor-pointer"
                     }
@@ -263,7 +274,7 @@ const CheckoutForm = () => {
                       Giao hàng đồng giá
                     </span>
                     <span className={username ? "opacity-30" : "text-orange"}>
-                      {`(${convertPrice(shippingValue[1])})`}
+                      {`(${convertPrice(SHIPPINGFEE[1])})`}
                     </span>
                   </label>
                 </div>
@@ -337,7 +348,7 @@ const CheckoutForm = () => {
             type={"submit"}
             disabled={isLoading}
           >
-            {isLoading ? "loading" : "đặt hàng"}
+            {isLoading ? "Loading..." : "đặt hàng"}
           </Button>
         </form>
       ) : (

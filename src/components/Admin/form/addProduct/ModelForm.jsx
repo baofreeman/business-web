@@ -1,8 +1,9 @@
 import { useFieldArray } from "react-hook-form";
+
 import SkuForm from "./SkuForm";
-import Button from "../../../ui/Button/Button";
-import Select from "../../../ui/Select/Select";
-import { color } from "../../../../services/option";
+import { Button, Select } from "../../../ui";
+
+import { COLOR } from "../../../../contants";
 
 const ModelForm = ({
   nestIndex,
@@ -19,7 +20,7 @@ const ModelForm = ({
     control,
   });
 
-  const optionColor = color.map((item) => (
+  const optionColor = COLOR.map((item) => (
     <option key={item} value={item}>
       {item}
     </option>

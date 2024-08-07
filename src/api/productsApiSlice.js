@@ -2,12 +2,12 @@
  * Add new product at Admin panel, includes name, desc, image, variants, color, price, sku.
  * Update products.
  * Delete products.
- * Get all products.
+ * Get all products with lazy loading
  * Get Variants of product.
  * Search, filter products based on query params.
  */
 
-import { createSelector, createEntityAdapter, current } from "@reduxjs/toolkit";
+import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { productSlice } from "./apiSlice";
 import queryString from "query-string";
 
@@ -21,7 +21,7 @@ export const initialState = productAdapter.getInitialState();
 let preArgs;
 export const productsApiSlice = productSlice.injectEndpoints({
   endpoints: (builder) => ({
-    //GET All product and filter product based on query params.
+    // GET All product with lazy loading
     getProducts: builder.query({
       query: ({ page }) => {
         console.log(page);
@@ -63,6 +63,7 @@ export const productsApiSlice = productSlice.injectEndpoints({
       },
     }),
 
+    // GET filter product with lazy loading
     getFilterProducts: builder.query({
       query: ({ category, search, page }) => {
         console.log(category, search, page);
@@ -106,6 +107,7 @@ export const productsApiSlice = productSlice.injectEndpoints({
       },
     }),
 
+    // Add product based on form at Admin panel
     addProduct: builder.mutation({
       query: (body) => {
         return {
@@ -120,7 +122,7 @@ export const productsApiSlice = productSlice.injectEndpoints({
       ],
     }),
 
-    // Update product based on form at Admin panel.
+    // Update product based on form at Admin panel
     updateProduct: builder.mutation({
       query: (body) => {
         return {
@@ -132,7 +134,7 @@ export const productsApiSlice = productSlice.injectEndpoints({
       invalidatesTags: ["Product"],
     }),
 
-    // Delete product bases on productId.
+    // Delete product bases on productId
     deleteProduct: builder.mutation({
       query: ({ productId }) => {
         return {
@@ -144,7 +146,7 @@ export const productsApiSlice = productSlice.injectEndpoints({
       invalidatesTags: [{ type: "Product", id: "LIST" }],
     }),
 
-    // Get Variants of Product bases on productId.
+    // Get Variants of Product bases on productId
     getVariants: builder.query({
       query: (itemId) => ({
         url: `/product/variants/${itemId}`,
@@ -154,7 +156,7 @@ export const productsApiSlice = productSlice.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "Variant", id }],
     }),
 
-    // Search product based on name.
+    // Search product based on name
     seachProduct: builder.query({
       query: (key) => ({
         url: `/product/search/${key}`,
@@ -168,10 +170,7 @@ export const productsApiSlice = productSlice.injectEndpoints({
 
 export const {
   useGetProductsQuery,
-  useLazyGetProductsQuery,
-  useGetProductsCategoryQuery,
   useGetFilterProductsQuery,
-  useLazyGetFilterProductsQuery,
   useAddProductMutation,
   useLazySeachProductQuery,
   useDeleteProductMutation,
@@ -179,49 +178,9 @@ export const {
   useLazyGetVariantsQuery,
 } = productsApiSlice;
 
-export const selectProductResult =
-  productsApiSlice.endpoints.getProducts.select({});
-
-export const selectProductData = createSelector(
-  selectProductResult,
-  (productResult) => productResult.data
-);
-
-// Select get all product.
-export const {
-  selectAll: selectAllProducts,
-  selectById: selectProductById,
-  selectIds: selectProductsIds,
-} = productAdapter.getSelectors(
-  (state) => selectProductData(state) ?? initialState
-);
-
+// GET Selector product with query
 export const getSelectors = (query) => {
   const selectSetup = productsApiSlice.endpoints.getProducts.select(query);
-  const adapterSelectors = createSelector(selectSetup, (result) =>
-    productAdapter.getSelectors(() => result?.data ?? initialState)
-  );
-  return {
-    selectAll: createSelector(adapterSelectors, (state) =>
-      state.selectAll(undefined)
-    ),
-    selectEntities: createSelector(adapterSelectors, (state) =>
-      state.selectEntities(undefined)
-    ),
-    selectIds: createSelector(adapterSelectors, (state) =>
-      state.selectIds(undefined)
-    ),
-    selectTotal: createSelector(adapterSelectors, (state) =>
-      state.selectTotal(undefined)
-    ),
-    selectById: (id) =>
-      createSelector(adapterSelectors, (state) => state.selectById(state, id)),
-  };
-};
-
-export const getFilterSelectors = (query) => {
-  const selectSetup =
-    productsApiSlice.endpoints.getProductsCategory.select(query);
   const adapterSelectors = createSelector(selectSetup, (result) =>
     productAdapter.getSelectors(() => result?.data ?? initialState)
   );

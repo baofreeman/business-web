@@ -1,3 +1,15 @@
+/**
+ * Authentication
+ * Register account
+ * Login account
+ * Verify account with Email
+ * Reset password with Email
+ * Change password
+ * Get profile
+ * Logout account
+ * Access token and Refresh token with backend
+ */
+
 import { apiSlice } from "./apiSlice";
 
 // Invalidate tag mutation
@@ -5,6 +17,7 @@ const invalidatesTags = (result) => (result ? ["UNAUTHORIZED"] : []);
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // Register
     registerUser: builder.mutation({
       query: (credentials) => ({
         url: "/auth/register",
@@ -14,6 +27,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags,
     }),
+
+    // Verify Email
     verifyEmail: builder.mutation({
       query: (credentials) => ({
         url: "/auth/verify-email",
@@ -27,6 +42,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       },
     }),
 
+    // Reset password after send Email
     resetPasswordLink: builder.mutation({
       query: (credentials) => ({
         url: "/auth/reset-password-link",
@@ -37,6 +53,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       invalidatesTags,
     }),
 
+    // Reset password
     resetPassword: builder.mutation({
       query: (data) => {
         const { id, token, ...values } = data;
@@ -63,6 +80,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       invalidatesTags,
     }),
 
+    // GET Profile
     getUser: builder.query({
       query: () => ({
         url: "/auth/me",
@@ -78,6 +96,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       },
     }),
 
+    // Change password
     changePassword: builder.mutation({
       query: (credentials) => ({
         url: "/auth/change-password",

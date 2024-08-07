@@ -1,8 +1,10 @@
+import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { Header } from "../Header/index";
 import { ToastContainer } from "react-toastify";
+
 import { useGetUserQuery } from "../../api/authApiSlice";
+import { Header } from "../Header";
 
 const Layout = () => {
   const [darkMode, setDarkMode] = useState(true);
@@ -15,6 +17,10 @@ const Layout = () => {
     setDarkMode((prevDarkMode) => !prevDarkMode);
   };
 
+  const darkModeCss = darkMode
+    ? "bg-black text-silver"
+    : "bg-silver text-black";
+
   return (
     <div className={`${darkMode ? "dark" : ""}`}>
       <div className="flex flex-col w-screen h-[100vh] max-h-full my-0 mx-auto dark:zz3d">
@@ -24,9 +30,7 @@ const Layout = () => {
         </main>
         <ToastContainer
           toastClassName={() =>
-            `${
-              darkMode ? "bg-black text-silver" : "bg-silver text-black"
-            } relative flex p-1 min-h-20 border rounded-md justify-between overflow-hidden cursor-pointer`
+            `${darkModeCss} relative flex p-1 min-h-20 border rounded-md justify-between overflow-hidden cursor-pointer`
           }
           bodyClassName={() => "flex items-center text-sm p-2"}
           autoClose={3000}

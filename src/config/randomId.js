@@ -1,6 +1,6 @@
 // Create random id.
 
-function makeid(length) {
+function randomId(length) {
   let result = "";
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -13,4 +13,4 @@ function makeid(length) {
   return result;
 }
 
-export { makeid };
+export { randomId };

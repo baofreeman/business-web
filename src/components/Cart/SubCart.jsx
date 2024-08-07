@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectCartItem,
   selectTotalAmount,
@@ -6,11 +6,21 @@ import {
 } from "../../api/cartSlice";
 import { Button } from "../ui/index";
 import { convertPrice } from "../../config/convertPrice";
+import { useEffect } from "react";
+import { selectSidebarRight, setSidebarRight } from "../../api/sidebarSlice";
 
 const SubCart = () => {
   const totalPrice = useSelector(selectTotalAmount); // GET total price
   const totalQuatity = useSelector(selectTotalQuatity); // GET total quantity
   const cart = useSelector(selectCartItem); // GET cart
+  const openSidebarRight = useSelector(selectSidebarRight);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (openSidebarRight === false) {
+      dispatch(setSidebarRight(!openSidebarRight));
+    }
+  }, []);
 
   return (
     <div

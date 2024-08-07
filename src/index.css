@@ -155,13 +155,22 @@
   .main-layout {
     grid-area: MAIN_LAYOUT;
   }
+
+  .custom-option {
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 60px;
+    cursor: pointer;
+    transition: all 0.5s;
+    border-bottom: 1px solid #ffffff;
+  }
 }
 
 @layer utilities {
   @variants responsive {
     /* Hide scrollbar for Chrome, Safari, and Opera */
     .no-scrollbar::-webkit-scrollbar {
-      display: none;
+      scrollbar-width: none;
     }
 
     /* Hide scrollbar for IE, Edge, and Firefox */

@@ -19,7 +19,7 @@ const Select = ({
         onChange={onChange}
         {...props}
       >
-        <option value={""}>{`${label}`}</option>
+        <option value={""} className="custom-option">{`${label}`}</option>
         {children}
       </select>
       {error && <Errors>{error}</Errors>}

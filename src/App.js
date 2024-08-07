@@ -1,15 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import { ROLES } from "./config/roles";
 import MiddlewareAuth from "./middlewares/MiddlewareAuth";
 
-import { Admin, Cart, NotFound, Shop } from "./page/index";
+import { Admin, Cart, NotFound, Shop } from "./page";
 import {
   AddProduct,
   EditProduct,
   Products,
   Orders,
   Users,
-} from "./components/Admin/index";
+} from "./components/Admin";
 import {
   ChangePassword,
   Login,
@@ -18,16 +17,14 @@ import {
   ResetPasswordLink,
   VerifyEmail,
   RequireAuth,
-} from "./components/Auth/index";
-import { Layout, LayoutTab, Public } from "./components/Layout/index";
-import {
-  AllProduct,
-  ListProduct,
-  FilterProducts,
-} from "./components/Shop/index";
+} from "./components/Auth";
+import { Layout, LayoutTab, Public } from "./components/Layout";
+import { ListAllProduct, ListFilterProducts } from "./components/Shop";
 
-import { CheckoutDetail, CheckoutSuccess } from "./components/Checkout/index";
+import { CheckoutDetail, CheckoutSuccess } from "./components/Checkout";
 import Prefresh from "./features/Prefresh";
+
+import { ROLES } from "./contants";
 
 function App() {
   return (
@@ -81,10 +78,8 @@ function App() {
 
                 {/* Shop */}
                 <Route path="/shop" element={<Shop />}>
-                  <Route index element={<AllProduct />} />
-                  <Route path=":category" element={<FilterProducts />} />
-                  {/* <Route path=":category" element={<ListProduct />} /> */}
-                  {/* <Route path="product" element={<DetailItem />} /> */}
+                  <Route index element={<ListAllProduct />} />
+                  <Route path=":category" element={<ListFilterProducts />} />
                 </Route>
                 <Route path="/cart">
                   <Route index element={<Cart />} />

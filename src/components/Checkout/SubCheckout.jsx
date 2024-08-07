@@ -6,9 +6,10 @@ import {
   selectTotalQuatity,
 } from "../../api/cartSlice";
 import useAuth from "../../hook/useAuth";
-import { shippingValue } from "../../services/option";
-import { convertPrice } from "../../config/convertPrice";
-import { Loading } from "../ui/index";
+
+import { convertPrice } from "../../config";
+import { Loading } from "../ui";
+import { SHIPPINGFEE } from "../../contants";
 
 const SubCheckout = () => {
   const cart = useSelector(selectCartItem); // GET cart.
@@ -21,20 +22,20 @@ const SubCheckout = () => {
   const totalPrice = useMemo(() => {
     let total = 0;
     if (userId) {
-      total = itemsPrice + shippingValue[0];
+      total = itemsPrice + SHIPPINGFEE[0];
       return total;
     } else {
-      total = itemsPrice + shippingValue[1];
+      total = itemsPrice + SHIPPINGFEE[1];
       return total;
     }
-  }, [userId]);
+  }, [userId, itemsPrice]);
 
   // Check roles Custommer => freeship.
   useEffect(() => {
     if (userId) {
-      setShipping(shippingValue[0]);
+      setShipping(SHIPPINGFEE[0]);
     } else {
-      setShipping(shippingValue[1]);
+      setShipping(SHIPPINGFEE[1]);
     }
   }, [userId]);
 
